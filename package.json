@@ -1,0 +1,14 @@
+{
+  "name": "champiback_v4",
+  "version": "1.0.0",
+  "description": "Version 4 du projet avec API structurée",
+  "main": "src/api/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Idric Evarne",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
