@@ -81,12 +81,12 @@ app.use("/", express.static("/home/pi/Desktop/champiBack_V3/"));
 //* Frontend.
 
 const gestionAirGetFrondendRouteHandler = require("./routes/frontendRoutes/gestionAirRoutesFrontend");
-app.use("gestionAirRoutes", gestionAirGetFrondendRouteHandler);
+app.use("/gestionAirRoutesFront", gestionAirGetFrondendRouteHandler);
 
 //* API.
 
 const gestionAirGetApiRouteHandler = require("./routes/apiRoutes/gestionAirRoutesApi");
-app.use("gestionAirRoutes", gestionAirGetApiRouteHandler);
+app.use("/gestionAirRoutesApi", gestionAirGetApiRouteHandler);
 
 //? --------------------------------------------------
 
