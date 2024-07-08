@@ -24,5 +24,27 @@ exports.getTemperatureAir = (req, res) => {
         });
     });
 };
+
+exports.getDataAir = (req, res) => {
+  let gestionAirId;
+  gestionAirsDataModels
+    .findOne({
+      attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
+      raw: true,
+    })
+    .then((id) => {
+      // console.log('Le dernier id de gestionAir est : ', id);
+      // console.log(id.maxid);
+
+      gestionAirsDataModels
+        .findOne({
+          where: { id: id.maxid },
+        })
+        .then((datatemperatureAir) => {
+          res.status(200).json({ datatemperatureAir });
+        });
+    });
+};
+
 exports.postConsigneAir = (req, res) => {};
 exports.postPasEtObjectifAir = (req, res) => {};

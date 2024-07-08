@@ -8,6 +8,9 @@ router.get(
   "/getTemperatureAir",
   gestionAirRoutesFrontendHandler.getTemperatureAir
 );
+
+router.get("/getDataAir", gestionAirRoutesFrontendHandler.getDataAir);
+
 router.post(
   "/postConsigneAir",
   gestionAirRoutesFrontendHandler.postConsigneAir
