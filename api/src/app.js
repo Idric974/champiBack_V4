@@ -43,8 +43,8 @@ app.use(bodyParser.json());
 
 //? Génération des pages html.
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+app.get("../frontend/index.html", (req, res) => {
+  res.sendFile(__dirname + "../frontend/index.html");
 });
 
 app.get("/pageRelay.html", (req, res) => {

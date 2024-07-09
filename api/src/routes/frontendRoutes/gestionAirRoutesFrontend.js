@@ -9,15 +9,24 @@ router.get(
   gestionAirRoutesFrontendHandler.getTemperatureAir
 );
 
-router.get("/getDataAir", gestionAirRoutesFrontendHandler.getDataAir);
+router.get(
+  "/getPasEtConsigneTemperatureAir",
+  gestionAirRoutesFrontendHandler.getPasEtConsigneTemperatureAir
+);
 
 router.post(
-  "/postConsigneAir",
-  gestionAirRoutesFrontendHandler.postConsigneAir
+  "/postConsigneTemperatureAir",
+  gestionAirRoutesFrontendHandler.postConsigneTemperatureAir
 );
+
 router.post(
-  "/postPasEtObjectifAir",
-  gestionAirRoutesFrontendHandler.postPasEtObjectifAir
+  "/postPasEtConsigneTemperatureAir",
+  gestionAirRoutesFrontendHandler.postPasEtConsigneTemperatureAir
+);
+
+router.post(
+  "/postVanneActiveAir",
+  gestionAirRoutesFrontendHandler.postVanneActiveAir
 );
 
 //? -------------------------------------------------

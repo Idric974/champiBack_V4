@@ -48,7 +48,8 @@ server.on("listening", () => {
     typeof address === "string" ? "pipe " + address : "port " + `${port}`;
 
   console.log(
-    "[NODE SERVER] Le serveur est démarré sur le http://localhost:" + port
+    "[NODE SERVER CHAMPIBACK V4] Le serveur est démarré sur le http://localhost:" +
+      port
   );
 });
 
