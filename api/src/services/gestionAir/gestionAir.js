@@ -3,7 +3,8 @@ const db = require("../../models");
 const {
   sendSMS,
   miseAjourEtatRelay,
-  gpioAction,
+  gpioActionOut,
+  gpioActionIn,
 } = require("../../utils/functions/myfunctions");
 
 //? Recupération de la vanne à utiliser.
@@ -491,7 +492,7 @@ let definitionDesActions = () => {
             " secondes"
         );
 
-        gpioAction("out", ouvertureVanne);
+        gpioActionOut("out", ouvertureVanne);
 
         if (etatVanneBDD >= 100) {
           etatRelay = 100;
@@ -502,7 +503,7 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", ouvertureVanne);
+          gpioActionIn("in", ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve(etatRelay, (actionRelay = 0));
         }, duree15Seconde);
@@ -518,7 +519,7 @@ let definitionDesActions = () => {
             " secondes"
         );
 
-        gpioAction("out", ouvertureVanne);
+        gpioActionOut("out", ouvertureVanne);
 
         if (etatVanneBDD >= 100) {
           etatRelay = 100;
@@ -529,7 +530,7 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", ouvertureVanne);
+          gpioActionIn("in", ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve(etatRelay, (actionRelay = 0));
         }, duree15Seconde);
@@ -545,7 +546,7 @@ let definitionDesActions = () => {
             " secondes"
         );
 
-        gpioAction("out", ouvertureVanne);
+        gpioActionOut("out", ouvertureVanne);
 
         if (etatVanneBDD >= 100) {
           etatRelay = 100;
@@ -556,7 +557,7 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", ouvertureVanne);
+          gpioActionIn("in", ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve(etatRelay, (actionRelay = 0));
         }, duree5Seconde);
@@ -572,7 +573,7 @@ let definitionDesActions = () => {
             " secondes"
         );
 
-        gpioAction("out", ouvertureVanne);
+        gpioActionOut("out", ouvertureVanne);
 
         if (etatVanneBDD >= 100) {
           etatRelay = 100;
@@ -583,7 +584,7 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", ouvertureVanne);
+          gpioActionIn("in", ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve(etatRelay, (actionRelay = 0));
         }, duree2Seconde);
@@ -599,7 +600,7 @@ let definitionDesActions = () => {
             " secondes"
         );
 
-        gpioAction("out", ouvertureVanne);
+        gpioActionOut("out", ouvertureVanne);
 
         if (etatVanneBDD >= 100) {
           etatRelay = 100;
@@ -610,7 +611,7 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", ouvertureVanne);
+          gpioActionIn("in", ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve(etatRelay, (actionRelay = 0));
         }, duree1Seconde);
@@ -641,7 +642,7 @@ let definitionDesActions = () => {
             " secondes"
         );
 
-        gpioAction("out", fermetureVanne);
+        gpioActionOut("out", fermetureVanne);
 
         if (etatVanneBDD <= 0) {
           etatRelay = 0;
@@ -652,7 +653,7 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", fermetureVanne);
+          gpioActionIn("in", fermetureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve();
         }, duree1Seconde);
@@ -667,7 +668,7 @@ let definitionDesActions = () => {
             " secondes"
         );
 
-        gpioAction("out", fermetureVanne);
+        gpioActionOut("out", fermetureVanne);
 
         if (etatVanneBDD <= 0) {
           etatRelay = 0;
@@ -678,7 +679,7 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", fermetureVanne);
+          gpioActionIn("in", fermetureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve();
         }, duree5Seconde);
@@ -694,7 +695,7 @@ let definitionDesActions = () => {
             " secondes"
         );
 
-        gpioAction("out", fermetureVanne);
+        gpioActionOut("out", fermetureVanne);
 
         if (etatVanneBDD <= 0) {
           etatRelay = 0;
@@ -705,7 +706,7 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", fermetureVanne);
+          gpioActionIn("in", fermetureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve();
         }, duree5Seconde);
@@ -721,7 +722,7 @@ let definitionDesActions = () => {
             " secondes"
         );
 
-        gpioAction("out", fermetureVanne);
+        gpioActionOut("out", fermetureVanne);
 
         if (etatVanneBDD <= 0) {
           etatRelay = 0;
@@ -732,7 +733,7 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", fermetureVanne);
+          gpioActionIn("in", fermetureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve();
         }, duree15Seconde);
@@ -741,18 +742,18 @@ let definitionDesActions = () => {
         //
       } else if (delta <= -3) {
         console.log(
-          "✅ SUCCÈS | Gestions Air | ALERTE, le delta est supérieur à -3°C"
+          "✅ SUCCÈS | Gestions Air | ALERTE, le delta est inférieur à -3°C"
         );
 
         // sendSMS("Attention : le delta est inférieur à -3°C");
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
+          "✅ SUCCÈS | Gestions Air | Delta <= -3° | Action = Fermuture vanne pendant : " +
             duree15Seconde +
             " secondes"
         );
 
-        gpioAction("out", fermetureVanne);
+        gpioActionOut("out", fermetureVanne);
 
         if (etatVanneBDD <= 0) {
           etatRelay = 0;
@@ -763,10 +764,10 @@ let definitionDesActions = () => {
         miseAjourEtatRelay(etatRelay, (actionRelay = 1));
 
         setTimeout(() => {
-          gpioAction("in", fermetureVanne);
+          gpioActionIn("in", fermetureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve(etatRelay, (actionRelay = 0));
-        }, 15000);
+        }, duree15Seconde);
 
         //? -----------------------------------------------
         //
@@ -832,8 +833,8 @@ let handleMyPromise = async () => {
     await calculeDeLaTemperatureMoyenne();
     await definitionTemperatureAirCorrigee();
     await definitionDuDelta();
-    //await definitionDesActions();
-    //await enregistrementDatas();
+    await definitionDesActions();
+    await enregistrementDatas();
   } catch (err) {
     console.log("err finale :", err);
   }

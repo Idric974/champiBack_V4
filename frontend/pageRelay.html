@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Champi Back V4 Relays</title>
+    <link rel="icon" type="image/png" href="./images/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="./styles/globaleStyles.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/pageRelay.css" />
+  </head>
+
+  <body>
+    <div class="box">
+      <!-- âž–âž–âž–âž–âž–âž– ðŸŸ¢ NAVIGATION ðŸŸ¢ âž–âž–âž–âž–âž–âž– -->
+
+      <div class="boxMenu">
+        <div class="boxMenuBlock1">
+          <!-- Le Menu -->
+          <nav class="menu">
+            <div class="version">Champi Back V3</div>
+            <!-- <p class="boxMenuTitle">Menu</p> -->
+            <ul class="menuButton">
+              <a class="menuButtonItems" href="/"><li>Accueil</li></a>
+              <a class="menuButtonItems" href="/pageRelay.html"
+                ><li>Relays</li></a
+              >
+              <a class="menuButtonItems" href="/pageCourbes.html"
+                ><li>Courbe</li></a
+              >
+            </ul>
+          </nav>
+
+          <!-- Le control des vannes -->
+
+          <div class="boxVanne">
+            <div class="switchValve">
+              <div class="switchValveBoxOn">
+                <p class="switchValveBoxOnTitle">Vanne A</p>
+                <button class="switchValveVA" id="switchValveA">ON</button>
+              </div>
+            </div>
+
+            <div class="switchValveBoxOff">
+              <p class="switchValveBoxOnTitle">Vanne B</p>
+              <button class="switchValveVB" id="switchValveB">OFF</button>
+            </div>
+          </div>
+
+          <!-- <div class="dateEtHeure">
+          <p class="dateEtHeureHeure" id="afficheHeure">-</p>
+          <p class="dateEtHeureDate" id="afficheDate2">-</p>
+        </div> -->
+        </div>
+      </div>
+
+      <!-- âž–âž–âž–âž–âž–âž– âŒ FIN NAVIGATION âŒ âž–âž–âž–âž–âž–âž– -->
+
+      <div class="boxAffichage">
+        <!-- âž–âž– â­ DATE BOX â­ âž–âž– -->
+
+        <div class="dateBox">
+          <div id="afficheDate" class="laDate"></div>
+        </div>
+
+        <!-- âž–âž– â­ SHOW DATA â­ âž–âž– -->
+
+        <!-- MAIN -->
+        <div class="boxAffichageContent">
+          <div class="boxRelayContent">
+            <!-- EAU AU SOL -->
+            <div class="boxCardRelay_1">
+              <div class="boxCardRelayData">
+                <p class="boxCardRelayTitle">Eau au sol</p>
+                <button id="btnRelayEauSol" class="boutonActivation">
+                  Activation
+                </button>
+              </div>
+            </div>
+            <!-- FIN EAU AU SOL -->
+
+            <!-- VENTILATEUR HUMIDITÃ‰ -->
+            <div class="boxCardRelay_2">
+              <div class="boxCardRelayData">
+                <p class="boxCardRelayTitle">Ventilateur humiditÃ©</p>
+                <button id="ventilateurHumiditeOn" class="boutonActivation">
+                  Activation
+                </button>
+                <button id="ventilateurHumiditeOff" class="boutonDeactivation">
+                  DÃ©activation
+                </button>
+              </div>
+            </div>
+            <!-- FIN VENTILATEUR HUMIDITÃ‰ -->
+
+            <div class="boxCardRelay_3">
+              <div class="boxCardRelayData">
+                <p id="etatRelay" class="boxCardRelayTitle"></p>
+
+                <div class="boxCardRelay_3Box">
+                  <!-- ETAT VANNE FROID A 5 SCONDES -->
+                  <div class="buttonBox">
+                    <div class="buttonBoxTitle">Action Ã  5 secondes</div>
+                    <button
+                      id="vanneFroid5SesoncdesOn"
+                      class="boutonActivation"
+                    >
+                      Ouverture
+                    </button>
+                    <button
+                      id="vanneFroid5SesoncdesOff"
+                      class="boutonDeactivation"
+                    >
+                      Fermeture
+                    </button>
+                  </div>
+
+                  <!-- ETAT VANNE FROID A 40 SCONDES -->
+                  <div class="buttonBox">
+                    <div class="buttonBoxTitle">Action Ã  40 secondes</div>
+                    <button
+                      id="vanneFroid40SesoncdesOn"
+                      class="boutonActivation"
+                    >
+                      Ouverture
+                    </button>
+                    <button
+                      id="vanneFroid40SesoncdesOff"
+                      class="boutonDeactivation"
+                    >
+                      Fermeture
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- FIN ETAT VANNE FROID -->
+          </div>
+        </div>
+      </div>
+
+      <!-- FIN MAIN -->
+    </div>
+
+    <script src="/gestion/gestionRelay/bundle.js"></script>
+    <!--  browserify /home/pi/Desktop/champiBack_V3/gestion/gestionRelay/gestionRelay.js > /home/pi/Desktop/champiBack_V3/gestion/gestionRelay/bundle.js   -->
+  </body>
+</html>

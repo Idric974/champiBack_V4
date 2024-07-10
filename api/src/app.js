@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const path = require("path");
 
 //? Utilisation de cors pour les connexions
 
@@ -43,37 +44,47 @@ app.use(bodyParser.json());
 
 //? Génération des pages html.
 
-app.get("../frontend/index.html", (req, res) => {
-  res.sendFile(__dirname + "../frontend/index.html");
+//! TEST
+
+//! --------------------------------------------------
+
+const genererModele = require("/home/pi/Desktop/champiBack_V4/frontend/pages/indexGet.js");
+
+app.get("/", async (req, res) => {
+  const indexHtml = await genererModele("index");
+  res.send(indexHtml);
 });
 
-app.get("/pageRelay.html", (req, res) => {
-  res.sendFile(__dirname + "/pageRelay.html");
-});
+// app.use(express.static(path.join(__dirname, "../../frontend")));
 
-app.get("/pageCourbes.html", (req, res) => {
-  res.sendFile(__dirname + "/pageCourbes.html");
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../../frontend", "index.html"));
+// });
 
-app.get("/pageCourbes1.html", (req, res) => {
-  res.sendFile(__dirname + "/pageCourbes1.html");
-});
+// app.get("/pageRelay.html", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../../frontend", "/pageRelay.html"));
+// });
+
+// app.get("/pageCourbes.html", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../../frontend", "/pageCourbes.html"));
+// });
 
 //? --------------------------------------------------
 
 //? Les images.
 
-app.use("/images", express.static("/home/pi/Desktop/champiBack_V3/images"));
+app.use(
+  "/images",
+  express.static("/home/pi/Desktop/champiBack_V4/frontend/images")
+);
 //? --------------------------------------------------
 
 //? Le CSS.
 
-app.use("/styles", express.static("/home/pi/Desktop/champiBack_V3/styles"));
-//? --------------------------------------------------
-
-//? Le Javascript.
-
-app.use("/", express.static("/home/pi/Desktop/champiBack_V3/"));
+app.use(
+  "/styles",
+  express.static("/home/pi/Desktop/champiBack_V4/frontend/styles")
+);
 //? --------------------------------------------------
 
 //? Liste des routes.
@@ -87,6 +98,9 @@ app.use("/gestionAirRoutesFront", gestionAirGetFrondendRouteHandler);
 
 const gestionAirGetApiRouteHandler = require("./routes/apiRoutes/gestionAirRoutesApi");
 app.use("/gestionAirRoutesApi", gestionAirGetApiRouteHandler);
+
+const gestionRelayApiRouteHandler = require("./routes/apiRoutes/gestionRelayApiRoutes");
+app.use("/gestionRelayApiRoutes", gestionRelayApiRouteHandler);
 
 //? --------------------------------------------------
 

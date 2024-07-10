@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Champi Back V4 Courbes</title>
+    <link rel="icon" type="image/png" href="./images/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="./styles/globaleStyles.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/pageCourbes.css" />
+  </head>
+
+  <body>
+    <div class="box">
+      <!-- âž–âž–âž–âž–âž–âž– ðŸŸ¢ NAVIGATION ðŸŸ¢ âž–âž–âž–âž–âž–âž– -->
+
+      <div class="boxMenu">
+        <div class="boxMenuBlock1">
+          <!-- Le Menu -->
+          <nav class="menu">
+            <div class="version">Champi Back V4</div>
+            <!-- <p class="boxMenuTitle">Menu</p> -->
+            <ul class="menuButton">
+              <a class="menuButtonItems" href="/"><li>Accueil</li></a>
+              <a class="menuButtonItems" href="/pageRelay.html"
+                ><li>Relays</li></a
+              >
+              <a class="menuButtonItems" href="/pageCourbes.html"
+                ><li>Courbe</li></a
+              >
+            </ul>
+          </nav>
+
+          <!-- Le control des vannes -->
+
+          <div class="boxVanne">
+            <div class="switchValve">
+              <div class="switchValveBoxOn">
+                <p class="switchValveBoxOnTitle">Vanne A</p>
+                <button class="switchValveVA" id="switchValveA">ON</button>
+              </div>
+            </div>
+
+            <div class="switchValveBoxOff">
+              <p class="switchValveBoxOnTitle">Vanne B</p>
+              <button class="switchValveVB" id="switchValveB">OFF</button>
+            </div>
+          </div>
+
+          <!-- <div class="dateEtHeure">
+          <p class="dateEtHeureHeure" id="afficheHeure">-</p>
+          <p class="dateEtHeureDate" id="afficheDate2">-</p>
+        </div> -->
+        </div>
+      </div>
+
+      <!-- âž–âž–âž–âž–âž–âž– âŒ FIN NAVIGATION âŒ âž–âž–âž–âž–âž–âž– -->
+
+      <!-- MAIN -->
+      <div class="boxAffichage">
+        <!-- âž–âž– â­ DATE BOX â­ âž–âž– -->
+
+        <div class="dateBox">
+          <div id="afficheDate" class="laDate"></div>
+        </div>
+
+        <!-- âž–âž– â­ SHOW DATA â­ âž–âž– -->
+
+        <div class="demarrerCycle">
+          <div class="boxButtonDemCycle">
+            <div class="cont">
+              <button id="btnAir" class="demarrerCycleButton">
+                DÃ©marrer un cycle
+              </button>
+            </div>
+            <!-- <div id="dateDuJourCycle" class="cont1"></div> -->
+            <div id="dateDemarrageCycle" class="cont2"></div>
+            <div id="jourDuCycle" class="cont3"></div>
+          </div>
+
+          <small id="infoSmallId" class="infoSmall infoSmallDisplay"
+            >La date de dÃ©but de cycle Ã  Ã©tÃ© crÃ©Ã© et enregistrÃ©e dans la
+            base de donnÃ©es.</small
+          >
+        </div>
+
+        <div class="container">
+          <!-- Boutons des tabs. -->
+          <div class="container-onglets">
+            <p class="onglets active">Gestion courbes air</p>
+            <p class="onglets">Gestion courbes humiditÃ©</p>
+            <p class="onglets">Gestion courbes Co2</p>
+          </div>
+          <!-- Fin Boutons des tabs. -->
+
+          <!-- Courbes gestionAir -->
+          <div class="contenu active-contenu">
+            <div class="graphData">
+              <canvas id="myChartAir"></canvas>
+            </div>
+
+            <div class="graphVanne">
+              <canvas id="myChartAirVanne"></canvas>
+            </div>
+          </div>
+          <!-- FIN Courbes gestionAir -->
+
+          <!-- Courbes gestionHum -->
+          <div class="contenu">
+            <canvas id="myChartHum"></canvas>
+          </div>
+          <!-- FIN Courbes gestionHum -->
+
+          <!-- Courbes gestionHum -->
+          <div class="contenu">
+            <canvas id="myChartCo2"></canvas>
+          </div>
+          <!-- Courbes gestionCo2 -->
+        </div>
+      </div>
+
+      <!-- FIN MAIN -->
+    </div>
+
+    <script src="/gestion/gestionCourbes/bundle.js"></script>
+    <!--  browserify /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/courbes.js > /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/bundle.js   -->
+
+    <script src="/gestion/gestionCourbes/courbeAir/bundle.js"></script>
+    <!-- browserify /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/courbeAir/gestionCourbeAir.js > /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/courbeAir/bundle.js   -->
+
+    <script src="/gestion/gestionCourbes/courbeVanneAir/bundle.js"></script>
+    <!-- browserify /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/courbeVanneAir/gestionVanneAir.js > /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/courbeVanneAir/bundle.js   -->
+
+    <script src="/gestion/gestionCourbes/courbeHumidite/bundle.js"></script>
+    <!-- browserify /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/courbeHumidite/gestionCourbeHum.js > /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/courbeHumidite/bundle.js   -->
+
+    <script src="/gestion/gestionCourbes/courbeCo2/bundle.js"></script>
+    <!-- browserify /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/courbeCo2/gestionCourbeCo2.js > /home/pi/Desktop/champiBack_V3/gestion/gestionCourbes/courbeCo2/bundle.js   -->
+  </body>
+</html>

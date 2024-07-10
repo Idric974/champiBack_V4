@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{EN-TETE}}
+  </head>
+
+  <body>
+    <div class="box">
+      <!-- le menu -->
+      <div class="boxMenu">
+        <div class="boxMenuBlock1">
+          <!-- Le Menu -->
+          <nav class="menu">
+            <div class="version">Champi Back V4</div>
+            <!-- <p class="boxMenuTitle">Menu</p> -->
+            <ul class="menuButton">
+              <a class="menuButtonItems" href="/"><li>Accueil</li></a>
+              <a class="menuButtonItems" href="/pageRelay.html"
+                ><li>Relays</li></a
+              >
+              <a class="menuButtonItems" href="/pageCourbes.html"
+                ><li>Courbe</li></a
+              >
+            </ul>
+          </nav>
+
+          <!-- Le control des vannes -->
+
+          <div class="boxVanne">
+            <div class="switchValve">
+              <div class="switchValveBoxOn">
+                <p class="switchValveBoxOnTitle">Hum</p>
+                <button class="switchValveVA" id="switchHum">ON</button>
+              </div>
+            </div>
+
+            <div class="switchValveBoxOff">
+              <p class="switchValveBoxOnTitle">Sec</p>
+              <button class="switchValveVB" id="switchSec">OFF</button>
+            </div>
+          </div>
+
+          <div class="dateEtHeure">
+            <p class="dateEtHeureHeure" id="afficheHeure">-</p>
+            <p class="dateEtHeureDate" id="afficheDate">-</p>
+          </div>
+        </div>
+      </div>
+      <!-- le corps -->
+      <div class="boxAffichage">{{CORPS}}</div>
+    </div>
+  </body>
+</html>

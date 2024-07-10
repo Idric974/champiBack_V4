@@ -1,5 +1,3 @@
-const { exec } = require("child_process");
-
 //? Afficher la date.
 
 const showDate = () => {
@@ -64,7 +62,7 @@ const showTime = () => {
 
 //? -------------------------------------------------
 
-//? Gestion des boutons sec et humidité de l'accueil.
+//? Gestion des boutons sec et humiditÃ© de l'accueil.
 
 //* switch Valve A/B.
 
@@ -127,15 +125,38 @@ const saveVanneActive = () => {
       console.log("postVanneActive => ", data);
     })
     .catch("postVanneActive error=> ", (error) => {
-      console.error("🔴 Error | Functions | saveVanneActive : ", error);
+      console.error("ðŸ”´ Error | Functions | saveVanneActive : ", error);
     });
 };
 
 //? -------------------------------------------------
 
-//? Envoyer un SMS d’alerte.
+//? Fermeture de la vanne lors du switch.
 
-const numSalle = require("../../utils/numSalle/configNumSalle");
+const gpioAction = (action, pin) => {
+  // console.log('action + pin ==> ',action, pin);
+
+  fetch("http://localhost:3003/api/relayRoutes/fermetureVanneSwitch/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ action, pin }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("ðŸ– gpioAction ==>", data);
+    })
+    .catch((error) => {
+      console.error("ðŸ”´ Error | Functions | gpioAction : ", error);
+    });
+};
+
+//? -------------------------------------------------
+
+//? Envoyer un SMS dâ€™alerte.
+
+const numSalle = require("../../configNumSalle");
 
 const sendSMS = (temperatureDuMessage) => {
   console.log("temperatureDuMessage :", temperatureDuMessage);
@@ -169,13 +190,13 @@ const sendSMS = (temperatureDuMessage) => {
       console.log("Reponse de SMS808 : ", data);
     })
     .catch((error) => {
-      console.error("🔴 Error | Functions | sendSMS : ", error);
+      console.error("ðŸ”´ Error | Functions | sendSMS : ", error);
     });
 };
 
 //? --------------------------------------------------
 
-//? Mise à jour de l'état des relay.
+//? Mise Ã  jour de l'Ã©tat des relay.
 
 let miseAjourEtatRelay = (etatRelay) => {
   fetch("http://localhost:3003/api/functionsRoutes/majEtatRelay", {
@@ -196,66 +217,11 @@ let miseAjourEtatRelay = (etatRelay) => {
 
 //? --------------------------------------------------
 
-//? Activer un relais.
-
-const gpioActionOut = async (action, pin) => {
-  // console.log("🟢 Paramètre Relay On : ", { action, pin });
-
-  exec(
-    `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOn.py ${pin}`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error executing script: ${error}`);
-        return;
-      }
-
-      if (stderr) {
-        // console.error(`gpioActionIn | stderr |Error output: ${stderr}`);
-        return;
-      }
-
-      console.log(
-        `✅ SUCCÈS | Activation du relais ${pin} | Script output: ${stdout}`
-      );
-    }
-  );
-};
-
-//? --------------------------------------------------
-
-//? Désactiver un relais.
-
-const gpioActionIn = async (action, pin) => {
-  // console.log("🔴 Paramètre Relay Off : ", { action, pin });
-
-  exec(
-    `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOff.py ${pin}`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`gpioActionIn | Error executing script: ${error}`);
-        return;
-      }
-
-      if (stderr) {
-        // console.error(`gpioActionIn | stderr |Error output: ${stderr}`);
-        return;
-      }
-
-      console.log(
-        `✅ SUCCÈS | Déactivation du relais ${pin} | Script output: ${stdout}`
-      );
-    }
-  );
-};
-
-//? --------------------------------------------------
-
 module.exports = {
   showDate,
   showTime,
-  // switchValve,
+  switchValve,
   sendSMS,
   miseAjourEtatRelay,
-  gpioActionOut,
-  gpioActionIn,
+  gpioAction,
 };
