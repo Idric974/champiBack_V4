@@ -55,6 +55,16 @@ app.get("/", async (req, res) => {
   res.send(indexHtml);
 });
 
+app.get("/relay", async (req, res) => {
+  const relayHtml = await genererModele("relay");
+  res.send(relayHtml);
+});
+
+app.get("/courbe", async (req, res) => {
+  const courbeHtml = await genererModele("courbe");
+  res.send(courbeHtml);
+});
+
 // app.use(express.static(path.join(__dirname, "../../frontend")));
 
 // app.get("/", (req, res) => {

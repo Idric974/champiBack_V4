@@ -1,0 +1,61 @@
+<div class="boxAffichage">
+  <!-- âž–âž– â­ DATE BOX â­ âž–âž– -->
+
+  <div class="dateBox">
+    <div id="afficheDate" class="laDate"></div>
+  </div>
+
+  <!-- âž–âž– â­ SHOW DATA â­ âž–âž– -->
+
+  <div class="demarrerCycle">
+    <div class="boxButtonDemCycle">
+      <div class="cont">
+        <button id="btnAir" class="demarrerCycleButton">
+          DÃ©marrer un cycle
+        </button>
+      </div>
+      <!-- <div id="dateDuJourCycle" class="cont1"></div> -->
+      <div id="dateDemarrageCycle" class="cont2"></div>
+      <div id="jourDuCycle" class="cont3"></div>
+    </div>
+
+    <small id="infoSmallId" class="infoSmall infoSmallDisplay"
+      >La date de dÃ©but de cycle Ã  Ã©tÃ© crÃ©Ã© et enregistrÃ©e dans la base
+      de donnÃ©es.</small
+    >
+  </div>
+
+  <div class="container">
+    <!-- Boutons des tabs. -->
+    <div class="container-onglets">
+      <p class="onglets active">Gestion courbes air</p>
+      <p class="onglets">Gestion courbes humiditÃ©</p>
+      <p class="onglets">Gestion courbes Co2</p>
+    </div>
+    <!-- Fin Boutons des tabs. -->
+
+    <!-- Courbes gestionAir -->
+    <div class="contenu active-contenu">
+      <div class="graphData">
+        <canvas id="myChartAir"></canvas>
+      </div>
+
+      <div class="graphVanne">
+        <canvas id="myChartAirVanne"></canvas>
+      </div>
+    </div>
+    <!-- FIN Courbes gestionAir -->
+
+    <!-- Courbes gestionHum -->
+    <div class="contenu">
+      <canvas id="myChartHum"></canvas>
+    </div>
+    <!-- FIN Courbes gestionHum -->
+
+    <!-- Courbes gestionHum -->
+    <div class="contenu">
+      <canvas id="myChartCo2"></canvas>
+    </div>
+    <!-- Courbes gestionCo2 -->
+  </div>
+</div>
