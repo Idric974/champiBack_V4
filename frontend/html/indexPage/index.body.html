@@ -357,8 +357,9 @@
   </div>
 </div>
 
-<!-- * RÉCUPÉRATION DE LA TEMPÉRATURE DE L’AIR. -->
+<!-- *  -->
 <script>
+  // ** 🟢 RÉCUPÉRATION DE LA TEMPÉRATURE DE L’AIR 🟢
   let temperatureAir;
   let temperatureAirLocalStorage;
   let deltaAirLocalStorage;
@@ -376,7 +377,7 @@
       .then((data) => {
         // console.log("DATA BRUTE : temperatureAir =>",data);
 
-        let temperatureAir = data.temperatureAir.temperatureAir;
+        temperatureAir = data.temperatureAir.temperatureAir;
         // console.log("ðŸ‘‰ temperatureAir =>", temperatureAir);
         // console.log("ðŸ‘‰ temperatureAir typeof =>", typeof temperatureAir);
 
@@ -404,10 +405,9 @@
     getTemperatureAir();
     //console.log('rÃ©cup tempAir');
   }, 10000);
-</script>
 
-<!-- * RÉCUPÉRATION DES DATAS DE LA TEMPÉRATURE DE L’AIR. -->
-<script>
+  //** 🟢 RÉCUPÉRATION DES DATAS DE LA TEMPÉRATURE DE L’AIR 🟢
+
   let consigneAir;
   let consigneAirLocalStorage;
   let objectifAir;
@@ -546,6 +546,9 @@
         }, 120000);
       })
       .then(() => {
+        console.log("temperatureAir ==> ", temperatureAir);
+        console.log("consigneAir ==> ", consigneAir);
+
         deltaAir = temperatureAir - consigneAir;
 
         console.log("ðŸ‘‰ delta Air =>", deltaAir);
@@ -570,20 +573,16 @@
     getConsigneAir();
     // console.log('rÃ©cup consigneAir');
   }, 15000);
-</script>
 
-<!-- * POST DE LA CONSIGNE AIR. -->
-<script>
+  //**🟢 POST DE LA CONSIGNE AIR 🟢
+
   document
     .getElementById("validationConsigneAir")
-    .addEventListener("click", function (event) {
-      event.preventDefault();
-      console.log("Clic sur bouton validation consigne air ");
+    .addEventListener("click", function () {
+      // console.log("Clic sur bouton validation consigne air ");
 
       let consigneAirForm = document.getElementById("consigneAirForm").value;
       console.log("consigneAirForm", consigneAirForm);
-
-      localStorage.setItem("gestionAir ==> Dernier consigne:", consigneAirForm);
 
       const postConsigneTemperatureAir = () => {
         console.log("Envoi de la requête fetch...");
@@ -609,6 +608,10 @@
           })
           .then((data) => {
             console.log("Post Consigne Temperature Air : ", data);
+            localStorage.setItem(
+              "gestionAir ==> Dernier consigne:",
+              consigneAirForm
+            );
           })
           .catch((error) => {
             console.log("Erreur lors de l'envoi de la requête fetch :", error);
@@ -617,25 +620,21 @@
 
       postConsigneTemperatureAir();
     });
-</script>
 
-<!-- * POST DES DATAS AIR. -->
-<script>
+  //** 🟢 POST DES DATAS AIR 🟢
+
   document
     .getElementById("validationdataAir")
-    .addEventListener("click", function (event) {
-      event.preventDefault(); // Empêcher le rechargement de la page
-      console.log("Clic sur bouton validation Etal Hum");
+    .addEventListener("click", function () {
+      // console.log("Clic sur bouton validation Etal Hum");
 
       //* Pas Air.
       let pasAirForm = document.getElementById("pasAirForm").value;
       console.log("pasAirForm", pasAirForm);
-      localStorage.setItem("gestionAir ==> Dernier Pas:", pasAirForm);
 
       //* Objectif Air.
       let objectiAirForm = document.getElementById("objectiAirForm").value;
       console.log("objectiAirForm", objectiAirForm);
-      localStorage.setItem("gestionAir ==> Dernier Objectif:", objectiAirForm);
 
       const postPasEtConsigneTemperatureAir = () => {
         console.log("Envoi de la requête fetch...");
@@ -662,6 +661,11 @@
           })
           .then((data) => {
             console.log("Post Pas Et Consigne Temperature Air :", data);
+            localStorage.setItem("gestionAir ==> Dernier Pas:", pasAirForm);
+            localStorage.setItem(
+              "gestionAir ==> Dernier Objectif:",
+              objectiAirForm
+            );
           })
           .catch((error) => {
             console.error(

@@ -2,10 +2,10 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const path = require("path");
+const cors = require("cors");
 
 //? Utilisation de cors pour les connexions
 
-const cors = require("cors");
 app.use(cors());
 
 //? --------------------------------------------------
@@ -38,30 +38,35 @@ db.sequelize.sync({
 
 //? Utilisation de body parser
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ type: "application/json; charset=utf-8" }));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    type: "application/x-www-form-urlencoded; charset=UTF-8",
+  })
+);
 
 //? --------------------------------------------------
 
 //? Génération des pages html.
 
-//! TEST
-
-//! --------------------------------------------------
-
 const genererModele = require("/home/pi/Desktop/champiBack_V4/frontend/pages/indexGet.js");
 
 app.get("/", async (req, res) => {
   const indexHtml = await genererModele("indexPage/index");
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(indexHtml);
 });
 
 app.get("/relay", async (req, res) => {
   const relayHtml = await genererModele("relayPages/relay");
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(relayHtml);
 });
 
 app.get("/courbe", async (req, res) => {
   const courbeHtml = await genererModele("courbesPages/courbe");
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(courbeHtml);
 });
 
