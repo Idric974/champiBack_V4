@@ -51,33 +51,19 @@ app.use(bodyParser.json());
 const genererModele = require("/home/pi/Desktop/champiBack_V4/frontend/pages/indexGet.js");
 
 app.get("/", async (req, res) => {
-  const indexHtml = await genererModele("index");
+  const indexHtml = await genererModele("indexPage/index");
   res.send(indexHtml);
 });
 
 app.get("/relay", async (req, res) => {
-  const relayHtml = await genererModele("relay");
+  const relayHtml = await genererModele("relayPages/relay");
   res.send(relayHtml);
 });
 
 app.get("/courbe", async (req, res) => {
-  const courbeHtml = await genererModele("courbe");
+  const courbeHtml = await genererModele("courbesPages/courbe");
   res.send(courbeHtml);
 });
-
-// app.use(express.static(path.join(__dirname, "../../frontend")));
-
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../../frontend", "index.html"));
-// });
-
-// app.get("/pageRelay.html", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../../frontend", "/pageRelay.html"));
-// });
-
-// app.get("/pageCourbes.html", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../../frontend", "/pageCourbes.html"));
-// });
 
 //? --------------------------------------------------
 

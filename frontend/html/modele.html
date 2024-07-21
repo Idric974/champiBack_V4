@@ -10,11 +10,11 @@
   <body>
     <div class="box">
       <!-- le menu -->
-      <div class="boxMenu">
+      <div class="menuContainer">
         <div class="boxMenuBlock1">
           <!-- Le Menu -->
           <nav class="menu">
-            <div class="version">Champi Back V4</div>
+            <div class="version">ChampiBack V4</div>
             <!-- <p class="boxMenuTitle">Menu</p> -->
             <ul class="menuButton">
               <a class="menuButtonItems" href="/"><li>Accueil</li></a>
@@ -46,7 +46,190 @@
         </div>
       </div>
       <!-- le corps -->
-      <div class="boxAffichage">{{CORPS}}</div>
+
+      <div class="dataContainer">{{CORPS}}</div>
     </div>
+
+    <!-- * AFFICHER LA DATE -->
+
+    <script>
+      const showDate = () => {
+        let myDate;
+
+        let mois = [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+        ];
+
+        let maintenant = new Date();
+        let jour = maintenant.getDate();
+        let moisAnnee = mois[maintenant.getMonth()];
+        let annee = maintenant.getFullYear();
+
+        myDate = `${jour}/${moisAnnee}/${annee}`;
+
+        const element = document.getElementById("afficheDate");
+        if (element) {
+          element.innerHTML = myDate;
+        }
+        // console.log("La date ==>", myDate);
+      };
+      showDate();
+    </script>
+
+    <!-- * AFFICHER L'HEURE -->
+
+    <script>
+      const showTime = () => {
+        let myHeure;
+
+        function updateTime() {
+          let myDate = new Date();
+          let heure = myDate.getHours().toString().padStart(2, "0");
+          let minute = myDate.getMinutes().toString().padStart(2, "0");
+          let seconde = myDate.getSeconds().toString().padStart(2, "0");
+
+          myHeure = `${heure}:${minute}:${seconde}`;
+
+          const element = document.getElementById("afficheHeure");
+          if (element) {
+            element.innerHTML = myHeure;
+          } else {
+            console.log("Pas d'heure");
+          }
+        }
+
+        setInterval(() => {
+          updateTime();
+        }, 1000);
+      };
+
+      // Appeler la fonction showTime après que le DOM est chargé
+      document.addEventListener("DOMContentLoaded", (event) => {
+        showTime();
+      });
+    </script>
+
+    <!-- * GESTION DES BOUTONS HUMIDITÉ SEC. -->
+
+    <script>
+      let pin;
+      let vanneActive = "vanneHum";
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const buttonHum = document.getElementById("switchHum");
+        const buttonSec = document.getElementById("switchSec");
+
+        const toggleButtons = (activeButton, inactiveButton) => {
+          activeButton.innerHTML = "ON";
+          activeButton.style.backgroundColor = "var(--orangeClic974)";
+          inactiveButton.innerHTML = "OFF";
+          inactiveButton.style.backgroundColor = "var(--greenColor)";
+        };
+
+        const handleClick = (activeVanne, activeButton, inactiveButton) => {
+          vanneActive = activeVanne;
+          toggleButtons(activeButton, inactiveButton);
+          saveVanneActive();
+          gpioAction(pin);
+        };
+
+        buttonHum.addEventListener("click", () => {
+          handleClick("vanneHum", buttonHum, buttonSec);
+          activeVanne = "vanneHum";
+          pin = 25;
+          console.log("Bouton vanneHum cliqué");
+        });
+        buttonSec.addEventListener("click", () => {
+          handleClick("vanneSec", buttonSec, buttonHum);
+          activeVanne = "vanneSec";
+          pin = 23;
+          console.log("Bouton vanneSec cliqué");
+        });
+      });
+    </script>
+
+    <!-- * SAUVEGARDE DE LA VANNE ACTIVE. -->
+
+    <script>
+      const saveVanneActive = () => {
+        fetch(
+          "http://localhost:3003/gestionAirRoutesFront/postVanneActiveAir/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              vanneActive,
+            }),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("postVanneActive => ", data);
+          })
+          .catch("postVanneActive error=> ", (error) => {
+            console.error("🔴 Error | Functions | saveVanneActive : ", error);
+          });
+      };
+    </script>
+
+    <!-- * FERMETURE DE LA VANNE LORS DU SWITCH. -->
+
+    <script>
+      const gpioAction = (pin) => {
+        console.log("pin ==> ", pin);
+
+        fetch(
+          "http://localhost:3003/gestionAirRoutesFront/postFermetureVanneAir/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ pin }),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("🖐 gpioAction ==>", data);
+          })
+          .catch((error) => {
+            console.error("🔴 Error | Functions | gpioAction : ", error);
+          });
+      };
+    </script>
+
+    <!-- * MISE À JOUR DE L'ÉTAT DES RELAIS. -->
+
+    <script>
+      let miseAjourEtatRelay = (etatRelay) => {
+        fetch("http://localhost:3003/gestionAirRoutesFront/majEtatRelay", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ etatRelay }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      };
+    </script>
   </body>
 </html>

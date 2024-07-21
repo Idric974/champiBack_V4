@@ -29,6 +29,11 @@ router.post(
   gestionAirRoutesFrontendHandler.postVanneActiveAir
 );
 
+router.post(
+  "/postFermetureVanneAir",
+  gestionAirRoutesFrontendHandler.postFermetureVanneAir
+);
+
 //? -------------------------------------------------
 
 module.exports = router;

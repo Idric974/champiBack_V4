@@ -129,3 +129,45 @@ exports.postVanneActiveAir = (req, res) => {
       return res.status(400).json({ error });
     });
 };
+
+//? Fermeture de la vanne froid humidité ou sec pour 40 sec.
+
+const { exec } = require("child_process");
+const util = require("util");
+const execAsync = util.promisify(exec);
+
+exports.postFermetureVanneAir = async (req, res) => {
+  let gpioPin = req.body.pin;
+  // console.log("gpioPin ==>", gpioPin);
+
+  try {
+    // Exécuter le script gpioOn.py
+    const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
+      `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOn.py ${gpioPin}`
+    );
+    if (stderrOn) {
+      console.error(`Error output (gpioOn.py): ${stderrOn}`);
+    }
+    console.log(`Script output (gpioOn.py): ${stdoutOn}`);
+
+    // Attendre 40 secondes avant d'exécuter le script gpioOff.py
+    await new Promise((resolve) => setTimeout(resolve, 40000));
+
+    // Exécuter le script gpioOff.py
+    const { stdout: stdoutOff, stderr: stderrOff } = await execAsync(
+      `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOff.py ${gpioPin}`
+    );
+    if (stderrOff) {
+      console.error(`Error output (gpioOff.py): ${stderrOff}`);
+    }
+    console.log(`Script output (gpioOff.py): ${stdoutOff}`);
+
+    // Envoyer la réponse
+    res.status(200).json({ message: "Fermeture de la vanne terminée" });
+  } catch (error) {
+    console.error(`Error executing script: ${error}`);
+    res
+      .status(500)
+      .json({ message: "Erreur lors de l'exécution du script", error });
+  }
+};

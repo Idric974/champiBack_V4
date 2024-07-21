@@ -11,6 +11,7 @@ def handler(signal_received, frame):
 
 def main(pin):
     # Initialisation des GPIO
+    gpio.setwarnings(False)  # Désactiver les avertissements
     gpio.setmode(gpio.BCM)
     gpio.setup(pin, gpio.OUT)
 

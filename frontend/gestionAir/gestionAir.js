@@ -1,12 +1,4 @@
-// const { showDate, showTime, switchValve } = require("../functions/myfunctions");
-
-// showDate();
-// showTime();
-// switchValve();
-
-// showDate();
-// showTime();
-// switchValve();
+console.log("HELLO");
 
 //? RÃ©cupÃ©ration de la tempÃ¨rature Air dans la base.
 

@@ -1,0 +1,676 @@
+<div class="boxCard">
+  <!-- BOX AFFICHAGE -->
+
+  <div class="boxCardData1">
+    <p class="boxCardDataTitle">Température Air</p>
+
+    <div id="temperatureAir" class="boxCardDataValue">😀</div>
+
+    <div class="boxCardDataParams">
+      <div class="cardDataParams">
+        <p class="cardDataParamsTitle">Consigne Air :</p>
+        <div id="consigneAir" class="boxCardDataItem">😀</div>
+      </div>
+
+      <div class="cardDataParams">
+        <p class="cardDataParamsTitle">Delta Air :</p>
+        <p id="deltaAir" class="boxCardDataItem">😀</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIN BOX AFFICHAGE -->
+
+  <!-- BOX SAISIE -->
+
+  <div class="boxCardData2">
+    <p class="boxCardData2Title">Descente Air</p>
+
+    <div class="boxCardData2Form">
+      <form class="inputForm">
+        <div class="inputBlocForm">
+          <label class="lableBlocForm" for="consigneAir">Consigne :</label>
+          <input
+            class="inputBlocBox"
+            type="number"
+            step="0.1"
+            id="consigneAirForm"
+            name="consigneAir"
+            required
+          />
+          <p class="histoBlocForm" id="dernierConsigneAirEntree">😀</p>
+        </div>
+
+        <div class="validationButtonBox">
+          <button class="validationButton" id="validationConsigneAir">
+            Valider Consigne
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="boxCardData2Form">
+      <form class="inputForm">
+        <div class="inputBlocForm">
+          <label class="lableBlocForm" for="consigneAir">Pas :</label>
+          <input
+            class="inputBlocBox"
+            type="number"
+            step="0.1"
+            id="pasAirForm"
+            name="consigneAir"
+            required
+          />
+          <p class="histoBlocForm" id="dernierPasAirEntree">😀</p>
+        </div>
+
+        <div class="inputBlocForm">
+          <label class="lableBlocForm" for="consigneAir">Objectif :</label>
+          <input
+            class="inputBlocBox"
+            type="number"
+            step="0.1"
+            id="objectiAirForm"
+            name="consigneAir"
+            required
+          />
+          <p class="histoBlocForm" id="dernierObjectifAirEntree">😀</p>
+        </div>
+
+        <div class="validationButtonBox">
+          <button class="validationButton" id="validationdataAir">
+            Valider Data
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="descenteAirBox" id="descenteAir">Pas de descente activée</div>
+  </div>
+
+  <!-- FIN BOX SAISIE -->
+</div>
+<!-- --------------------- -->
+
+<!-- ➖➖ 🔺 SUBSTRAT 🔺 ➖➖ -->
+
+<!-- <div class="boxCard"> -->
+<!-- BOX AFFICHAGE -->
+
+<!-- <div class="boxCardData1">
+      <p class="boxCardDataTitle">Température substrat</p>
+
+      <div id="temperatureSubstrat" class="boxCardDataValue"></div>
+
+      <div class="boxCardDataParams">
+        <div class="cardDataParams">
+          <p class="cardDataParamsTitle">Consigne Max :</p>
+          <div id="consigneMaxDataSubstrat" class="boxCardDataItem"></div>
+        </div>
+
+        <div class="cardDataParams">
+          <p class="cardDataParamsTitle">Consigne Min :</p>
+          <div id="consigneMinDataSubstrat" class="boxCardDataItem"></div>
+        </div>
+      </div>
+    </div> -->
+
+<!-- FIN BOX AFFICHAGE -->
+
+<!-- BOX SAISIE -->
+<!-- 
+    <div class="boxCardData2">
+      <p class="boxCardData2Title">Gestion Substrat</p>
+
+      <div class="boxCardData2Form">
+        <form class="inputForm">
+          <div class="inputBlocForm">
+            <label class="lableBlocForm" for="consigneAir">Temp Max :</label>
+            <input class="inputBlocBox" type="number" step="0.1" id="inputConsigneMaxDataSubstrat"
+              name="consigneAir" required />
+            <p class="histoBlocForm" id="dernierConsigneSubstratMaxEntree">
+              😀
+            </p>
+          </div>
+
+          <div class="inputBlocForm">
+            <label class="lableBlocForm" for="consigneAir">Temp Min :</label>
+            <input class="inputBlocBox" type="number" step="0.1" id="inputConsigneMinDataSubstrat"
+              name="consigneAir" required />
+            <p class="histoBlocForm" id="dernierConsigneSubstratMinEntree">
+              😀
+            </p>
+          </div>
+
+          <div class="validationButtonBox">
+            <button class="validationButton" id="validationConsigneSubstrat">
+              Valider Data
+            </button>
+          </div>
+
+          <div class="heigtSub"></div>
+        </form>
+      </div>
+
+      <div class="descenteAirBox" id="descenteSub">
+        Pas de descente activée
+      </div>
+    </div> -->
+
+<!-- FIN BOX SAISIE -->
+<!-- </div> -->
+
+<!-- ➖➖ 🔺 TAUX HUMIDITE 🔺 ➖➖ -->
+
+<!-- Taux de Humidité -->
+<div class="boxCard">
+  <!-- BOX AFFICHAGE -->
+
+  <div class="boxCardData1">
+    <p class="boxCardDataTitle">Taux Humidité</p>
+
+    <div id="tauxHumidite" class="boxCardDataValue"></div>
+
+    <div class="boxCardDataParams">
+      <div class="cardDataParams">
+        <p class="cardDataParamsTitle">Consigne Hum :</p>
+        <div id="consigneHumidite" class="boxCardDataItem"></div>
+      </div>
+
+      <div class="cardDataParams">
+        <p class="cardDataParamsTitle">Delta Hum :</p>
+        <div id="deltaHumidite" class="boxCardDataItem"></div>
+      </div>
+
+      <div class="cardDataParams">
+        <p class="cardDataParamsTitle">Temp Sec :</p>
+        <div id="temperatureSec" class="boxCardDataItem"></div>
+      </div>
+
+      <div class="cardDataParams">
+        <p class="cardDataParamsTitle">Temp Hum :</p>
+        <div id="temperatureHum" class="boxCardDataItem"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIN BOX AFFICHAGE -->
+
+  <!-- BOX SAISIE -->
+
+  <div class="boxCardData2">
+    <p class="boxCardData2Title">Descente Humidité</p>
+
+    <div class="boxCardData2Form">
+      <form class="inputForm">
+        <div class="inputBlocForm">
+          <label class="lableBlocForm" for="consigneAir">Consigne :</label>
+          <input
+            class="inputBlocBox"
+            type="number"
+            step="0.1"
+            id="consigneHumForm"
+            name="consigneAir"
+            required
+          />
+          <p class="histoBlocForm" id="dernierConsigneHumEntree">😀</p>
+        </div>
+
+        <div class="validationButtonBox">
+          <button class="validationButton" id="validationConsigneHum">
+            Valider Consigne
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="boxCardData2Form">
+      <form class="inputForm">
+        <div class="inputBlocForm">
+          <label class="lableBlocForm" for="consigneAir">Pas :</label>
+          <input
+            class="inputBlocBox"
+            type="number"
+            step="0.1"
+            id="pasHumForm"
+            name="consigneAir"
+            required
+          />
+          <p class="histoBlocForm" id="dernierConsignePasEntree">😀</p>
+        </div>
+
+        <div class="inputBlocForm">
+          <label class="lableBlocForm" for="consigneAir">Objectif :</label>
+          <input
+            class="inputBlocBox"
+            type="number"
+            step="0.1"
+            id="objectifHumForm"
+            name="consigneAir"
+            required
+          />
+          <p class="histoBlocForm" id="dernierConsigneObjectifEntree">😀</p>
+        </div>
+
+        <div class="validationButtonBox">
+          <button class="validationButton" id="validationdataHum">
+            Valider Data
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="descenteAirBox" id="descenteHum">Pas de descente activée</div>
+  </div>
+</div>
+
+<!-- ➖➖ 🔺 TAUX CO2 🔺 ➖➖ -->
+
+<div class="boxCard">
+  <!-- BOX AFFICHAGE -->
+
+  <div class="boxCardData1">
+    <p class="boxCardDataTitle">Taux de Co2</p>
+
+    <div id="tauxCo2" class="boxCardDataValue">😀</div>
+
+    <div class="boxCardDataParams">
+      <div class="cardDataParams">
+        <p class="cardDataParamsTitle">Consigne Co2 :</p>
+        <div id="consigneCo2" class="boxCardDataItem">😀</div>
+      </div>
+
+      <div class="cardDataParams">
+        <p class="cardDataParamsTitle">Delta Co2 :</p>
+        <div id="deltaCo2" class="boxCardDataItem">😀</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIN BOX AFFICHAGE -->
+
+  <!-- BOX SAISIE -->
+
+  <div class="boxCardData2">
+    <p class="boxCardData2Title">Descente Co2</p>
+
+    <div class="boxCardData2Form">
+      <form class="inputForm">
+        <div class="inputBlocForm">
+          <label class="lableBlocForm" for="consigneAir">Consigne :</label>
+          <input
+            class="inputBlocBox"
+            type="number"
+            step="0.1"
+            id="consigneCo2Form"
+            name="consigneAir"
+            required
+          />
+          <p class="histoBlocForm" id="dernierConsigneCo2Entree">😀</p>
+        </div>
+
+        <div class="validationButtonBox">
+          <button class="validationButton" id="validationConsigneCo2">
+            Valider Consigne
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="boxCardData2Form">
+      <form class="inputForm">
+        <div class="inputBlocForm">
+          <label class="lableBlocForm" for="consigneAir">Pas :</label>
+          <input
+            class="inputBlocBox"
+            type="number"
+            step="0.1"
+            id="pasCo2Form"
+            name="consigneAir"
+            required
+          />
+          <p class="histoBlocForm" id="dernierPasCo2Entree">😀</p>
+        </div>
+
+        <div class="inputBlocForm">
+          <label class="lableBlocForm" for="consigneAir">Objectif :</label>
+          <input
+            class="inputBlocBox"
+            type="number"
+            step="0.1"
+            id="objectifCo2Form"
+            name="consigneAir"
+            required
+          />
+          <p class="histoBlocForm" id="dernierObjectifCo2Entree">😀</p>
+        </div>
+
+        <div class="validationButtonBox">
+          <button class="validationButton" id="validationdataCo2">
+            Valider Data
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="descenteAirBox" id="descenteCo2">Pas de descente activée</div>
+  </div>
+</div>
+
+<!-- * RÉCUPÉRATION DE LA TEMPÉRATURE DE L’AIR. -->
+<script>
+  let temperatureAir;
+  let temperatureAirLocalStorage;
+  let deltaAirLocalStorage;
+
+  const getTemperatureAir = () => {
+    fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/", {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // console.log("DATA BRUTE : temperatureAir =>",data);
+
+        let temperatureAir = data.temperatureAir.temperatureAir;
+        // console.log("ðŸ‘‰ temperatureAir =>", temperatureAir);
+        // console.log("ðŸ‘‰ temperatureAir typeof =>", typeof temperatureAir);
+
+        localStorage.setItem(
+          "gestionAir ==> TempÃ¨rature Air:",
+          temperatureAir
+        );
+
+        let temperatureAirLocalStorage = localStorage.getItem(
+          "gestionAir ==> TempÃ¨rature Air:"
+        );
+
+        document.getElementById("temperatureAir").innerHTML =
+          temperatureAirLocalStorage + "Â°C";
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(JSON.stringify(error));
+      });
+  };
+
+  getTemperatureAir();
+
+  setInterval(() => {
+    getTemperatureAir();
+    //console.log('rÃ©cup tempAir');
+  }, 10000);
+</script>
+
+<!-- * RÉCUPÉRATION DES DATAS DE LA TEMPÉRATURE DE L’AIR. -->
+<script>
+  let consigneAir;
+  let consigneAirLocalStorage;
+  let objectifAir;
+  let pasAir;
+  let nbJourAir;
+  let nbHeureAir;
+  let getDernierConsigneAirEntree;
+  let getdernierPasAirEntree;
+  let getDernierObjectifAirEntree;
+  let deltaAir;
+
+  let getConsigneAir = () => {
+    fetch(
+      "http://localhost:3003/gestionAirRoutesFront/getPasEtConsigneTemperatureAir/",
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        //* Consigne Air.
+        //console.log("DATA BRUTE : Consigne Air =>",data);
+
+        consigneAir = data.datatemperatureAir.consigneAir;
+        // console.log("ðŸ‘‰ consigneAir =>", consigneAir);
+        // console.log("ðŸ‘‰ consigneAir typeof =>", typeof consigneAir);
+
+        localStorage.setItem("gestionAir ==> Consigne :", consigneAir);
+
+        consigneAirLocalStorage = localStorage.getItem(
+          "gestionAir ==> Consigne :"
+        );
+
+        document.getElementById("consigneAir").innerHTML =
+          consigneAirLocalStorage + "Â°C";
+
+        //* -------------------------------------------------
+
+        //* Affichage historique Consigne.
+        getDernierConsigneAirEntree = localStorage.getItem(
+          "gestionAir ==> Dernier consigne:"
+        );
+
+        document.getElementById("dernierConsigneAirEntree").innerHTML =
+          getDernierConsigneAirEntree;
+
+        //* -------------------------------------------------
+
+        //* Affichage historique Pas.
+        getdernierPasAirEntree = localStorage.getItem(
+          "gestionAir ==> Dernier Pas:"
+        );
+
+        document.getElementById("dernierPasAirEntree").innerHTML =
+          getdernierPasAirEntree;
+
+        //* -------------------------------------------------
+
+        //* Affichage historique Objectif.
+        getDernierObjectifAirEntree = localStorage.getItem(
+          "gestionAir ==> Dernier Objectif:"
+        );
+
+        document.getElementById("dernierObjectifAirEntree").innerHTML =
+          getDernierObjectifAirEntree;
+
+        //* -------------------------------------------------
+      })
+      .then(() => {
+        let CalculeNombreJour = () => {
+          if (
+            consigneAir == 0 ||
+            consigneAir == "" ||
+            consigneAir == null ||
+            getDernierObjectifAirEntree == 0 ||
+            getDernierObjectifAirEntree == "" ||
+            getDernierObjectifAirEntree == null ||
+            getdernierPasAirEntree == 0 ||
+            getdernierPasAirEntree == "" ||
+            getdernierPasAirEntree == null
+          ) {
+            //  console.log('Pas de paramÃ¨tre pas de calcule des jours');
+            return;
+          } else {
+            let dureeDescenteAir =
+              ((consigneAir - getDernierObjectifAirEntree) /
+                getdernierPasAirEntree) *
+              12;
+
+            // console.log('DurÃ©e Descente Air', dureeDescenteAir);
+
+            let totalHeures = dureeDescenteAir;
+
+            nbJourAir = Math.floor(totalHeures / 24);
+
+            totalHeures %= 360;
+
+            nbHeureAir = Math.floor(totalHeures / 36);
+
+            // console.log(
+            //   'La durÃ©e de la descente Air est de  : ' +
+            //   nbJourAir +
+            //   ' Jours ' +
+            //   nbHeureAir +
+            //   ' Heures '
+            // );
+          }
+
+          localStorage.setItem("gestionAir ==> Nombre de jour:", nbJourAir);
+          nbJourAirLocalStorage = localStorage.getItem("Valeure nbJour Air : ");
+
+          let nombreDeJour = localStorage.getItem(
+            "gestionAir ==> Nombre de jour:"
+          );
+
+          localStorage.setItem("gestionAir ==> Nombre de heure:", nbHeureAir);
+
+          let nombreDeHeure = localStorage.getItem(
+            "gestionAir ==> Nombre de heure:"
+          );
+
+          document.getElementById("descenteAir").innerHTML =
+            nombreDeJour +
+            " " +
+            "Jours et" +
+            " " +
+            nombreDeHeure +
+            " " +
+            "Heures";
+        };
+
+        CalculeNombreJour();
+
+        setInterval(() => {
+          CalculeNombreJour();
+        }, 120000);
+      })
+      .then(() => {
+        deltaAir = temperatureAir - consigneAir;
+
+        console.log("ðŸ‘‰ delta Air =>", deltaAir);
+        //console.log("ðŸ‘‰ delta Air typeof =>",typeof deltaAir);
+
+        localStorage.setItem("Valeure delta Air : ", deltaAir);
+
+        deltaAirLocalStorage = localStorage.getItem("Valeure delta Air : ");
+
+        document.getElementById("deltaAir").innerHTML =
+          deltaAirLocalStorage + "Â°C";
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(JSON.stringify(error));
+      });
+  };
+
+  getConsigneAir();
+
+  setInterval(() => {
+    getConsigneAir();
+    // console.log('rÃ©cup consigneAir');
+  }, 15000);
+</script>
+
+<!-- * POST DE LA CONSIGNE AIR. -->
+<script>
+  document
+    .getElementById("validationConsigneAir")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      console.log("Clic sur bouton validation consigne air ");
+
+      let consigneAirForm = document.getElementById("consigneAirForm").value;
+      console.log("consigneAirForm", consigneAirForm);
+
+      localStorage.setItem("gestionAir ==> Dernier consigne:", consigneAirForm);
+
+      const postConsigneTemperatureAir = () => {
+        console.log("Envoi de la requête fetch...");
+        fetch(
+          "http://localhost:3003/gestionAirRoutesFront/postConsigneTemperatureAir/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              consigneAir: consigneAirForm,
+            }),
+          }
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                "Network response was not ok " + response.statusText
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Post Consigne Temperature Air : ", data);
+          })
+          .catch((error) => {
+            console.log("Erreur lors de l'envoi de la requête fetch :", error);
+          });
+      };
+
+      postConsigneTemperatureAir();
+    });
+</script>
+
+<!-- * POST DES DATAS AIR. -->
+<script>
+  document
+    .getElementById("validationdataAir")
+    .addEventListener("click", function (event) {
+      event.preventDefault(); // Empêcher le rechargement de la page
+      console.log("Clic sur bouton validation Etal Hum");
+
+      //* Pas Air.
+      let pasAirForm = document.getElementById("pasAirForm").value;
+      console.log("pasAirForm", pasAirForm);
+      localStorage.setItem("gestionAir ==> Dernier Pas:", pasAirForm);
+
+      //* Objectif Air.
+      let objectiAirForm = document.getElementById("objectiAirForm").value;
+      console.log("objectiAirForm", objectiAirForm);
+      localStorage.setItem("gestionAir ==> Dernier Objectif:", objectiAirForm);
+
+      const postPasEtConsigneTemperatureAir = () => {
+        console.log("Envoi de la requête fetch...");
+        fetch(
+          "http://localhost:3003/gestionAirRoutesFront/postPasEtConsigneTemperatureAir/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              pasAir: pasAirForm,
+              objectifAir: objectiAirForm,
+            }),
+          }
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                "Network response was not ok " + response.statusText
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Post Pas Et Consigne Temperature Air :", data);
+          })
+          .catch((error) => {
+            console.error(
+              "There was a problem with your fetch operation:",
+              error
+            );
+          });
+      };
+
+      postPasEtConsigneTemperatureAir(); // Appel de la fonction pour envoyer les données
+    });
+</script>
