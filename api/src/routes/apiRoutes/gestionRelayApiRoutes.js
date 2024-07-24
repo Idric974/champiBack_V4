@@ -4,7 +4,22 @@ const gestionRelayApiRoutesHandler = require("../../controllers/apiControllers/g
 
 //? Gestion Relay.
 
-router.post("/postRelayAction", gestionRelayApiRoutesHandler.postRelayAction);
+router.get(
+  "/activerRelayEauAuSol",
+  gestionRelayApiRoutesHandler.activerRelayEauAuSol
+);
+
+router.post(
+  "/relayVanneFroid5Secondes",
+  gestionRelayApiRoutesHandler.relayVanneFroid5Secondes
+);
+
+router.post(
+  "/relayVanneFroid40Secondes",
+  gestionRelayApiRoutesHandler.relayVanneFroid40Secondes
+);
+
+router.post("/relayVentilo", gestionRelayApiRoutesHandler.relayVentilo);
 
 //? -------------------------------------------------
 

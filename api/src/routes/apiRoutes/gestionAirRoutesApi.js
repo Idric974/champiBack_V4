@@ -5,11 +5,8 @@ const gestionAirRoutesApisHandler = require("../../controllers/apiControllers/ap
 //? Gestion Air.
 
 router.get("/getTemperatureAir", gestionAirRoutesApisHandler.getTemperatureAir);
-router.post("/postConsigneAir", gestionAirRoutesApisHandler.postConsigneAir);
-router.post(
-  "/postPasEtObjectifAir",
-  gestionAirRoutesApisHandler.postPasEtObjectifAir
-);
+router.post("/gpioActionOn", gestionAirRoutesApisHandler.gpioActionOn);
+router.post("/gpioActionOff", gestionAirRoutesApisHandler.gpioActionOff);
 //? -------------------------------------------------
 
 module.exports = router;

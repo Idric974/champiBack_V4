@@ -7,6 +7,7 @@ const cors = require("cors");
 //? Utilisation de cors pour les connexions
 
 app.use(cors());
+app.use(express.json());
 
 //? --------------------------------------------------
 

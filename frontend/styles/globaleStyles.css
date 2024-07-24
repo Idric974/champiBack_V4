@@ -504,7 +504,7 @@ button:active {
 
 .dateEtHeureHeure {
   border-radius: 5px;
-  font-size: 3rem;
+  font-size: 2.8rem;
   color: var(--orangeClic974);
   text-align: center;
   margin: 10px 0px 20px 0px;
@@ -524,5 +524,5 @@ button:active {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  padding: 10px 10px 10px 10px;
 }

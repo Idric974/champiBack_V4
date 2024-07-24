@@ -8,8 +8,9 @@ const mysql = require("mysql");
 // let tableName = 'gestion_airs_datas';
 // let tableName = 'gestion_airs_etalonnages';
 // let tableName = 'gestion_airs_etat_relays';
+// let tableName = "gestion_vannes";
 
- //* gestion_co2s
+//* gestion_co2s
 // let tableName = 'gestion_co2s';
 // let tableName = 'gestion_co2s_datas';
 
@@ -23,12 +24,12 @@ const mysql = require("mysql");
 // let tableName = 'gestion_substrats';
 // let tableName = 'gestion_substrats_datas';
 
+//* gestion_courbes
 // let tableName = 'gestion_courbes';
-// let tableName = 'relay_eau_au_sols';
-// let tableName = 'relay_eau_au_sol'; //vide
-// let tableName = 'gestion_logs';
-// let tableName = 'gestion_vannes';
 
+//* gestion_relay
+let tableName = "relay_eau_au_sols";
+// let tableName = 'relay_eau_au_sol'; //vide
 
 //? -------------------------------------------------
 
