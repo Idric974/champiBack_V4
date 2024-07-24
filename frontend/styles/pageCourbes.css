@@ -23,25 +23,33 @@
 
 .demarrerCycleButton {
   width: 33%;
-  padding: 15px 10px 15px 10px;
-  background-color: #e59500;
-  margin: 10px 5px 10px 0px;
+  padding: 10px 10px 10px 10px;
+  background-color: var(--orangeClic974);
+  margin: 11px 0px 11px 0px;
   color: white;
   font-weight: bolder;
-  border-radius: 10px;
+  border-radius: 5px;
   font-size: 1.5rem;
+  box-shadow: var(--shadow);
 }
 
 .demarrerCycleDate {
-  border: solid black 1px;
   width: 33%;
   padding: 15px 10px 15px 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1.2rem;
+  box-shadow: var(--shadow);
 }
 
 .demarrerCycleJour {
-  border: solid black 1px;
   width: 33%;
-  padding: 15px 10px 15px 10px;
+  padding: 10px 10px 10px 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 2rem;
+  box-shadow: var(--shadow);
+  color: var(--orangeClic974);
 }
 
 .cont {
@@ -64,7 +72,7 @@
 
 .container {
   /* border: solid green 1px; */
-  width: 98.3%;
+  width: 100%;
   margin: 10px 0px 10px 0px;
   background: #f1f1f1;
   border-radius: 10px;
@@ -237,7 +245,7 @@
 /* Anim */
 
 .active {
-  background-color: #e59500;
+  background-color: var(--orangeClic974);
   color: #f1f1f1;
   transition: all 0.3s ease;
 }

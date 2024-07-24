@@ -104,6 +104,9 @@ app.use("/gestionAirRoutesApi", gestionAirGetApiRouteHandler);
 const gestionRelayApiRouteHandler = require("./routes/apiRoutes/gestionRelayApiRoutes");
 app.use("/gestionRelayApiRoutes", gestionRelayApiRouteHandler);
 
+const gestionCourbesApiRouteHandler = require("./routes/apiRoutes/gestionCourbesApiRoutes");
+app.use("/gestionCourbesApiRoutes", gestionCourbesApiRouteHandler);
+
 //? --------------------------------------------------
 
 module.exports = app;
