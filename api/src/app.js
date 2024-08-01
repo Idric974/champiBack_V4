@@ -89,13 +89,27 @@ app.use(
 );
 //? --------------------------------------------------
 
-//? Les script.
+//? Les scripts des pages.
 
-//* Gestion Air.
+//* Accueil.
 
 app.use(
-  "/gestionAir",
-  express.static("/home/pi/Desktop/champiBack_V4/frontend/services/gestionAir")
+  "/pageAccueil",
+  express.static("/home/pi/Desktop/champiBack_V4/frontend/services/pageAccueil")
+);
+
+//* Relays.
+
+app.use(
+  "/pageRelays",
+  express.static("/home/pi/Desktop/champiBack_V4/frontend/services/pageRelays")
+);
+
+//* Courbes.
+
+app.use(
+  "/pageCourbes",
+  express.static("/home/pi/Desktop/champiBack_V4/frontend/services/pageCourbes")
 );
 
 //? --------------------------------------------------
