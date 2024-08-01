@@ -5,6 +5,7 @@ const childProcess = require("child_process");
 
 //? Calcules.
 
+//const gestionAir = schedule.scheduleJob(" * * * * * ", () => {
 const gestionAir = schedule.scheduleJob(" */10 * * * * ", () => {
   function runScript(scriptPath, callback) {
     //* keep track of whether callback has been invoked to prevent multiple invocations

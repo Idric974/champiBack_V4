@@ -89,6 +89,26 @@ app.use(
 );
 //? --------------------------------------------------
 
+//? Les script.
+
+//* Gestion Air.
+
+app.use(
+  "/gestionAir",
+  express.static("/home/pi/Desktop/champiBack_V4/frontend/services/gestionAir")
+);
+
+//? --------------------------------------------------
+
+//? Fichier pour les graphiques.
+
+app.use(
+  "/dist",
+  express.static("/home/pi/Desktop/champiBack_V4/node_modules/chart.js/dist")
+);
+
+//? --------------------------------------------------
+
 //? Liste des routes.
 
 //* Frontend.
@@ -98,12 +118,15 @@ app.use("/gestionAirRoutesFront", gestionAirGetFrondendRouteHandler);
 
 //* API.
 
+// Gestion Air.
 const gestionAirGetApiRouteHandler = require("./routes/apiRoutes/gestionAirRoutesApi");
 app.use("/gestionAirRoutesApi", gestionAirGetApiRouteHandler);
 
+// Gestion des relais
 const gestionRelayApiRouteHandler = require("./routes/apiRoutes/gestionRelayApiRoutes");
 app.use("/gestionRelayApiRoutes", gestionRelayApiRouteHandler);
 
+// Gestion des courbes.
 const gestionCourbesApiRouteHandler = require("./routes/apiRoutes/gestionCourbesApiRoutes");
 app.use("/gestionCourbesApiRoutes", gestionCourbesApiRouteHandler);
 

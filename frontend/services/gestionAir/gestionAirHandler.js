@@ -1,18 +1,10 @@
-console.log("HELLO");
-
-//? RÃ©cupÃ©ration de la tempÃ¨rature Air dans la base.
-
-//* TempÃ©rature Air.
-
+// ** 🟢 RÉCUPÉRATION DE LA TEMPÉRATURE DE L’AIR 🟢
 let temperatureAir;
 let temperatureAirLocalStorage;
-
-//* Consigne Air.
-
 let deltaAirLocalStorage;
 
-let getTemperatureAir = () => {
-  fetch("http://localhost:3003/api/gestionAirRoutes/getTemperatureAir/", {
+const getTemperatureAir = () => {
+  fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/", {
     method: "GET",
   })
     .then((response) => {
@@ -24,9 +16,9 @@ let getTemperatureAir = () => {
     .then((data) => {
       // console.log("DATA BRUTE : temperatureAir =>",data);
 
-      let temperatureAir = data.temperatureAir.temperatureAir;
-      //console.log("ðŸ‘‰ temperatureAir =>",temperatureAir);
-      //console.log("ðŸ‘‰ temperatureAir typeof =>",typeof temperatureAir);
+      temperatureAir = data.temperatureAir.temperatureAir;
+      // console.log("ðŸ‘‰ temperatureAir =>", temperatureAir);
+      // console.log("ðŸ‘‰ temperatureAir typeof =>", typeof temperatureAir);
 
       localStorage.setItem("gestionAir ==> TempÃ¨rature Air:", temperatureAir);
 
@@ -50,11 +42,7 @@ setInterval(() => {
   //console.log('rÃ©cup tempAir');
 }, 10000);
 
-//? -------------------------------------------------
-
-//? RÃ©cupÃ©ration de la consigne Air dans la base.
-
-//* tempÃ©rature Air.
+//** 🟢 RÉCUPÉRATION DES DATAS DE LA TEMPÉRATURE DE L’AIR 🟢
 
 let consigneAir;
 let consigneAirLocalStorage;
@@ -68,17 +56,20 @@ let getDernierObjectifAirEntree;
 let deltaAir;
 
 let getConsigneAir = () => {
-  fetch("http://localhost:3003/api/gestionAirRoutes/getDataAir/", {
-    method: "GET",
-  })
+  fetch(
+    "http://localhost:3003/gestionAirRoutesFront/getPasEtConsigneTemperatureAir/",
+    {
+      method: "GET",
+    }
+  )
     .then((response) => response.json())
     .then((data) => {
       //* Consigne Air.
       //console.log("DATA BRUTE : Consigne Air =>",data);
 
       consigneAir = data.datatemperatureAir.consigneAir;
-      //console.log("ðŸ‘‰ consigneAir =>",consigneAir);
-      //console.log("ðŸ‘‰ consigneAir typeof =>",typeof consigneAir);
+      // console.log("ðŸ‘‰ consigneAir =>", consigneAir);
+      // console.log("ðŸ‘‰ consigneAir typeof =>", typeof consigneAir);
 
       localStorage.setItem("gestionAir ==> Consigne :", consigneAir);
 
@@ -191,9 +182,12 @@ let getConsigneAir = () => {
       }, 120000);
     })
     .then(() => {
+      console.log("temperatureAir ==> ", temperatureAir);
+      console.log("consigneAir ==> ", consigneAir);
+
       deltaAir = temperatureAir - consigneAir;
 
-      //console.log("ðŸ‘‰ delta Air =>",deltaAir);
+      console.log("ðŸ‘‰ delta Air =>", deltaAir);
       //console.log("ðŸ‘‰ delta Air typeof =>",typeof deltaAir);
 
       localStorage.setItem("Valeure delta Air : ", deltaAir);
@@ -216,99 +210,30 @@ setInterval(() => {
   // console.log('rÃ©cup consigneAir');
 }, 15000);
 
-//? -------------------------------------------------
-
-//? 3 Calcul du delta.
-
-// let deltaAir;
-const calculDuDelta = () => {
-  // deltaAir = parseFloat(temperatureAir - consigneAir).toFixed(2);
-
-  deltaAir = temperatureAir - consigneAir;
-
-  console.log("ðŸ‘‰ delta Air =>", deltaAir);
-  console.log("ðŸ‘‰ delta Air typeof =>", typeof deltaAir);
-
-  localStorage.setItem("Valeure delta Air : ", deltaAir);
-
-  deltaAirLocalStorage = localStorage.getItem("Valeure delta Air : ");
-
-  document.getElementById("deltaAir").innerHTML = deltaAirLocalStorage + "Â°C";
-};
-
-calculDuDelta();
-
-//? -------------------------------------------------
-
-//?  Post consigne air dans la base.
+//**🟢 POST DE LA CONSIGNE AIR 🟢
 
 document
   .getElementById("validationConsigneAir")
   .addEventListener("click", function () {
-    //
-    console.log("Clic sur bouton validation consigne air ");
+    // console.log("Clic sur bouton validation consigne air ");
 
     let consigneAirForm = document.getElementById("consigneAirForm").value;
-    // console.log('consigneAirForm', consigneAirForm);
+    console.log("consigneAirForm", consigneAirForm);
 
-    localStorage.setItem("gestionAir ==> Dernier consigne:", consigneAirForm);
-
-    const boutonValiderEtalAir = () => {
-      fetch("http://localhost:3003/api/gestionAirRoutes/postConsigneAir/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          consigneAir: consigneAirForm,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-  });
-
-//? Post des datas air dans la base.
-
-document
-  .getElementById("validationdataAir")
-  .addEventListener("click", function () {
-    //
-    // console.log('Clic sur bouton validation Etal Hum');
-
-    //* Pas Air.
-
-    let pasAirForm = document.getElementById("pasAirForm").value;
-    // console.log('pasAirForm', pasAirForm);
-
-    localStorage.setItem("gestionAir ==> Dernier Pas:", pasAirForm);
-
-    //* -------------------------------------------------
-
-    //* Objectif Air.
-
-    let objectiAirForm = document.getElementById("objectiAirForm").value;
-
-    localStorage.setItem("gestionAir ==> Dernier Objectif:", objectiAirForm);
-
-    //* -------------------------------------------------
-
-    const boutonValiderEtalHum = () => {
-      fetch("http://localhost:3003/api/gestionAirRoutes/postDataAir/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          pasAir: pasAirForm,
-          objectifAir: objectiAirForm,
-        }),
-      })
+    const postConsigneTemperatureAir = () => {
+      console.log("Envoi de la requête fetch...");
+      fetch(
+        "http://localhost:3003/gestionAirRoutesFront/postConsigneTemperatureAir/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            consigneAir: consigneAirForm,
+          }),
+        }
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error(
@@ -318,7 +243,65 @@ document
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          console.log("Post Consigne Temperature Air : ", data);
+          localStorage.setItem(
+            "gestionAir ==> Dernier consigne:",
+            consigneAirForm
+          );
+        })
+        .catch((error) => {
+          console.log("Erreur lors de l'envoi de la requête fetch :", error);
+        });
+    };
+
+    postConsigneTemperatureAir();
+  });
+
+//** 🟢 POST DES DATAS AIR 🟢
+
+document
+  .getElementById("validationdataAir")
+  .addEventListener("click", function () {
+    // console.log("Clic sur bouton validation Etal Hum");
+
+    //* Pas Air.
+    let pasAirForm = document.getElementById("pasAirForm").value;
+    console.log("pasAirForm", pasAirForm);
+
+    //* Objectif Air.
+    let objectiAirForm = document.getElementById("objectiAirForm").value;
+    console.log("objectiAirForm", objectiAirForm);
+
+    const postPasEtConsigneTemperatureAir = () => {
+      console.log("Envoi de la requête fetch...");
+      fetch(
+        "http://localhost:3003/gestionAirRoutesFront/postPasEtConsigneTemperatureAir/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pasAir: pasAirForm,
+            objectifAir: objectiAirForm,
+          }),
+        }
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              "Network response was not ok " + response.statusText
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Post Pas Et Consigne Temperature Air :", data);
+          localStorage.setItem("gestionAir ==> Dernier Pas:", pasAirForm);
+          localStorage.setItem(
+            "gestionAir ==> Dernier Objectif:",
+            objectiAirForm
+          );
         })
         .catch((error) => {
           console.error(
@@ -328,7 +311,5 @@ document
         });
     };
 
-    window.location.reload();
+    postPasEtConsigneTemperatureAir(); // Appel de la fonction pour envoyer les données
   });
-
-//? -------------------------------------------------

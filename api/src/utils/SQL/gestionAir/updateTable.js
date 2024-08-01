@@ -6,12 +6,12 @@ const mysql = require("mysql");
 const tableName = "gestion_airs";
 
 const newData = {
-  temperatureAir: 10,
-  deltaAir: 11,
+  temperatureAir: 12,
+  deltaAir: 13,
   days: 12,
   heures: 13,
-  etatRelay: 14,
-  actionRelay: 15,
+  etatRelay: 1,
+  actionRelay: 0,
   consigne: 16,
   valeurAxeX: 17,
   jourDuCycle: new Date(),

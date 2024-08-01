@@ -9,6 +9,11 @@ router.get(
   gestionCourbesRoutesApisHandler.getDateDemarrageCycle
 );
 
+router.get(
+  "/getTemperatureAirCourbe",
+  gestionCourbesRoutesApisHandler.getTemperatureAirCourbe
+);
+
 router.post(
   "/dateDemarrageCycle",
   gestionCourbesRoutesApisHandler.dateDemarrageCycle
