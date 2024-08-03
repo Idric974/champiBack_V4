@@ -2,16 +2,12 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 const db = require("../../models");
 require("dotenv").config();
-
 const gestionAirModels = db.gestionAir;
 const gestionAirsDataModels = db.gestionAirData;
-
 const gestionHumModels = db.gestionHum;
 const gestionHumDataModels = db.gestionHumData;
-
 const gestionCo2Models = db.gestionCo2;
 const gestionCo2DataModels = db.gestionCo2Data;
-
 const gestionCourbesModels = db.gestionCourbes;
 
 //! Les fonctions.
@@ -153,6 +149,48 @@ exports.getTemperatureAirCourbe = async (req, res) => {
     }
 
     res.status(200).json({ temperatureAirCourbe });
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des données de température : ",
+      error
+    );
+    res.status(500).json({
+      error:
+        "Erreur serveur lors de la récupération des données de température",
+    });
+  }
+};
+
+//? Construction du graphique température air consigne.
+
+exports.getConsigneAirCourbe = async (req, res) => {
+  try {
+    const dateDemarrageCycle = await recuperationDateDemarrageCycle();
+
+    if (!dateDemarrageCycle) {
+      throw new Error("Date de démarrage du cycle non trouvée.");
+    }
+
+    const dateDuJour = new Date();
+    // console.log("Date de démarrage du cycle : ", dateDemarrageCycle);
+    // console.log("Date du jour : ", dateDuJour);
+
+    const consigneAirCourbe = await gestionAirsDataModels.findAll({
+      raw: true,
+      where: {
+        createdAt: {
+          [Op.between]: [dateDemarrageCycle, dateDuJour],
+        },
+      },
+    });
+
+    // console.log("Données de température récupérées : ", temperatureAirCourbe);
+
+    if (consigneAirCourbe.length === 0) {
+      console.warn("Aucune donnée récupérée entre ces dates.");
+    }
+
+    res.status(200).json({ consigneAirCourbe });
   } catch (error) {
     console.error(
       "Erreur lors de la récupération des données de température : ",

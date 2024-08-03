@@ -127,8 +127,13 @@ app.use(
 
 //* Frontend.
 
+// Gestion Air.
 const gestionAirGetFrondendRouteHandler = require("./routes/frontendRoutes/gestionAirRoutesFrontend");
 app.use("/gestionAirRoutesFront", gestionAirGetFrondendRouteHandler);
+
+// Gestion des courbes.
+const gestionCourbesFrondendRouteHandler = require("./routes/frontendRoutes/gestionCourbesRoutesFrontend");
+app.use("/gestionCourbesRoutesFront", gestionCourbesFrondendRouteHandler);
 
 //* API.
 
@@ -139,10 +144,6 @@ app.use("/gestionAirRoutesApi", gestionAirGetApiRouteHandler);
 // Gestion des relais
 const gestionRelayApiRouteHandler = require("./routes/apiRoutes/gestionRelayApiRoutes");
 app.use("/gestionRelayApiRoutes", gestionRelayApiRouteHandler);
-
-// Gestion des courbes.
-const gestionCourbesApiRouteHandler = require("./routes/apiRoutes/gestionCourbesApiRoutes");
-app.use("/gestionCourbesApiRoutes", gestionCourbesApiRouteHandler);
 
 //? --------------------------------------------------
 
