@@ -8,7 +8,7 @@ const {
   gpioActionOff,
 } = require("../../utils/functions/myfunctions");
 
-console.log(`🟢 SUCCÈS | Gestions Air | Démarrage du script à ${currentTime}`);
+console.log(`🟢 SUCCÈS | Gestion Air | Démarrage du script à ${currentTime}`);
 
 //? Recupération de la vanne à utiliser.
 
@@ -44,7 +44,7 @@ const recuperationDeLaVanneActive = () => {
           ouvertureVanne = "23";
           fermetureVanne = "22";
           console.log(
-            "✅ SUCCÈS | Gestions Air | La vanne utilisée est = ",
+            "✅ SUCCÈS | Gestion Air | La vanne utilisée est = ",
             vanneActive
           );
 
@@ -53,7 +53,7 @@ const recuperationDeLaVanneActive = () => {
           ouvertureVanne = "25";
           fermetureVanne = "24";
           console.log(
-            "✅ SUCCÈS | Gestions Air | La vanne utilisée est = ",
+            "✅ SUCCÈS | Gestion Air | La vanne utilisée est = ",
             vanneActive
           );
           resolve({ ouvertureVanne, fermetureVanne });
@@ -108,15 +108,12 @@ const recupérationDeLaConsigne = () => {
         objectif = result.objectifAir;
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Récupération de la Consigne Air =",
+          "✅ SUCCÈS | Gestion Air | Récupération de la Consigne Air =",
           consigne
         );
+        console.log("✅ SUCCÈS | Gestion Air | Récupération du Pas Air =", pas);
         console.log(
-          "✅ SUCCÈS | Gestions Air | Récupération du Pas Air =",
-          pas
-        );
-        console.log(
-          "✅ SUCCÈS | Gestions Air | Récupération de l'Objectif Air =",
+          "✅ SUCCÈS | Gestion Air | Récupération de l'Objectif Air =",
           objectif
         );
 
@@ -164,7 +161,7 @@ const recuperationDeEtalonage = () => {
         etalonnage = result.etalonnageAir;
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Récupération de l'étalonage = ",
+          "✅ SUCCÈS | Gestion Air | Récupération de l'étalonage = ",
           etalonnage
         );
 
@@ -212,11 +209,11 @@ const recuperationEtatVanneFroid = () => {
         deltaAirPrecedent = result.deltaAir;
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Récupération de l'état de la vanne froid =",
+          "✅ SUCCÈS | Gestion Air | Récupération de l'état de la vanne froid =",
           etatVanneBDD
         );
         console.log(
-          "✅ SUCCÈS | Gestions Air | Récupération du delta Air =",
+          "✅ SUCCÈS | Gestion Air | Récupération du delta Air =",
           deltaAirPrecedent
         );
 
@@ -269,7 +266,7 @@ let constructionAxeX = () => {
       dateDemarrageCycle = new Date(result.dateDemarrageCycle);
 
       console.log(
-        "✅ SUCCÈS | Gestions Air | Date de démarrage du cycle = ",
+        "✅ SUCCÈS | Gestion Air | Date de démarrage du cycle = ",
         dateDemarrageCycle
       );
 
@@ -284,7 +281,7 @@ let constructionAxeX = () => {
 
       valeurAxeX = `Jour ${jourDuCycle} - ${heureMinute}`;
       console.log(
-        "✅ SUCCÈS | Gestions Air | Construction de la valeur de l'axe X = ",
+        "✅ SUCCÈS | Gestion Air | Construction de la valeur de l'axe X = ",
         valeurAxeX
       );
 
@@ -335,10 +332,11 @@ let getTemperatures = () => {
             }
 
             valuesTable.push(reading.value * 40);
+            let lastIndex = valuesTable.length;
             console.log(
-              "✅ SUCCÈS | Gestions Air | Mesure de la température Air",
-              "color: green",
-              valuesTable
+              "✅ SUCCÈS | Gestion Air | Mesure " +
+                lastIndex +
+                "/10 de la température Air."
             );
 
             if (valuesTable.length >= 10) {
@@ -398,7 +396,7 @@ const calculeDeLaTemperatureMoyenne = () => {
         Math.round((sumlistValAir / arrayLength) * 100) / 100;
 
       console.log(
-        "✅ SUCCÈS | Gestions Air | Temperature air moyenne = ",
+        "✅ SUCCÈS | Gestion Air | Temperature air moyenne = ",
         temperatureMoyenneAir
       );
 
@@ -427,7 +425,7 @@ let definitionTemperatureAirCorrigee = () => {
         parseFloat(temperatureMoyenneAir.toFixed(1)) + etalonnage;
 
       console.log(
-        "✅ SUCCÈS | Gestions Air | Définition de la température air corrigée = ",
+        "✅ SUCCÈS | Gestion Air | Définition de la température air corrigée = ",
         temperatureCorrigee
       );
 
@@ -455,7 +453,7 @@ let definitionDuDelta = () => {
     try {
       delta = parseFloat((temperatureCorrigee - consigne).toFixed(1));
 
-      console.log("✅ SUCCÈS | Gestions Air | Définition du delta = ", delta);
+      console.log("✅ SUCCÈS | Gestion Air | Définition du delta = ", delta);
 
       resolve();
     } catch (error) {
@@ -485,13 +483,13 @@ let definitionDesActions = () => {
 
       if (delta >= 3) {
         console.log(
-          "✅ SUCCÈS | Gestions Air | ALERTE, le delta est supérieur à 3°C"
+          "✅ SUCCÈS | Gestion Air | ALERTEle delta est supérieur à 3°C."
         );
 
         // sendSMS("Attention : le delta est supérieur à 3°C");
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
             duree15Seconde +
             " secondes"
         );
@@ -518,7 +516,7 @@ let definitionDesActions = () => {
         //
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta > 1.5° < 3° | Action = Ouverture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta > 1.5° < 3° | Action = Ouverture vanne pendant : " +
             duree15Seconde +
             " secondes"
         );
@@ -545,7 +543,7 @@ let definitionDesActions = () => {
         //
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
             duree5Seconde +
             " secondes"
         );
@@ -572,7 +570,7 @@ let definitionDesActions = () => {
         //
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
             duree2Seconde +
             " secondes"
         );
@@ -599,7 +597,7 @@ let definitionDesActions = () => {
         //
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
             duree1Seconde +
             " secondes"
         );
@@ -628,7 +626,7 @@ let definitionDesActions = () => {
         //! Pas d'action car interval entre -0.3 et 0.3"
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Pas d'action"
+          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Pas d'action"
         );
 
         etatRelay = etatVanneBDD;
@@ -641,7 +639,7 @@ let definitionDesActions = () => {
         //
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
             duree1Seconde +
             " secondes"
         );
@@ -667,7 +665,7 @@ let definitionDesActions = () => {
       } else if (delta < -0.5 && delta >= -1) {
         //
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
             duree5Seconde +
             " secondes"
         );
@@ -694,7 +692,7 @@ let definitionDesActions = () => {
         //
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
             duree5Seconde +
             " secondes"
         );
@@ -721,7 +719,7 @@ let definitionDesActions = () => {
         //
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
             duree15Seconde +
             " secondes"
         );
@@ -746,13 +744,13 @@ let definitionDesActions = () => {
         //
       } else if (delta <= -3) {
         console.log(
-          "✅ SUCCÈS | Gestions Air | ALERTE, le delta est inférieur à -3°C"
+          "✅ SUCCÈS | Gestion Air | !!!! ALERTE !!!! le delta est inférieur à -3°C."
         );
 
         // sendSMS("Attention : le delta est inférieur à -3°C");
 
         console.log(
-          "✅ SUCCÈS | Gestions Air | Delta <= -3° | Action = Fermuture vanne pendant : " +
+          "✅ SUCCÈS | Gestion Air | Delta <= -3° | Action = Fermuture vanne pendant : " +
             duree15Seconde +
             " secondes"
         );
@@ -803,7 +801,7 @@ let enregistrementDatas = () => {
 
         .then(function (result) {
           console.log(
-            "✅ SUCCÈS | Gestions Air | Enregistrement des datas dans la base de données sous l'id :",
+            "✅ SUCCÈS | Gestion Air | Enregistrement des datas dans la base de données sous l'id :",
             result["dataValues"].id
           );
         })
@@ -813,7 +811,7 @@ let enregistrementDatas = () => {
         });
     } catch (error) {
       console.log(
-        "❌ ERREUR | gestions Air | Enregistrement des datas dans la base",
+        "❌ ERREUR | Gestion Air | Enregistrement des datas dans la base",
         error
       );
 

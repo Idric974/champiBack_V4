@@ -1,82 +1,104 @@
-const { exec } = require("child_process");
-
 //? Mise à jour de l'état des relay.
 
-let miseAjourEtatRelay = (etatRelay) => {
-  fetch("http://localhost:3003/api/functionsRoutes/majEtatRelay", {
+const miseAjourEtatRelay = async (etatRelay, actionRelay) => {
+  let url = "http://localhost:3003/gestionAirRoutesApi/majRelay";
+
+  const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ etatRelay }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    body: JSON.stringify({ etatRelay, actionRelay }),
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`🔴 HTTP Error ! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    console.log("✅ SUCCÈS | Gestion Air | Relais mis a jour :", data);
+  } catch (error) {
+    console.log(
+      `🔴 Catch Error | Une erreur s'est produite dans la requête mise à jour de l'état des relay : `,
+      error.message
+    );
+  }
 };
 
 //? --------------------------------------------------
 
 //? Activation du relais Gestion Air.
 
-const gpioActionOn = (pin) => {
-  // console.log("⭐ gpioActionOn ==> ", { pin });
+const gpioActionOn = async (pin) => {
+  let url = "http://localhost:3003/gestionAirRoutesApi/gpioActionOn/";
 
-  fetch("http://localhost:3003/gestionAirRoutesApi/gpioActionOn/", {
+  const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ pin }), // Encapsuler `pin` dans un objet
-  })
-    .then(async (response) => {
-      if (!response.ok) {
-        // Si la réponse n'est pas correcte (par exemple, une erreur 404 ou 500)
-        const text = await response.text();
-        throw new Error(`Error ${response.status}: ${text}`);
-      }
-      return response.json(); // Traiter la réponse JSON
-    })
-    .then((data) => {
-      console.log("✅ SUCCÈS | Gestion Air | ", data);
-    })
-    .catch((error) => {
-      console.error("🔴 Error | Functions | gpioAction : ", error);
-    });
+    body: JSON.stringify({ pin }),
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`🔴 HTTP Error ! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    console.log(
+      "✅ SUCCÈS | Gestion Air | Activation du relais Gestion Air : ",
+      data
+    );
+  } catch (error) {
+    console.log(
+      `🔴 Catch Error | Une erreur s'est produite dans la requête activation du relais Gestion Air : `,
+      error.message
+    );
+  }
 };
 
 //? --------------------------------------------------
 
 //? Déactivation du relais Gestion Air.
 
-const gpioActionOff = (pin) => {
-  // console.log("⭐ gpioActionOn ==> ", { pin });
+const gpioActionOff = async (pin) => {
+  let url = "http://localhost:3003/gestionAirRoutesApi/gpioActionOff/";
 
-  fetch("http://localhost:3003/gestionAirRoutesApi/gpioActionOff/", {
+  const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ pin }),
-  })
-    .then(async (response) => {
-      if (!response.ok) {
-        // Si la réponse n'est pas correcte (par exemple, une erreur 404 ou 500)
-        const text = await response.text();
-        throw new Error(`Error ${response.status}: ${text}`);
-      }
-      return response.json(); // Traiter la réponse JSON
-    })
-    .then((data) => {
-      console.log("✅ SUCCÈS | Gestion Air | ", data);
-    })
-    .catch((error) => {
-      console.error("🔴 Error | Functions | gpioAction : ", error);
-    });
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`🔴 HTTP Error ! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    console.log(
+      "✅ SUCCÈS | Gestion Air | Déactivation du relais Gestion Air : ",
+      data
+    );
+  } catch (error) {
+    console.log(
+      `🔴 Catch Error | Une erreur s'est produite dans la requête déactivation du relais Gestion Air : `,
+      error.message
+    );
+  }
 };
 
 //? --------------------------------------------------
