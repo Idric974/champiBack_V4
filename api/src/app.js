@@ -91,6 +91,15 @@ app.use(
 
 //? Les scripts des pages.
 
+//* Gestion des boutons et des onglets.
+
+app.use(
+  "/gestionBoutonsEtOnglets",
+  express.static(
+    "/home/pi/Desktop/champiBack_V4/frontend/services/gestionBoutonsEtOnglets"
+  )
+);
+
 //* Accueil.
 
 app.use(

@@ -3,9 +3,7 @@ const { exec } = require("child_process");
 const util = require("util");
 const execAsync = util.promisify(exec);
 const db = require("../../models");
-const gestionAirsDataModels = db.gestionAirData;
 const gestionAirModels = db.gestionAir;
-const gestionAirVannesModels = db.gestionAirVannes;
 
 //? Mise à jour etat Relay.
 
