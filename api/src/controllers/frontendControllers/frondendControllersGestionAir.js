@@ -6,128 +6,142 @@ const gestionAirVannesModels = db.gestionAirVannes;
 
 //? Récupérer la température de l'air.
 
-exports.getTemperatureAir = (req, res) => {
-  gestionAirModels
-    .findOne({
+exports.getTemperatureAir = async (req, res) => {
+  try {
+    const idResult = await gestionAirModels.findOne({
       attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
       raw: true,
-    })
-    .then((id) => {
-      // console.log('Le dernier id de gestionAir est : ', id);
-      // console.log(id.maxid);
-
-      gestionAirModels
-        .findOne({
-          where: { id: id.maxid },
-        })
-        .then((temperatureAir) => {
-          res.status(200).json({ temperatureAir });
-        });
     });
+
+    if (!idResult || !idResult.maxid) {
+      return res.status(404).json({ error: "Aucune température trouvée." });
+    }
+
+    const temperatureAir = await gestionAirModels.findOne({
+      where: { id: idResult.maxid },
+    });
+
+    if (!temperatureAir) {
+      return res.status(404).json({
+        error: "La température avec l'ID spécifié n'a pas été trouvée.",
+      });
+    }
+
+    res.status(200).json({ temperatureAir });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erreur interne du serveur." });
+  }
 };
 
 //? Récupérer le pas et la consigne.
 
-exports.getPasEtConsigneTemperatureAir = (req, res) => {
-  gestionAirsDataModels
-    .findOne({
+exports.getPasEtConsigneTemperatureAir = async (req, res) => {
+  try {
+    const idResult = await gestionAirsDataModels.findOne({
       attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
       raw: true,
-    })
-    .then((id) => {
-      // console.log('Le dernier id de gestionAir est : ', id);
-      // console.log(id.maxid);
-
-      gestionAirsDataModels
-        .findOne({
-          where: { id: id.maxid },
-        })
-        .then((datatemperatureAir) => {
-          res.status(200).json({ datatemperatureAir });
-        });
     });
+
+    if (!idResult || !idResult.maxid) {
+      return res
+        .status(404)
+        .json({ error: "Aucune donnée de température trouvée." });
+    }
+
+    const datatemperatureAir = await gestionAirsDataModels.findOne({
+      where: { id: idResult.maxid },
+    });
+
+    if (!datatemperatureAir) {
+      return res.status(404).json({
+        error:
+          "La donnée de température avec l'ID spécifié n'a pas été trouvée.",
+      });
+    }
+
+    res.status(200).json({ datatemperatureAir });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erreur interne du serveur." });
+  }
 };
 
 //? Poster la consigne.
 
-exports.postConsigneTemperatureAir = (req, res) => {
-  let consigneAir = req.body.consigneAir;
-  console.log("Consigne Temperature Air ", consigneAir);
+exports.postConsigneTemperatureAir = async (req, res) => {
+  try {
+    const consigneAir = req.body.consigneAir;
+    console.log("Consigne Temperature Air ", consigneAir);
 
-  gestionAirsDataModels
-    .create({
+    await gestionAirsDataModels.create({
       consigneAir: req.body.consigneAir,
-    })
-    .then(() =>
-      res.status(200).json({
-        message: "Consigne Air enregitrée dans la base gestion_airs",
-      })
-    )
-    .catch((error) => {
-      console.log(error);
-
-      return res.status(400).json({ error });
     });
+
+    res.status(200).json({
+      message: "Consigne Air enregistrée dans la base gestion_airs",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error });
+  }
 };
 
 //? Poster le pas et l'objectif'.
 
-exports.postPasEtConsigneTemperatureAir = (req, res) => {
-  let pasAir = req.body.pasAir;
-  console.log("Le pas Air : " + pasAir);
+exports.postPasEtConsigneTemperatureAir = async (req, res) => {
+  try {
+    const pasAir = req.body.pasAir;
+    console.log("Le pas Air : " + pasAir);
 
-  let objectifAir = req.body.objectifAir;
-  console.log("L objectif Air : " + objectifAir);
+    const objectifAir = req.body.objectifAir;
+    console.log("L'objectif Air : " + objectifAir);
 
-  let lastId;
-
-  gestionAirsDataModels
-    .findOne({
+    // Trouver l'ID maximum
+    const idResult = await gestionAirsDataModels.findOne({
       attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
       raw: true,
-    })
-    .then((id) => {
-      // console.log('Le dernier id de gestionAir est : ', id);
-      // console.log(id.maxid);
-      lastId = id.maxid;
-
-      gestionAirsDataModels
-        .update(
-          { pasAir: pasAir, objectifAir: objectifAir },
-          { where: { id: lastId } }
-        )
-
-        .then(() =>
-          res.status(200).json({
-            message:
-              "Pas et objectif enregitrés dans la base gestion_airs_data",
-          })
-        )
-
-        .catch((err) => console.log(err));
     });
+
+    if (!idResult || !idResult.maxid) {
+      return res.status(404).json({ error: "Aucun enregistrement trouvé." });
+    }
+
+    const lastId = idResult.maxid;
+
+    // Mettre à jour l'enregistrement avec le dernier ID
+    await gestionAirsDataModels.update(
+      { pasAir: pasAir, objectifAir: objectifAir },
+      { where: { id: lastId } }
+    );
+
+    res.status(200).json({
+      message: "Pas et objectif enregistrés dans la base gestion_airs_data",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erreur interne du serveur." });
+  }
 };
 
 //? Poster de la vanne active air.
 
-exports.postVanneActiveAir = (req, res) => {
-  let vanneActive = req.body.vanneActive;
-  console.log("Vanne active air", vanneActive);
+exports.postVanneActiveAir = async (req, res) => {
+  try {
+    const vanneActive = req.body.vanneActive;
+    console.log("Vanne active air", vanneActive);
 
-  gestionAirVannesModels
-    .create({
-      vanneActive: req.body.vanneActive,
-    })
-    .then(() =>
-      res.status(200).json({
-        message: "Vanne active air dans la base",
-      })
-    )
-    .catch((error) => {
-      console.log(error);
-
-      return res.status(400).json({ error });
+    await gestionAirVannesModels.create({
+      vanneActive: vanneActive,
     });
+
+    res.status(200).json({
+      message: "Vanne active air enregistrée dans la base",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error });
+  }
 };
 
 //? Fermeture de la vanne froid humidité ou sec pour 40 sec.

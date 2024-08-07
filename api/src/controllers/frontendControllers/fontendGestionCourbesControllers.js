@@ -99,22 +99,19 @@ exports.getDateDemarrageCycle = async (req, res) => {
 
 //? POST Date de démarrage du Cycle.
 
-exports.dateDemarrageCycle = (req, res) => {
-  //
-  gestionCourbesModels
-    .create({
+exports.dateDemarrageCycle = async (req, res) => {
+  try {
+    await gestionCourbesModels.create({
       dateDemarrageCycle: req.body.dateDemarrageCycle,
-    })
-    .then(() =>
-      res.status(200).json({
-        message: "La date de démarrage du cycle à été enregistrée",
-      })
-    )
-    .catch((error) => {
-      console.log(error);
-
-      return res.status(400).json({ error });
     });
+
+    res.status(200).json({
+      message: "La date de démarrage du cycle a été enregistrée",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error });
+  }
 };
 
 //?--------------------------------------------------------------
@@ -161,6 +158,8 @@ exports.getTemperatureAirCourbe = async (req, res) => {
   }
 };
 
+//? --------------------------------------------------------------
+
 //? Construction du graphique température air consigne.
 
 exports.getConsigneAirCourbe = async (req, res) => {
@@ -202,3 +201,5 @@ exports.getConsigneAirCourbe = async (req, res) => {
     });
   }
 };
+
+//? --------------------------------------------------------------

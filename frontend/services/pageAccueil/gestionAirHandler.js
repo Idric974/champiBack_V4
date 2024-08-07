@@ -1,4 +1,5 @@
-// ** 🟢 RÉCUPÉRATION DE LA TEMPÉRATURE DE L’AIR 🟢
+//? RÉCUPÉRATION DE LA TEMPÉRATURE DE L’AIR.
+
 let temperatureAir;
 let temperatureAirLocalStorage;
 let deltaAirLocalStorage;
@@ -29,6 +30,7 @@ const getTemperatureAir = () => {
       document.getElementById("temperatureAir").innerHTML =
         temperatureAirLocalStorage + "Â°C";
     })
+
     .catch((error) => {
       console.log(error);
       console.log(JSON.stringify(error));
@@ -37,25 +39,20 @@ const getTemperatureAir = () => {
 
 getTemperatureAir();
 
-setInterval(() => {
-  getTemperatureAir();
-  //console.log('rÃ©cup tempAir');
-}, 10000);
+//? RÉCUPÉRATION DES DATAS DE LA TEMPÉRATURE DE L’AIR.
 
-//** 🟢 RÉCUPÉRATION DES DATAS DE LA TEMPÉRATURE DE L’AIR 🟢
-
-let consigneAir;
 let consigneAirLocalStorage;
-let objectifAir;
-let pasAir;
 let nbJourAir;
 let nbHeureAir;
 let getDernierConsigneAirEntree;
 let getdernierPasAirEntree;
 let getDernierObjectifAirEntree;
 let deltaAir;
+let pasAirFromDb;
+let objectifAirFromDb;
+let newConsigne;
 
-let getConsigneAir = () => {
+let getDataAir = () => {
   fetch(
     "http://localhost:3003/gestionAirRoutesFront/getPasEtConsigneTemperatureAir/",
     {
@@ -65,12 +62,10 @@ let getConsigneAir = () => {
     .then((response) => response.json())
     .then((data) => {
       //* Consigne Air.
-      //console.log("DATA BRUTE : Consigne Air =>",data);
+      // console.log("DATA BRUTE : Consigne Air =>", data);
 
       consigneAir = data.datatemperatureAir.consigneAir;
       // console.log("ðŸ‘‰ consigneAir =>", consigneAir);
-      // console.log("ðŸ‘‰ consigneAir typeof =>", typeof consigneAir);
-
       localStorage.setItem("gestionAir ==> Consigne :", consigneAir);
 
       consigneAirLocalStorage = localStorage.getItem(
@@ -79,8 +74,6 @@ let getConsigneAir = () => {
 
       document.getElementById("consigneAir").innerHTML =
         consigneAirLocalStorage + "Â°C";
-
-      //* -------------------------------------------------
 
       //* Affichage historique Consigne.
       getDernierConsigneAirEntree = localStorage.getItem(
@@ -94,7 +87,7 @@ let getConsigneAir = () => {
 
       //* Affichage historique Pas.
       getdernierPasAirEntree = localStorage.getItem(
-        "gestionAir ==> Dernier Pas:"
+        "Gestion Air | Dernier Pas"
       );
 
       document.getElementById("dernierPasAirEntree").innerHTML =
@@ -104,7 +97,7 @@ let getConsigneAir = () => {
 
       //* Affichage historique Objectif.
       getDernierObjectifAirEntree = localStorage.getItem(
-        "gestionAir ==> Dernier Objectif:"
+        "Gestion Air | Dernier Objectif"
       );
 
       document.getElementById("dernierObjectifAirEntree").innerHTML =
@@ -113,7 +106,7 @@ let getConsigneAir = () => {
       //* -------------------------------------------------
     })
     .then(() => {
-      let CalculeNombreJour = () => {
+      const calculeNombreJour = () => {
         if (
           consigneAir == 0 ||
           consigneAir == "" ||
@@ -175,49 +168,162 @@ let getConsigneAir = () => {
           "Heures";
       };
 
-      CalculeNombreJour();
-
-      setInterval(() => {
-        CalculeNombreJour();
-      }, 120000);
+      calculeNombreJour();
     })
     .then(() => {
-      console.log("temperatureAir ==> ", temperatureAir);
-      console.log("consigneAir ==> ", consigneAir);
+      const calculeDuDelta = () => {
+        deltaAir = temperatureAir - consigneAir;
 
-      deltaAir = temperatureAir - consigneAir;
+        console.log("ðŸ‘‰ delta Air =>", deltaAir);
+        //console.log("ðŸ‘‰ delta Air typeof =>",typeof deltaAir);
 
-      console.log("ðŸ‘‰ delta Air =>", deltaAir);
-      //console.log("ðŸ‘‰ delta Air typeof =>",typeof deltaAir);
+        localStorage.setItem("Valeure delta Air : ", deltaAir);
 
-      localStorage.setItem("Valeure delta Air : ", deltaAir);
+        deltaAirLocalStorage = localStorage.getItem("Valeure delta Air : ");
 
-      deltaAirLocalStorage = localStorage.getItem("Valeure delta Air : ");
+        document.getElementById("deltaAir").innerHTML =
+          deltaAirLocalStorage + "Â°C";
+      };
 
-      document.getElementById("deltaAir").innerHTML =
-        deltaAirLocalStorage + "Â°C";
+      // calculeDuDelta();
+    })
+    .then(() => {
+      const gestionDeLaConsigne = () => {
+        if (
+          pasAirFromDb === 0 ||
+          pasAirFromDb === "" ||
+          pasAirFromDb === null ||
+          objectifAirFromDb === 0 ||
+          objectifAirFromDb === "" ||
+          objectifAirFromDb === null
+        ) {
+          console.log(
+            "Paramètre ===> Pas et Objectif non renseignés : GESTION CONSIGNE MANUELLE."
+          );
+          console.log("Gestion de la consigne : ", {
+            pasAirFromDb,
+            objectifAirFromDb,
+          });
+          const element = document.getElementById("consigneAutomatiqueId");
+          element.classList.remove("consigneAutomatiqueOn");
+          element.classList.add("consigneAutomatiqueOff");
+        } else {
+          console.log(
+            "Paramètre ===> Pas et Objectif renseignés : GESTION CONSIGNE AUTOMATIQUE.",
+            { pasAirFromDb, objectifAirFromDb }
+          );
+          const element = document.getElementById("consigneAutomatiqueId");
+          element.classList.remove("consigneAutomatiqueOff");
+          element.classList.add("consigneAutomatiqueOn");
+        }
+      };
+
+      // gestionDeLaConsigne();
+    })
+    .then(() => {
+      let palier;
+      palier = Number(getdernierPasAirEntree) / 12;
+      // console.log("palier ==>> ", palier);
+      //  console.log("palier ==>> ", typeof palier);
+
+      let dernierObjectif = Number(getDernierObjectifAirEntree);
+      // console.log("dernierObjectif ==>> ", dernierObjectif);
+      // console.log("dernierObjectif ==>> ", typeof dernierObjectif);
+
+      const definitionCondition = async () => {
+        //* Condition 1 : consigne = objectifAir.
+
+        if (consigneAir === dernierObjectif) {
+          newConsigne = dernierObjectif;
+
+          console.log(
+            "Consigne automatique | Consigne = objectifAir | On ne fait rien : ",
+            newConsigne
+          );
+
+          //* Condition 2 : consigne <= objectifAir.
+        } else if (consigneAir <= dernierObjectif) {
+          newConsigne = dernierObjectif + palier;
+
+          console.log(
+            "Consigne automatique | Consigne <= objectifAir | Nouvelle consigne ➕ : ",
+            newConsigne
+          );
+        }
+
+        //* Condition 3 : consigne > objectifAir.
+        else if (consigneAir > dernierObjectif) {
+          newConsigne = dernierObjectif - palier;
+
+          console.log(
+            "Consigne automatique | Consigne > objectifAir | Nouvelle consigne ➖ :",
+            newConsigne
+          );
+        } else {
+          console.log("🔴 ERROR : Définition de la condition");
+        }
+      };
+
+      // definitionCondition();
+    })
+    .then(() => {
+      const miseAjourConsigne = async () => {
+        consigneAir = newConsigne;
+        fetch(
+          "http://localhost:3003/gestionAirRoutesFront/postConsigneTemperatureAir/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              consigneAir: newConsigne,
+            }),
+          }
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                "Network response was not ok " + response.statusText
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Post Consigne Temperature Air : ", data);
+            localStorage.setItem(
+              "gestionAir ==> Dernier consigne:",
+              consigneAirForm
+            );
+          })
+          .catch((error) => {
+            console.log("Erreur lors de l'envoi de la requête fetch :", error);
+          });
+      };
+
+      // miseAjourConsigne();
     })
     .catch((error) => {
-      console.log(error);
-      console.log(JSON.stringify(error));
+      console.log(
+        "Erreur dans le traitement des Data température Air :",
+        JSON.stringify(error)
+      );
     });
 };
 
-getConsigneAir();
+getDataAir();
 
-setInterval(() => {
-  getConsigneAir();
-  // console.log('rÃ©cup consigneAir');
-}, 15000);
+//? POST DE LA CONSIGNE AIR.
 
-//**🟢 POST DE LA CONSIGNE AIR 🟢
+let consigneAir;
+let consigneAirForm;
 
 document
   .getElementById("validationConsigneAir")
   .addEventListener("click", function () {
     // console.log("Clic sur bouton validation consigne air ");
 
-    let consigneAirForm = document.getElementById("consigneAirForm").value;
+    consigneAirForm = document.getElementById("consigneAirForm").value;
     console.log("consigneAirForm", consigneAirForm);
 
     const postConsigneTemperatureAir = () => {
@@ -257,59 +363,58 @@ document
     postConsigneTemperatureAir();
   });
 
-//** 🟢 POST DES DATAS AIR 🟢
+//? POST DES DATAS AIR ET GESTION DE LA CONSIGNE AUTOMATIQUE.
+
+let pasAir;
+let pasAirForm;
+let dernierPas;
+let objectifAir;
+
+let objectiAirForm;
 
 document
   .getElementById("validationdataAir")
-  .addEventListener("click", function () {
-    // console.log("Clic sur bouton validation Etal Hum");
-
-    //* Pas Air.
-    let pasAirForm = document.getElementById("pasAirForm").value;
-    console.log("pasAirForm", pasAirForm);
-
-    //* Objectif Air.
-    let objectiAirForm = document.getElementById("objectiAirForm").value;
-    console.log("objectiAirForm", objectiAirForm);
-
-    const postPasEtConsigneTemperatureAir = () => {
-      console.log("Envoi de la requête fetch...");
-      fetch(
-        "http://localhost:3003/gestionAirRoutesFront/postPasEtConsigneTemperatureAir/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            pasAir: pasAirForm,
-            objectifAir: objectiAirForm,
-          }),
-        }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              "Network response was not ok " + response.statusText
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Post Pas Et Consigne Temperature Air :", data);
-          localStorage.setItem("gestionAir ==> Dernier Pas:", pasAirForm);
-          localStorage.setItem(
-            "gestionAir ==> Dernier Objectif:",
-            objectiAirForm
-          );
-        })
-        .catch((error) => {
-          console.error(
-            "There was a problem with your fetch operation:",
-            error
-          );
-        });
-    };
-
-    postPasEtConsigneTemperatureAir(); // Appel de la fonction pour envoyer les données
+  .addEventListener("click", async function (event) {
+    // event.preventDefault();
+    await postPasEtConsigneTemperatureAir();
   });
+
+const postPasEtConsigneTemperatureAir = async () => {
+  //* Pas Air.
+  pasAirForm = document.getElementById("pasAirForm").value;
+  console.log("DATA 🔥 | pasAirForm : ", pasAirForm);
+
+  //* Objectif Air.
+  objectiAirForm = document.getElementById("objectiAirForm").value;
+  console.log("DATA 🔥 | objectiAirForm : ", objectiAirForm);
+
+  try {
+    console.log("Envoi de la requête fetch...");
+
+    const response = await fetch(
+      "http://localhost:3003/gestionAirRoutesFront/postPasEtConsigneTemperatureAir/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pasAir: pasAirForm,
+          objectifAir: objectiAirForm,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok " + response.statusText);
+    }
+
+    const data = await response.json();
+    console.log("DATA 🔥 | postPasEtConsigneTemperatureAir : ", data);
+
+    localStorage.setItem("Gestion Air | Dernier Pas", pasAirForm);
+    localStorage.setItem("Gestion Air | Dernier Objectif", objectiAirForm);
+  } catch (error) {
+    console.error("There was a problem with your fetch operation:", error);
+  }
+};

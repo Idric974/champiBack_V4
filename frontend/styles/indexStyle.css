@@ -223,6 +223,24 @@
   color: var(--orangeClic974);
 }
 
+.consigneAutomatiqueOn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
+  margin: 10px 0px 0px 0px;
+  border-radius: 5px 5px 5px 5px;
+  padding: 10px 0px 10px 0px;
+  background-color: var(--grisAnthracite);
+  color: var(--orangeClic974);
+}
+
+.consigneAutomatiqueOff {
+  display: none;
+}
+
 .boutonActivation {
   width: 95%;
   display: flex;

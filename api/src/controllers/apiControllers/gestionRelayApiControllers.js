@@ -269,7 +269,7 @@ exports.activerRelayEauAuSol = (req, res) => {
             resolve();
 
             //*-------------------------------------
-          }, 5000);
+          }, 120000);
         }
 
         if (etatRelayEauAuSol === 1) {

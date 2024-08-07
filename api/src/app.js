@@ -134,11 +134,17 @@ app.use(
 
 //? Liste des routes.
 
-//* Frontend.
+//* Page accueil.
 
 // Gestion Air.
 const gestionAirGetFrondendRouteHandler = require("./routes/frontendRoutes/gestionAirRoutesFrontend");
 app.use("/gestionAirRoutesFront", gestionAirGetFrondendRouteHandler);
+
+// Gestion humidité.
+const gestionHumiditeGetFrondendRouteHandler = require("./routes/frontendRoutes/gestionHumiditeRoutesFrontend");
+app.use("/gestionHumiditeRoutesFront", gestionHumiditeGetFrondendRouteHandler);
+
+//* Page courbes.
 
 // Gestion des courbes.
 const gestionCourbesFrondendRouteHandler = require("./routes/frontendRoutes/gestionCourbesRoutesFrontend");
