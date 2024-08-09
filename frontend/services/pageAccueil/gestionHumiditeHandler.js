@@ -9,16 +9,21 @@ let temperatureHumideLocalStorage;
 
 const getTauxHumidite = async () => {
   try {
-    const response = await fetch(
-      "http://localhost:3003/gestionHumiditeRoutesFront/getTauxHumidite",
-      {
-        method: "GET",
-      }
-    );
+    const url =
+      "http://localhost:3003/gestionHumiditeRoutesFront/getTauxHumidite";
+
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, options);
 
     if (!response.ok) {
       throw new Error(
-        `🔴 ERROR | Gestion humidité | Récupération du taux humidité : ${response.statusText}`
+        `🔴 THROWED ERROR | Gestion humidité | Récupération du taux humidité : ${response.statusText}`
       );
     }
 
@@ -77,9 +82,8 @@ const getTauxHumidite = async () => {
   } catch (error) {
     console.error(
       "🔴 ERROR | Erreur lors de la récupération des données :",
-      error
+      JSON.stringify(error)
     );
-    console.error("🔴 ERROR | Erreur JSON :", JSON.stringify(error));
   }
 };
 
@@ -87,7 +91,7 @@ getTauxHumidite();
 
 //? -------------------------------------------------
 
-//? Récupération de la consigne Humidité.
+//? Récupération des datas humidité.
 
 let consigneHumidite;
 let consigneHumiditeHisto;
@@ -97,23 +101,28 @@ let pasHumiditeLocalStorage;
 let objectifHumidite;
 let objectifHumiditeLocalStorage;
 
-const getConsigneHumidite = async () => {
+const getDatasHumidite = async () => {
   try {
-    const response = await fetch(
-      "http://localhost:3003/gestionHumiditeRoutesFront/getConsigneHumidite",
-      {
-        method: "GET",
-      }
-    );
+    const url =
+      "http://localhost:3003/gestionHumiditeRoutesFront/getDatasHumidite";
+
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, options);
 
     if (!response.ok) {
       throw new Error(
-        `🔴 ERROR | Gestion humidité | Récupération de la consigne Humidité : ${response.statusText}`
+        `🔴 THROWED ERROR | Gestion humidité | Récupération des datas humidité : ${response.statusText}`
       );
     }
 
     const data = await response.json();
-    console.log("⭐ DATA BRUTE | Consigne Humidité : ", data);
+    console.log("⭐ DATA BRUTE | Récupération des datas humidité : ", data);
 
     const { dataConsigneHumidite } = data;
 
@@ -127,66 +136,69 @@ const getConsigneHumidite = async () => {
 
     //* -------------------------------------------------
 
-    //* Consigne Humidité.
+    //* Historique Consigne Humide.
 
-    consigneHumiditeHisto = dataConsigneHumidite.consigneHum;
-    console.log("🟢 SUCCESS | Consigne Humidité : ", consigneHumiditeHisto);
-
-    localStorage.setItem(
-      "Gestion Humidite | Taux humidite",
-      consigneHumiditeHisto
+    let consigneHumiditeHistorique = localStorage.getItem(
+      "Gestion Humidite | Derniere Consigne"
     );
-    consigneHumiditeLocalStorage = localStorage.getItem(
-      "Gestion Humidite | Taux humidite"
-    );
+    console.log("consigneHumiditeHistorique =", consigneHumiditeHistorique);
 
     document.getElementById("dernierConsigneHumEntree").innerHTML =
-      consigneHumiditeLocalStorage + "°C";
+      consigneHumiditeHistorique;
 
     //* -------------------------------------------------
+    //* Historique Pas Humide.
 
-    //* Pas Humidité.
-
-    pasHumidite = dataConsigneHumidite.pasHum;
-    console.log("🟢 SUCCESS | Pas Humidité : ", pasHumidite);
-
-    localStorage.setItem("Gestion Humidite | Pas humidite", pasHumidite);
-    pasHumiditeLocalStorage = localStorage.getItem(
-      "Gestion Humidite | Pas humidite"
+    let pasHumiditeHistorique = localStorage.getItem(
+      "Gestion Humidite | Dernier Pas"
     );
-
+    console.log("pasHumiditeHistorique =", pasHumiditeHistorique);
     document.getElementById("dernierConsignePasEntree").innerHTML =
-      pasHumiditeLocalStorage + "°C";
+      pasHumiditeHistorique;
 
     //* -------------------------------------------------
 
-    //* Objectif Humidité.
+    //* Historique Objectif Humide.
 
-    objectifHumidite = dataConsigneHumidite.objectifHum;
-    console.log("🟢 SUCCESS | Objectif Humidité : ", objectifHumidite);
-
-    localStorage.setItem(
-      "Gestion Humidite | Objectif humidite",
-      objectifHumidite
+    let objectifHistorique = localStorage.getItem(
+      "Gestion Humidite | Dernier Objectif"
     );
-    objectifHumiditeLocalStorage = localStorage.getItem(
-      "Gestion Humidite | Objectif humidite"
-    );
-
+    console.log("objectifHistorique =", objectifHistorique);
     document.getElementById("dernierConsigneObjectifEntree").innerHTML =
-      objectifHumiditeLocalStorage + "°C";
-
-    //* -------------------------------------------------
+      objectifHistorique;
   } catch (error) {
     console.error(
-      "🔴 ERROR | Erreur lors de la récupération des données :",
-      error
+      "🔴 ERROR | Erreur lors de la récupération des datas humidité :",
+      JSON.stringify(error)
     );
-    console.error("🔴 ERROR | Erreur JSON :", JSON.stringify(error));
   }
 };
 
-getConsigneHumidite();
+getDatasHumidite();
+
+//? -------------------------------------------------
+
+//? Calcule du delta Humidite - Consigne.
+
+let delta;
+const calculeDuDeltaHumiditeConsigne = async () => {
+  await getTauxHumidite();
+  await getDatasHumidite();
+
+  delta = tauxHumidite - consigneHumidite;
+  console.log("Delta Humidite - Consigne ====> ", delta);
+
+  localStorage.setItem("Gestion Humidite | Delta Humidite", delta);
+
+  let deltaHumiditeHistorique = localStorage.getItem(
+    "Gestion Humidite | Delta Humidite"
+  );
+
+  document.getElementById("deltaHumidite").innerHTML =
+    deltaHumiditeHistorique + "°C";
+};
+
+calculeDuDeltaHumiditeConsigne();
 
 //? -------------------------------------------------
 
@@ -194,7 +206,8 @@ getConsigneHumidite();
 
 document
   .getElementById("validationConsigneHum")
-  .addEventListener("click", function () {
+  .addEventListener("click", function (event) {
+    // event.preventDefault();
     postConsigneHumidite();
   });
 
@@ -202,67 +215,87 @@ const postConsigneHumidite = async () => {
   try {
     const consigneHumForm = document.getElementById("consigneHumForm").value;
 
-    const response = await fetch(
-      "http://localhost:3003/gestionHumiditeRoutesFront/postConsigneHumidite",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          consigneHum: consigneHumForm,
-        }),
-      }
-    );
+    const url =
+      "http://localhost:3003/gestionHumiditeRoutesFront/postConsigneHumidite";
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        consigneHum: consigneHumForm,
+      }),
+    };
+
+    const response = await fetch(url, options);
 
     if (!response.ok) {
-      throw new Error("Network response was not ok " + response.statusText);
+      throw new Error(
+        `🔴 THROWED ERROR | Gestion humidité | Post consigne humidité : ${response.statusText}`
+      );
     }
 
     const data = await response.json();
     console.log("consigne humidité : ", data);
+
+    localStorage.setItem(
+      "Gestion Humidite | Derniere Consigne",
+      data.consigneHum
+    );
   } catch (error) {
-    console.log("Erreur lors de l'envoi de la requête fetch :", error);
+    console.log(
+      "Erreur lors du post consigne humidité : ",
+      JSON.stringify(error)
+    );
   }
 };
 
-//? Post du pas et de l'objectif humidité.
+//? Post des datas humidité.
 
 document
   .getElementById("validationdataHum")
-  .addEventListener("click", function () {
-    postPasetObjectifHumidite();
+  .addEventListener("click", function (event) {
+    //  event.preventDefault();
+    postDatasHumidite();
   });
 
-const postPasetObjectifHumidite = async () => {
+const postDatasHumidite = async () => {
   try {
     const pasHumForm = document.getElementById("pasHumForm").value;
-    localStorage.setItem("gestionHum ==> Dernier Pas:", pasHumForm);
-
     const objectifHumForm = document.getElementById("objectifHumForm").value;
-    localStorage.setItem("gestionHum ==> Dernier Objectif:", objectifHumForm);
 
-    const response = await fetch(
-      "http://localhost:3003/gestionHumiditeRoutesFront/postPasetObjectifHumidite",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          pasHum: pasHumForm,
-          objectifHum: objectifHumForm,
-        }),
-      }
-    );
+    const url =
+      "http://localhost:3003/gestionHumiditeRoutesFront/postDatasHumidite";
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pasHum: pasHumForm,
+        objectifHum: objectifHumForm,
+      }),
+    };
+
+    const response = await fetch(url, options);
 
     if (!response.ok) {
-      throw new Error("Network response was not ok " + response.statusText);
+      throw new Error(
+        `🔴 THROWED ERROR | Gestion humidité | Post datas humidité : ${response.statusText}`
+      );
     }
 
     const data = await response.json();
-    console.log("consigne humidité : ", data);
+    console.log("Post des datas humidité : ", data);
+
+    localStorage.setItem("Gestion Humidite | Dernier Pas", data.pasHum);
+    localStorage.setItem(
+      "Gestion Humidite | Dernier Objectif",
+      data.objectifHum
+    );
   } catch (error) {
-    console.log("Erreur lors de l'envoi de la requête fetch :", error);
+    console.log("Erreur lors post des datas humidité", JSON.stringify(error));
   }
 };

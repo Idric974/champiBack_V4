@@ -37,7 +37,7 @@ exports.getTauxHumidite = async (req, res) => {
 
 //? Récupération de la consigne Humidité.
 
-exports.getConsigneHumidite = async (req, res) => {
+exports.getDatasHumidite = async (req, res) => {
   try {
     const idResult = await gestionHumiditeDataModels.findOne({
       attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
@@ -69,18 +69,21 @@ exports.getConsigneHumidite = async (req, res) => {
 
 //? -------------------------------------------------
 
-//? Récupération de la consigne Humidité.
+//? Post de la consigne Humidité.
 
 exports.postConsigneHumidite = async (req, res) => {
   try {
-    console.log("consigneHum ", req.body.consigneHum);
-
+    const { consigneHum } = req.body;
+    console.log("DATA : ", { consigneHum });
     await gestionHumiditeDataModels.create({
-      consigneHum: req.body.consigneHum,
+      consigneHum,
     });
 
+    console.log();
+
     res.status(200).json({
-      message: "Consigne Humidité enregitrée dans la base gestion_airs",
+      message: "Consigne Humidité enregitrée :",
+      consigneHum,
     });
   } catch (error) {
     console.log(error);
@@ -92,12 +95,10 @@ exports.postConsigneHumidite = async (req, res) => {
 
 //? Post du pas et de l'objectif humidité.
 
-exports.postPasetObjectifHumidite = async (req, res) => {
+exports.postDatasHumidite = async (req, res) => {
   try {
-    const pasHum = req.body.pasHum;
-    const objectifHum = req.body.objectifHum;
-    //
-    console.log("DATA : ", { pasHum, objectifHum });
+    const { pasHum, objectifHum } = req.body;
+    // console.log("DATA : ", { pasHum, objectifHum });
 
     const idResult = await gestionHumiditeDataModels.findOne({
       attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
@@ -116,7 +117,9 @@ exports.postPasetObjectifHumidite = async (req, res) => {
     );
 
     res.status(200).json({
-      message: "Pas et objectif enregitrés",
+      message: "Datas Humidité enregitrés",
+      pasHum,
+      objectifHum,
     });
   } catch (error) {
     console.error(error);

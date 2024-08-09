@@ -8,8 +8,8 @@ router.get(
 );
 
 router.get(
-  "/getConsigneHumidite",
-  gestionHumiditeRoutesFrontendHandler.getConsigneHumidite
+  "/getDatasHumidite",
+  gestionHumiditeRoutesFrontendHandler.getDatasHumidite
 );
 
 router.post(
@@ -18,8 +18,8 @@ router.post(
 );
 
 router.post(
-  "/postPasetObjectifHumidite",
-  gestionHumiditeRoutesFrontendHandler.postPasetObjectifHumidite
+  "/postDatasHumidite",
+  gestionHumiditeRoutesFrontendHandler.postDatasHumidite
 );
 
 module.exports = router;
