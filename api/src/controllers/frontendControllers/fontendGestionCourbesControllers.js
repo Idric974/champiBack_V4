@@ -116,7 +116,7 @@ exports.dateDemarrageCycle = async (req, res) => {
 
 //?--------------------------------------------------------------
 
-//? Construction du graphique température air.
+//! Construction du graphique température air.
 
 exports.getTemperatureAirCourbe = async (req, res) => {
   try {
@@ -183,13 +183,101 @@ exports.getConsigneAirCourbe = async (req, res) => {
       },
     });
 
-    // console.log("Données de température récupérées : ", temperatureAirCourbe);
+    // console.log("Données de température récupérées : ", tauxHumiditeCourbe);
 
     if (consigneAirCourbe.length === 0) {
       console.warn("Aucune donnée récupérée entre ces dates.");
     }
 
     res.status(200).json({ consigneAirCourbe });
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des données de température : ",
+      error
+    );
+    res.status(500).json({
+      error:
+        "Erreur serveur lors de la récupération des données de température",
+    });
+  }
+};
+
+//? --------------------------------------------------------------
+
+//! Construction du taux humidité.
+
+exports.getTauxHumiditeCourbe = async (req, res) => {
+  try {
+    const dateDemarrageCycle = await recuperationDateDemarrageCycle();
+
+    if (!dateDemarrageCycle) {
+      throw new Error("Date de démarrage du cycle non trouvée.");
+    }
+
+    const dateDuJour = new Date();
+    // console.log("Date de démarrage du cycle : ", dateDemarrageCycle);
+    // console.log("Date du jour : ", dateDuJour);
+
+    const tauxHumiditeCourbe = await gestionHumModels.findAll({
+      raw: true,
+      where: {
+        createdAt: {
+          [Op.between]: [dateDemarrageCycle, dateDuJour],
+        },
+      },
+    });
+
+    // console.log("Données de température récupérées : ", tauxHumiditeCourbe);
+
+    if (tauxHumiditeCourbe.length === 0) {
+      console.warn("Aucune donnée récupérée entre ces dates.");
+    }
+
+    res.status(200).json({ tauxHumiditeCourbe });
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des données de température : ",
+      error
+    );
+    res.status(500).json({
+      error:
+        "Erreur serveur lors de la récupération des données de température",
+    });
+  }
+};
+
+//? --------------------------------------------------------------
+
+//? Construction du graphique température air consigne.
+
+exports.getConsigneHumiditeCourbe = async (req, res) => {
+  try {
+    const dateDemarrageCycle = await recuperationDateDemarrageCycle();
+
+    if (!dateDemarrageCycle) {
+      throw new Error("Date de démarrage du cycle non trouvée.");
+    }
+
+    const dateDuJour = new Date();
+    // console.log("Date de démarrage du cycle : ", dateDemarrageCycle);
+    // console.log("Date du jour : ", dateDuJour);
+
+    const consigneHumiditeCourbeCourbe = await gestionHumDataModels.findAll({
+      raw: true,
+      where: {
+        createdAt: {
+          [Op.between]: [dateDemarrageCycle, dateDuJour],
+        },
+      },
+    });
+
+    // console.log("Données de température récupérées : ", tauxHumiditeCourbe);
+
+    if (consigneHumiditeCourbeCourbe.length === 0) {
+      console.warn("Aucune donnée récupérée entre ces dates.");
+    }
+
+    res.status(200).json({ consigneHumiditeCourbeCourbe });
   } catch (error) {
     console.error(
       "Erreur lors de la récupération des données de température : ",

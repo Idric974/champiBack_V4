@@ -71,9 +71,11 @@ const stockerValeursVanne = async () => {
 
 //? Construction du graphique vanne.
 
-let constructionDuGraphiqueVanne = () => {
+let constructionDuGraphiqueVanne = async () => {
   try {
-    const ctxAir = document.getElementById("myChartAirVanne").getContext("2d");
+    const ctxAir = await document
+      .getElementById("myChartAirVanne")
+      .getContext("2d");
 
     const myLabelsAir = [];
 
@@ -102,10 +104,10 @@ let constructionDuGraphiqueVanne = () => {
     const configCo2 = {
       type: "line",
       data,
-      optionsAir,
+      options: optionsAir,
     };
 
-    new Chart(ctxAir, configCo2);
+    await new Chart(ctxAir, configCo2);
 
     // console.log("🟢 SUCCESS |  Étape 3 OK | Construction graphique.");
   } catch (error) {

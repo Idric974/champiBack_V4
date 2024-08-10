@@ -1,11 +1,11 @@
-//? Récupération des data température air.
+//? Récupération Temperature Humidite.
 
-let dataCourbeAir;
+let dataCourbeHumidite;
 
-const getValeursTemperatureAir = async () => {
+const getValeursTemperatureHumidite = async () => {
   try {
     const response = await fetch(
-      "http://localhost:3003/gestionCourbesRoutesFront/getTemperatureAirCourbe/",
+      "http://localhost:3003/gestionCourbesRoutesFront/getTauxHumiditeCourbe/",
       {
         method: "GET",
       }
@@ -18,16 +18,16 @@ const getValeursTemperatureAir = async () => {
     }
 
     const data = await response.json();
-    // console.log("⭐ DATA BRUTE | getDateDemarrageDuCycle: ", data);
+    console.log("⭐ DATA BRUTE | getValeursTemperatureHumidite: ", data);
 
-    const { temperatureAirCourbe } = data;
-    dataCourbeAir = temperatureAirCourbe;
-    let tailleTableau = temperatureAirCourbe.length;
+    const { tauxHumiditeCourbe } = data;
+    dataCourbeHumidite = tauxHumiditeCourbe;
+    let tailleTableau = tauxHumiditeCourbe.length;
 
-    // console.log("🟢 SUCCESS |  Étape 1 OK | Data courbes récupérées : ", {
-    //   dataCourbeAir,
-    //   tailleTableau,
-    // });
+    console.log("🟢 SUCCESS |  Étape 1 OK | Data courbes récupérées : ", {
+      dataCourbeHumidite,
+      tailleTableau,
+    });
   } catch (error) {
     console.error(
       "🔴 ERROR | Erreur lors de la récupération des données :",
@@ -41,19 +41,19 @@ const getValeursTemperatureAir = async () => {
 
 //? Stockage des valeurs température air dans un tableau.
 
-let tableauValeursTemperatureAir = [];
+let tableauValeursTauxHumidite = [];
 
-const stockerValeursTemperatureAir = async () => {
+const stockerValeursTauxHumidite = async () => {
   try {
-    tableauValeursTemperatureAir = dataCourbeAir.map((item) => ({
+    tableauValeursTauxHumidite = dataCourbeAir.map((item) => ({
       x: item.valeurAxeX,
-      y: item.temperatureAir,
+      y: item.tauxHumidite,
     }));
 
-    // console.log(
-    //   "🟢 SUCCESS | Étape 2 OK | Valeurs température air stockées dans le tableau :",
-    //   tableauValeursTemperatureAir
-    // );
+    console.log(
+      "🟢 SUCCESS | Étape 2 OK | Valeurs température air stockées dans le tableau :",
+      tableauValeursTauxHumidite
+    );
   } catch (error) {
     console.error(
       "🔴 ERROR | Erreur lors du stockage des valeurs température air dans le tableau :",
@@ -64,14 +64,14 @@ const stockerValeursTemperatureAir = async () => {
 
 //? -------------------------------------------------
 
-//? Récupération des consignes température air.
+//? Récupération consigne Humidite.
 
-let consigneCourbeAir;
+let consigneHumidite;
 
-const getValeursConsigneAir = async () => {
+const getConsigneHumiditeCourbe = async () => {
   try {
     const response = await fetch(
-      "http://localhost:3003/gestionCourbesRoutesFront/getConsigneAirCourbe/",
+      "http://localhost:3003/gestionCourbesRoutesFront/getConsigneHumiditeCourbe/",
       {
         method: "GET",
       }
@@ -84,22 +84,19 @@ const getValeursConsigneAir = async () => {
     }
 
     const data = await response.json();
-    // console.log("⭐ DATA BRUTE | getValeursConsigne: ", data);
+    console.log("⭐ DATA BRUTE | get Consigne HumiditeCourbe: ", data);
 
-    const { consigneAirCourbe } = data;
-    consigneCourbeAir = consigneAirCourbe;
-    let tailleTableau = consigneAirCourbe.length;
+    const { consigneHumiditeCourbeCourbe } = data;
+    consigneHumidite = consigneHumiditeCourbeCourbe;
+    let tailleTableau = consigneHumiditeCourbeCourbe.length;
 
-    // console.log(
-    //   "🟢 SUCCESS |  Étape 3 OK |  Valeurs data consigne récupérées : ",
-    //   {
-    //     consigneCourbeAir,
-    //     tailleTableau,
-    //   }
-    // );
+    console.log("🟢 SUCCESS |  Étape 1 OK | Data courbes récupérées : ", {
+      consigneHumidite,
+      tailleTableau,
+    });
   } catch (error) {
     console.error(
-      "🔴 ERROR | Erreur lors de la récupération de valeurs data consigne :",
+      "🔴 ERROR | Erreur lors de la récupération des données :",
       error
     );
     console.error("🔴 ERROR | Erreur JSON :", JSON.stringify(error));
@@ -110,18 +107,18 @@ const getValeursConsigneAir = async () => {
 
 //? Stockage des valeurs consignes air dans un tableau.
 
-let tableauValeursConsigneAir = [];
+let tableauValeursConsigneHumidite = [];
 
-const stockerValeursConsigneAir = async () => {
+const stockerValeursConsigneHumidite = async () => {
   try {
-    tableauValeursConsigneAir = consigneCourbeAir.map((item) => ({
+    tableauValeursConsigneHumidite = consigneCourbeAir.map((item) => ({
       x: item.valeurAxeX,
-      y: item.consigneAir,
+      y: item.consigneHum,
     }));
 
     console.log(
       "🟢 SUCCESS | Étape 4 OK | Valeurs consigne stockées dans le tableau :",
-      tableauValeursConsigneAir
+      tableauValeursConsigneHumidite
     );
   } catch (error) {
     console.error(
@@ -135,9 +132,9 @@ const stockerValeursConsigneAir = async () => {
 
 //? Construction du graphique temperature air.
 
-let constructionDuGraphique = async () => {
+let constructionDuGraphiqueHumidite = async () => {
   try {
-    const ctxAir = await document.getElementById("myChartAir").getContext("2d");
+    const ctxAir = await document.getElementById("myChartHum").getContext("2d");
 
     const myLabelsAir = [];
 
@@ -147,19 +144,17 @@ let constructionDuGraphique = async () => {
       datasets: [
         //? Courbe taux humidité
         {
-          label: "Température Air",
-          data: tableauValeursTemperatureAir,
+          label: "Courbe Taux Humidité",
+          data: tableauValeursTauxHumidite,
           backgroundColor: "rgba(255, 99, 132, 0.2)",
           borderColor: "rgba(255, 99, 132, 1)",
           borderWidth: 1,
           lineTension: 0.2,
           pointRadius: 0,
         },
-
-        //? Courbe consigne air.
         {
-          label: "Consigne Air.",
-          data: tableauValeursConsigneAir,
+          label: "Courbe Consigne humidité",
+          data: tableauValeursConsigneHumidite,
           backgroundColor: "rgba(54, 162, 235, 0.2)",
           borderColor: "rgba(54, 162, 235, 1)",
           borderWidth: 1,
@@ -193,16 +188,17 @@ let constructionDuGraphique = async () => {
 
 //? Lancer la construction du graphique courbe air.
 
-const constructionCourbeAir = async () => {
+(async function constructionCourbeHumidite() {
   try {
-    await getValeursTemperatureAir();
-    await stockerValeursTemperatureAir();
-    await getValeursConsigneAir();
-    await stockerValeursConsigneAir();
-    await constructionDuGraphique();
-  } catch (err) {
-    console.log("🔺 ERREUR | Resolve promise | Construction courbe air", err);
+    await getValeursTemperatureHumidite();
+    await stockerValeursTauxHumidite();
+    await getConsigneHumiditeCourbe();
+    await stockerValeursConsigneHumidite();
+    await constructionDuGraphiqueHumidite();
+  } catch (error) {
+    console.error(
+      "🟠 Erreur dans le processus d'exécution du script gestion humidité",
+      JSON.stringify(error)
+    );
   }
-};
-
-constructionCourbeAir();
+})();

@@ -4,10 +4,18 @@ const gestionAirRoutesFrontendHandler = require("../../controllers/frontendContr
 
 //? Gestion Air.
 
+//* Gestion des datas à afficher.
 router.get(
   "/getDateDemarrageCycle",
   gestionAirRoutesFrontendHandler.getDateDemarrageCycle
 );
+
+router.post(
+  "/dateDemarrageCycle",
+  gestionAirRoutesFrontendHandler.dateDemarrageCycle
+);
+
+//* Gestion Air.
 
 router.get(
   "/getTemperatureAirCourbe",
@@ -19,9 +27,15 @@ router.get(
   gestionAirRoutesFrontendHandler.getConsigneAirCourbe
 );
 
-router.post(
-  "/dateDemarrageCycle",
-  gestionAirRoutesFrontendHandler.dateDemarrageCycle
+//* Gestion Humidité.
+router.get(
+  "/getTauxHumiditeCourbe",
+  gestionAirRoutesFrontendHandler.getTauxHumiditeCourbe
+);
+
+router.get(
+  "/getConsigneHumiditeCourbe",
+  gestionAirRoutesFrontendHandler.getConsigneHumiditeCourbe
 );
 
 //? -------------------------------------------------
