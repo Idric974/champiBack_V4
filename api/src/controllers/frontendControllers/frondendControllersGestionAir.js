@@ -17,17 +17,17 @@ exports.getTemperatureAir = async (req, res) => {
       return res.status(404).json({ error: "Aucune température trouvée." });
     }
 
-    const temperatureAir = await gestionAirModels.findOne({
+    const dataTemperatureAir = await gestionAirModels.findOne({
       where: { id: idResult.maxid },
     });
 
-    if (!temperatureAir) {
+    if (!dataTemperatureAir) {
       return res.status(404).json({
         error: "La température avec l'ID spécifié n'a pas été trouvée.",
       });
     }
 
-    res.status(200).json({ temperatureAir });
+    res.status(200).json({ dataTemperatureAir });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erreur interne du serveur." });

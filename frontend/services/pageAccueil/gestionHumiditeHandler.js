@@ -122,14 +122,14 @@ const getDatasHumidite = async () => {
     }
 
     const data = await response.json();
-    console.log("⭐ DATA BRUTE | Récupération des datas humidité : ", data);
+    // console.log("⭐ DATA BRUTE | Récupération des datas humidité : ", data);
 
     const { dataConsigneHumidite } = data;
 
     //* Consigne Humidité à afficher.
 
     consigneHumidite = dataConsigneHumidite.consigneHum;
-    console.log("🟢 SUCCESS | Consigne Humidité : ", consigneHumidite);
+    // console.log("🟢 SUCCESS | Consigne Humidité : ", consigneHumidite);
 
     document.getElementById("consigneHumidite").innerHTML =
       consigneHumidite + "%";
@@ -141,7 +141,7 @@ const getDatasHumidite = async () => {
     let consigneHumiditeHistorique = localStorage.getItem(
       "Gestion Humidite | Derniere Consigne"
     );
-    console.log("consigneHumiditeHistorique =", consigneHumiditeHistorique);
+    // console.log("consigneHumiditeHistorique =", consigneHumiditeHistorique);
 
     document.getElementById("dernierConsigneHumEntree").innerHTML =
       consigneHumiditeHistorique;
@@ -152,7 +152,7 @@ const getDatasHumidite = async () => {
     let pasHumiditeHistorique = localStorage.getItem(
       "Gestion Humidite | Dernier Pas"
     );
-    console.log("pasHumiditeHistorique =", pasHumiditeHistorique);
+    // console.log("pasHumiditeHistorique =", pasHumiditeHistorique);
     document.getElementById("dernierConsignePasEntree").innerHTML =
       pasHumiditeHistorique;
 
@@ -163,7 +163,7 @@ const getDatasHumidite = async () => {
     let objectifHistorique = localStorage.getItem(
       "Gestion Humidite | Dernier Objectif"
     );
-    console.log("objectifHistorique =", objectifHistorique);
+    // console.log("objectifHistorique =", objectifHistorique);
     document.getElementById("dernierConsigneObjectifEntree").innerHTML =
       objectifHistorique;
   } catch (error) {
@@ -186,7 +186,7 @@ const calculeDuDeltaHumiditeConsigne = async () => {
   await getDatasHumidite();
 
   delta = tauxHumidite - consigneHumidite;
-  console.log("Delta Humidite - Consigne ====> ", delta);
+  // console.log("Delta Humidite - Consigne ====> ", delta);
 
   localStorage.setItem("Gestion Humidite | Delta Humidite", delta);
 
@@ -237,7 +237,7 @@ const postConsigneHumidite = async () => {
     }
 
     const data = await response.json();
-    console.log("consigne humidité : ", data);
+    // console.log("consigne humidité : ", data);
 
     localStorage.setItem(
       "Gestion Humidite | Derniere Consigne",
@@ -288,7 +288,7 @@ const postDatasHumidite = async () => {
     }
 
     const data = await response.json();
-    console.log("Post des datas humidité : ", data);
+    // console.log("Post des datas humidité : ", data);
 
     localStorage.setItem("Gestion Humidite | Dernier Pas", data.pasHum);
     localStorage.setItem(

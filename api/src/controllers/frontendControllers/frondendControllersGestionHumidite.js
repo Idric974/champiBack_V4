@@ -74,7 +74,7 @@ exports.getDatasHumidite = async (req, res) => {
 exports.postConsigneHumidite = async (req, res) => {
   try {
     const { consigneHum } = req.body;
-    console.log("DATA : ", { consigneHum });
+    // console.log("DATA : ", { consigneHum });
     await gestionHumiditeDataModels.create({
       consigneHum,
     });

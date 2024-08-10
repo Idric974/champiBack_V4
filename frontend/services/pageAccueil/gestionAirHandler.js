@@ -4,37 +4,41 @@ let temperatureAir;
 let temperatureAirLocalStorage;
 let deltaAirLocalStorage;
 
-const getTemperatureAir = () => {
-  fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/", {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      // console.log("DATA BRUTE : temperatureAir =>",data);
+const getTemperatureAir = async () => {
+  try {
+    const url =
+      "http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/";
 
-      temperatureAir = data.temperatureAir.temperatureAir;
-      // console.log("ðŸ‘‰ temperatureAir =>", temperatureAir);
-      // console.log("ðŸ‘‰ temperatureAir typeof =>", typeof temperatureAir);
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-      localStorage.setItem("gestionAir ==> TempÃ¨rature Air:", temperatureAir);
+    const response = await fetch(url, options);
 
-      let temperatureAirLocalStorage = localStorage.getItem(
-        "gestionAir ==> TempÃ¨rature Air:"
-      );
+    if (!response.ok) {
+      throw new Error("Network response was not ok " + response.statusText);
+    }
 
-      document.getElementById("temperatureAir").innerHTML =
-        temperatureAirLocalStorage + "Â°C";
-    })
+    const data = await response.json();
 
-    .catch((error) => {
-      console.log(error);
-      console.log(JSON.stringify(error));
-    });
+    const { dataTemperatureAir } = data;
+
+    temperatureAir = dataTemperatureAir.temperatureAir;
+    localStorage.setItem("gestionAir ==> Température Air:", temperatureAir);
+
+    const temperatureAirLocalStorage = localStorage.getItem(
+      "gestionAir ==> Température Air:"
+    );
+
+    document.getElementById("temperatureAir").innerHTML =
+      temperatureAirLocalStorage + " °C";
+  } catch (error) {
+    console.log(error);
+    console.log(JSON.stringify(error));
+  }
 };
 
 getTemperatureAir();
@@ -52,7 +56,7 @@ let pasAirFromDb;
 let objectifAirFromDb;
 let newConsigne;
 
-let getDataAir = () => {
+let getDataAir = async () => {
   fetch(
     "http://localhost:3003/gestionAirRoutesFront/getPasEtConsigneTemperatureAir/",
     {
@@ -170,23 +174,7 @@ let getDataAir = () => {
 
       calculeNombreJour();
     })
-    .then(() => {
-      const calculeDuDelta = () => {
-        deltaAir = temperatureAir - consigneAir;
 
-        console.log("ðŸ‘‰ delta Air =>", deltaAir);
-        //console.log("ðŸ‘‰ delta Air typeof =>",typeof deltaAir);
-
-        localStorage.setItem("Valeure delta Air : ", deltaAir);
-
-        deltaAirLocalStorage = localStorage.getItem("Valeure delta Air : ");
-
-        document.getElementById("deltaAir").innerHTML =
-          deltaAirLocalStorage + "Â°C";
-      };
-
-      // calculeDuDelta();
-    })
     .then(() => {
       const gestionDeLaConsigne = () => {
         if (
@@ -312,6 +300,28 @@ let getDataAir = () => {
 };
 
 getDataAir();
+
+//? Calcule du delta Humidite - Consigne.
+
+//? -------------------------------------------------
+
+const calculeDuDeltaTemperatureAirConsigne = async () => {
+  await getTemperatureAir();
+  await getDataAir();
+
+  deltaAir = temperatureAir - consigneAir;
+  // console.log("Delta Humidite - Consigne ====> ", deltaAir);
+
+  localStorage.setItem("Valeure delta Air : ", deltaAir);
+
+  deltaAirLocalStorage = localStorage.getItem("Valeure delta Air : ");
+
+  document.getElementById("deltaAir").innerHTML = deltaAirLocalStorage + "Â°C";
+};
+
+calculeDuDeltaTemperatureAirConsigne();
+
+//? -------------------------------------------------
 
 //? POST DE LA CONSIGNE AIR.
 
