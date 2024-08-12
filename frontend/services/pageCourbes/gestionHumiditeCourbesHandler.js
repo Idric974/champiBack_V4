@@ -1,15 +1,20 @@
-//? Récupération Temperature Humidite.
+//? Récupération du taux d'humidite.
 
-let dataCourbeHumidite;
+let tauxHumidite;
 
-const getValeursTemperatureHumidite = async () => {
+const getValeursTauxHumidite = async () => {
   try {
-    const response = await fetch(
-      "http://localhost:3003/gestionCourbesRoutesFront/getTauxHumiditeCourbe/",
-      {
-        method: "GET",
-      }
-    );
+    const url =
+      "http://localhost:3003/gestionCourbesRoutesFront/getTauxHumiditeCourbe/";
+
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, options);
 
     if (!response.ok) {
       throw new Error(
@@ -18,16 +23,19 @@ const getValeursTemperatureHumidite = async () => {
     }
 
     const data = await response.json();
-    console.log("⭐ DATA BRUTE | getValeursTemperatureHumidite: ", data);
+    // console.log("⭐ DATA BRUTE | Valeurs Taux Humidite : ", data);
 
     const { tauxHumiditeCourbe } = data;
-    dataCourbeHumidite = tauxHumiditeCourbe;
+    tauxHumidite = tauxHumiditeCourbe;
     let tailleTableau = tauxHumiditeCourbe.length;
 
-    console.log("🟢 SUCCESS |  Étape 1 OK | Data courbes récupérées : ", {
-      dataCourbeHumidite,
-      tailleTableau,
-    });
+    // console.log(
+    //   "🟢 SUCCESS |  Étape 1 courbe humidité OK | Récupération du taux d'humidite : ",
+    //   {
+    //     tauxHumidite,
+    //     tailleTableau,
+    //   }
+    // );
   } catch (error) {
     console.error(
       "🔴 ERROR | Erreur lors de la récupération des données :",
@@ -39,21 +47,21 @@ const getValeursTemperatureHumidite = async () => {
 
 //? -------------------------------------------------
 
-//? Stockage des valeurs température air dans un tableau.
+//? Stockage du taux d'humidite dans un tableau.
 
 let tableauValeursTauxHumidite = [];
 
 const stockerValeursTauxHumidite = async () => {
   try {
-    tableauValeursTauxHumidite = dataCourbeAir.map((item) => ({
+    tableauValeursTauxHumidite = tauxHumidite.map((item) => ({
       x: item.valeurAxeX,
       y: item.tauxHumidite,
     }));
 
-    console.log(
-      "🟢 SUCCESS | Étape 2 OK | Valeurs température air stockées dans le tableau :",
-      tableauValeursTauxHumidite
-    );
+    // console.log(
+    //   "🟢 SUCCESS | Étape 2 courbe humidité OK | Stockage du taux d'humidite :",
+    //   tableauValeursTauxHumidite
+    // );
   } catch (error) {
     console.error(
       "🔴 ERROR | Erreur lors du stockage des valeurs température air dans le tableau :",
@@ -64,18 +72,23 @@ const stockerValeursTauxHumidite = async () => {
 
 //? -------------------------------------------------
 
-//? Récupération consigne Humidite.
+//? Récupération des Datas Humidite.
 
 let consigneHumidite;
 
 const getConsigneHumiditeCourbe = async () => {
   try {
-    const response = await fetch(
-      "http://localhost:3003/gestionCourbesRoutesFront/getConsigneHumiditeCourbe/",
-      {
-        method: "GET",
-      }
-    );
+    const url =
+      "http://localhost:3003/gestionCourbesRoutesFront/getConsigneHumiditeCourbe/";
+
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, options);
 
     if (!response.ok) {
       throw new Error(
@@ -84,16 +97,19 @@ const getConsigneHumiditeCourbe = async () => {
     }
 
     const data = await response.json();
-    console.log("⭐ DATA BRUTE | get Consigne HumiditeCourbe: ", data);
+    //console.log("⭐ DATA BRUTE | get datas humidité : ", data);
 
     const { consigneHumiditeCourbeCourbe } = data;
     consigneHumidite = consigneHumiditeCourbeCourbe;
     let tailleTableau = consigneHumiditeCourbeCourbe.length;
 
-    console.log("🟢 SUCCESS |  Étape 1 OK | Data courbes récupérées : ", {
-      consigneHumidite,
-      tailleTableau,
-    });
+    // console.log(
+    //   "🟢 SUCCESS |  Étape 3 courbes humidité | Récupération des Datas Humidite : ",
+    //   {
+    //     consigneHumidite,
+    //     tailleTableau,
+    //   }
+    // );
   } catch (error) {
     console.error(
       "🔴 ERROR | Erreur lors de la récupération des données :",
@@ -111,15 +127,15 @@ let tableauValeursConsigneHumidite = [];
 
 const stockerValeursConsigneHumidite = async () => {
   try {
-    tableauValeursConsigneHumidite = consigneCourbeAir.map((item) => ({
+    tableauValeursConsigneHumidite = consigneHumidite.map((item) => ({
       x: item.valeurAxeX,
       y: item.consigneHum,
     }));
 
-    console.log(
-      "🟢 SUCCESS | Étape 4 OK | Valeurs consigne stockées dans le tableau :",
-      tableauValeursConsigneHumidite
-    );
+    // console.log(
+    //   "🟢 SUCCESS | Étape 4 courbe humidité OK | Stockage des datas humidite :",
+    //   tableauValeursConsigneHumidite
+    // );
   } catch (error) {
     console.error(
       "🔴 ERROR | Erreur lors du stockage des valeurs dans le tableau :",
@@ -134,7 +150,9 @@ const stockerValeursConsigneHumidite = async () => {
 
 let constructionDuGraphiqueHumidite = async () => {
   try {
-    const ctxAir = await document.getElementById("myChartHum").getContext("2d");
+    const ctxHumidite = await document
+      .getElementById("myChartHum")
+      .getContext("2d");
 
     const myLabelsAir = [];
 
@@ -164,19 +182,19 @@ let constructionDuGraphiqueHumidite = async () => {
       ],
     };
 
-    const optionsAir = {
+    const optionsHumidite = {
       animation: {
         duration: 0,
       },
     };
 
-    const configCo2 = {
+    const configHumidite = {
       type: "line",
       data,
-      options: optionsAir,
+      options: optionsHumidite,
     };
 
-    await new Chart(ctxAir, configCo2);
+    await new Chart(ctxHumidite, configHumidite);
 
     // console.log("🟢 SUCCESS |  Étape 5 OK | Construction graphique.");
   } catch (error) {
@@ -190,7 +208,7 @@ let constructionDuGraphiqueHumidite = async () => {
 
 (async function constructionCourbeHumidite() {
   try {
-    await getValeursTemperatureHumidite();
+    await getValeursTauxHumidite();
     await stockerValeursTauxHumidite();
     await getConsigneHumiditeCourbe();
     await stockerValeursConsigneHumidite();

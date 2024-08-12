@@ -1,5 +1,3 @@
-console.log("TEST");
-
 //? Récupération des data température air.
 
 let dataCourbeVanne;

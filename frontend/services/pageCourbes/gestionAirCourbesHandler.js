@@ -119,10 +119,10 @@ const stockerValeursConsigneAir = async () => {
       y: item.consigneAir,
     }));
 
-    console.log(
-      "🟢 SUCCESS | Étape 4 OK | Valeurs consigne stockées dans le tableau :",
-      tableauValeursConsigneAir
-    );
+    // console.log(
+    //   "🟢 SUCCESS | Étape 4 OK | Valeurs consigne stockées dans le tableau :",
+    //   tableauValeursConsigneAir
+    // );
   } catch (error) {
     console.error(
       "🔴 ERROR | Erreur lors du stockage des valeurs dans le tableau :",
@@ -175,13 +175,13 @@ let constructionDuGraphique = async () => {
       },
     };
 
-    const configCo2 = {
+    const configAir = {
       type: "line",
       data,
       options: optionsAir,
     };
 
-    await new Chart(ctxAir, configCo2);
+    await new Chart(ctxAir, configAir);
 
     // console.log("🟢 SUCCESS |  Étape 5 OK | Construction graphique.");
   } catch (error) {
