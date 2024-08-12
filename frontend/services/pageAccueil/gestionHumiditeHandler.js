@@ -38,7 +38,8 @@ const getTauxHumidite = async () => {
     // console.log("🟢 SUCCESS | Taux humidite : ", tauxHumidite);
 
     localStorage.setItem("Gestion Humidite | Taux humidite", tauxHumidite);
-    tauxHumiditeLocalStorage = localStorage.getItem(
+
+    const tauxHumiditeLocalStorage = localStorage.getItem(
       "Gestion Humidite | Taux humidite"
     );
 
@@ -251,6 +252,8 @@ const postConsigneHumidite = async () => {
   }
 };
 
+//? -------------------------------------------------
+
 //? Post des datas humidité.
 
 document
@@ -299,3 +302,5 @@ const postDatasHumidite = async () => {
     console.log("Erreur lors post des datas humidité", JSON.stringify(error));
   }
 };
+
+//? -------------------------------------------------

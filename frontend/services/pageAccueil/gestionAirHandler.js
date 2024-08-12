@@ -1,4 +1,4 @@
-//? RÉCUPÉRATION DE LA TEMPÉRATURE DE L’AIR.
+//? Récupération de la température de l’air.
 
 let temperatureAir;
 let temperatureAirLocalStorage;

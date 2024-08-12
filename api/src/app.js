@@ -144,7 +144,9 @@ app.use("/gestionAirRoutesFront", gestionAirGetFrondendRouteHandler);
 const gestionHumiditeGetFrondendRouteHandler = require("./routes/frontendRoutes/gestionHumiditeRoutesFrontend");
 app.use("/gestionHumiditeRoutesFront", gestionHumiditeGetFrondendRouteHandler);
 
-//* Page courbes.
+// Gestion Co2.
+const gestionCo2GetFrondendRouteHandler = require("./routes/frontendRoutes/gestionCo2RoutesFrontend");
+app.use("/gestionCo2RoutesFront", gestionCo2GetFrondendRouteHandler);
 
 // Gestion des courbes.
 const gestionCourbesFrondendRouteHandler = require("./routes/frontendRoutes/gestionCourbesRoutesFrontend");
