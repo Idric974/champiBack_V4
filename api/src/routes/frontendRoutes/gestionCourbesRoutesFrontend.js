@@ -38,6 +38,17 @@ router.get(
   gestionAirRoutesFrontendHandler.getConsigneHumiditeCourbe
 );
 
+//* Gestion Co2.
+router.get(
+  "/getTauxCo2Courbe",
+  gestionAirRoutesFrontendHandler.getTauxCo2Courbe
+);
+
+router.get(
+  "/getDataCo2Courbe",
+  gestionAirRoutesFrontendHandler.getDataCo2Courbe
+);
+
 //? -------------------------------------------------
 
 module.exports = router;

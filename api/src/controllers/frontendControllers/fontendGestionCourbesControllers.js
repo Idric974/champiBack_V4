@@ -2,13 +2,26 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 const db = require("../../models");
 require("dotenv").config();
+
+//! Gestion Air.
 const gestionAirModels = db.gestionAir;
 const gestionAirsDataModels = db.gestionAirData;
+//! ---------------------------------------------
+
+//! Gestion Humidité.
 const gestionHumModels = db.gestionHum;
 const gestionHumDataModels = db.gestionHumData;
+//! ---------------------------------------------
+
+//! Gestion Co2.
 const gestionCo2Models = db.gestionCo2;
 const gestionCo2DataModels = db.gestionCo2Data;
+//! ---------------------------------------------
+
 const gestionCourbesModels = db.gestionCourbes;
+//! ---------------------------------------------
+
+const dateDuJour = new Date();
 
 //! Les fonctions.
 
@@ -77,13 +90,9 @@ exports.getDateDemarrageCycle = async (req, res) => {
     const annee = dateDemarrageCycle.getFullYear();
     const myDateDemarrageCycle = `${jour}-${mois}-${annee}`;
 
-    const dateDuJour = new Date();
     const nombreDeJourDuCycle = Math.floor(
       (dateDuJour - dateDemarrageCycle) / (1000 * 60 * 60 * 24)
     );
-
-    // console.log("Date de démarrage du cycle : ", myDateDemarrageCycle);
-    // console.log("Nombre de jours du cycle : ", nombreDeJourDuCycle);
 
     res.status(200).json({ nombreDeJourDuCycle, myDateDemarrageCycle });
   } catch (error) {
@@ -126,10 +135,6 @@ exports.getTemperatureAirCourbe = async (req, res) => {
       throw new Error("Date de démarrage du cycle non trouvée.");
     }
 
-    const dateDuJour = new Date();
-    // console.log("Date de démarrage du cycle : ", dateDemarrageCycle);
-    // console.log("Date du jour : ", dateDuJour);
-
     const temperatureAirCourbe = await gestionAirModels.findAll({
       raw: true,
       where: {
@@ -169,10 +174,6 @@ exports.getConsigneAirCourbe = async (req, res) => {
     if (!dateDemarrageCycle) {
       throw new Error("Date de démarrage du cycle non trouvée.");
     }
-
-    const dateDuJour = new Date();
-    // console.log("Date de démarrage du cycle : ", dateDemarrageCycle);
-    // console.log("Date du jour : ", dateDuJour);
 
     const consigneAirCourbe = await gestionAirsDataModels.findAll({
       raw: true,
@@ -214,10 +215,6 @@ exports.getTauxHumiditeCourbe = async (req, res) => {
       throw new Error("Date de démarrage du cycle non trouvée.");
     }
 
-    const dateDuJour = new Date();
-    // console.log("Date de démarrage du cycle : ", dateDemarrageCycle);
-    // console.log("Date du jour : ", dateDuJour);
-
     const tauxHumiditeCourbe = await gestionHumModels.findAll({
       raw: true,
       where: {
@@ -258,10 +255,6 @@ exports.getConsigneHumiditeCourbe = async (req, res) => {
       throw new Error("Date de démarrage du cycle non trouvée.");
     }
 
-    const dateDuJour = new Date();
-    // console.log("Date de démarrage du cycle : ", dateDemarrageCycle);
-    // console.log("Date du jour : ", dateDuJour);
-
     const consigneHumiditeCourbeCourbe = await gestionHumDataModels.findAll({
       raw: true,
       where: {
@@ -278,6 +271,87 @@ exports.getConsigneHumiditeCourbe = async (req, res) => {
     }
 
     res.status(200).json({ consigneHumiditeCourbeCourbe });
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des données de température : ",
+      error
+    );
+    res.status(500).json({
+      error:
+        "Erreur serveur lors de la récupération des données de température",
+    });
+  }
+};
+
+//? --------------------------------------------------------------
+
+//! Construction de la courbe taux Co2.
+
+//? Récupération du taux De Co2.
+
+exports.getTauxCo2Courbe = async (req, res) => {
+  try {
+    const dateDemarrageCycle = await recuperationDateDemarrageCycle();
+
+    if (!dateDemarrageCycle) {
+      throw new Error("Date de démarrage du cycle non trouvée.");
+    }
+
+    const tauxCo2Courbe = await gestionCo2Models.findAll({
+      raw: true,
+      where: {
+        createdAt: {
+          [Op.between]: [dateDemarrageCycle, dateDuJour],
+        },
+      },
+    });
+
+    // console.log("Données de température récupérées : ", tauxCo2Courbe);
+
+    if (tauxCo2Courbe.length === 0) {
+      console.warn("Aucune donnée récupérée entre ces dates.");
+    }
+
+    res.status(200).json({ tauxCo2Courbe });
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des données de Co2 : ",
+      error
+    );
+    res.status(500).json({
+      error: "Erreur serveur lors de la récupération des données Co2",
+    });
+  }
+};
+
+//? --------------------------------------------------------------
+
+//? Récupération des Datas Co2.
+
+exports.getDataCo2Courbe = async (req, res) => {
+  try {
+    const dateDemarrageCycle = await recuperationDateDemarrageCycle();
+
+    if (!dateDemarrageCycle) {
+      throw new Error("Date de démarrage du cycle non trouvée.");
+    }
+
+    const consigneCo2Courbe = await gestionCo2Models.findAll({
+      raw: true,
+      where: {
+        createdAt: {
+          [Op.between]: [dateDemarrageCycle, dateDuJour],
+        },
+      },
+    });
+
+    // console.log("Données de température récupérées : ", tauxCo2Courbe);
+
+    if (consigneCo2Courbe.length === 0) {
+      console.warn("Aucune donnée récupérée entre ces dates.");
+    }
+
+    res.status(200).json({ consigneCo2Courbe });
   } catch (error) {
     console.error(
       "Erreur lors de la récupération des données de température : ",
