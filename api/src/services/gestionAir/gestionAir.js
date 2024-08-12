@@ -336,7 +336,8 @@ let getTemperatures = () => {
             console.log(
               "✅ SUCCÈS | Gestion Air | Mesure " +
                 lastIndex +
-                "/10 de la température Air."
+                "/10 de la température Air : " +
+                reading.value
             );
 
             if (valuesTable.length >= 10) {
