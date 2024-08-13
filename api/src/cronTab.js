@@ -7,14 +7,23 @@ const process = childProcess.fork(scriptPath);
 
 //? Calcules.
 
-const gestionAir = schedule.scheduleJob("*/5 * * * *", () => {
+const gestionAir = schedule.scheduleJob(" */5 * * * * ", () => {
+  var childProcess = require("child_process");
+
   function runScript(scriptPath, callback) {
+    // keep track of whether callback has been invoked to prevent multiple invocations
+    var invoked = false;
+
+    var process = childProcess.fork(scriptPath);
+
+    // listen for errors as they may prevent the exit event from firing
     process.on("error", function (err) {
       if (invoked) return;
       invoked = true;
       callback(err);
     });
 
+    // execute the callback once the process has finished running
     process.on("exit", function (code) {
       if (invoked) return;
       invoked = true;
@@ -23,16 +32,14 @@ const gestionAir = schedule.scheduleJob("*/5 * * * *", () => {
     });
   }
 
-  runScript(
-    "/home/pi/Desktop/champiBack_V4/api/src/services/gestionAir/gestionAir.js",
-    function (err) {
-      if (err) throw err;
-      // console.log(
-      //   jaune,
-      //   '[ GESTION AIR CRON TAB  ] CALCULES Calcules sont  terminés'
-      // );
-    }
-  );
+  // Now we can run a script and invoke a callback when complete, e.g.
+  runScript("./gestion/gestionAir/gestionAir.js", function (err) {
+    if (err) throw err;
+    // console.log(
+    //   jaune,
+    //   '[ GESTION AIR CRON TAB  ] CALCULES Calcules sont  terminés'
+    // );
+  });
 });
 
 //? -------------------------------------------------
@@ -41,16 +48,24 @@ const gestionAir = schedule.scheduleJob("*/5 * * * *", () => {
 
 //? Calcules.
 
-const gestionHum = schedule.scheduleJob("*/15 * * * *", () => {
-  // const gestionHum = schedule.scheduleJob(' _/10 \* \* \* \* ', () => {
+const gestionHum = schedule.scheduleJob(" */15 * * * * ", () => {
+  // const gestionHum = schedule.scheduleJob(' */10 * * * * ', () => {
+  var childProcess = require("child_process");
 
   function runScript(scriptPath, callback) {
+    // keep track of whether callback has been invoked to prevent multiple invocations
+    var invoked = false;
+
+    var process = childProcess.fork(scriptPath);
+
+    // listen for errors as they may prevent the exit event from firing
     process.on("error", function (err) {
       if (invoked) return;
       invoked = true;
       callback(err);
     });
 
+    // execute the callback once the process has finished running
     process.on("exit", function (code) {
       if (invoked) return;
       invoked = true;
@@ -59,16 +74,14 @@ const gestionHum = schedule.scheduleJob("*/15 * * * *", () => {
     });
   }
 
-  runScript(
-    "/home/pi/Desktop/champiBack_V4/api/src/services/gestionHumidite/gestionHumidite.js",
-    function (err) {
-      if (err) throw err;
-      // console.log(
-      //   bleu,
-      //   '[ GESTION HUM CRON TAB  ] GESTION HUMIDITÉ finished running some-script.js'
-      // );
-    }
-  );
+  // Now we can run a script and invoke a callback when complete, e.g.
+  runScript("./gestion/gestionHum/gestionHum.js", function (err) {
+    if (err) throw err;
+    // console.log(
+    //   bleu,
+    //   '[ GESTION HUM CRON TAB  ] GESTION HUMIDITÉ finished running some-script.js'
+    // );
+  });
 });
 
 //? -------------------------------------------------
@@ -78,13 +91,22 @@ const gestionHum = schedule.scheduleJob("*/15 * * * *", () => {
 //? Calculs.
 
 const gestionCo2 = schedule.scheduleJob(" 01 * * * * ", () => {
+  var childProcess = require("child_process");
+
   function runScript(scriptPath, callback) {
+    // keep track of whether callback has been invoked to prevent multiple invocations
+    var invoked = false;
+
+    var process = childProcess.fork(scriptPath);
+
+    // listen for errors as they may prevent the exit event from firing
     process.on("error", function (err) {
       if (invoked) return;
       invoked = true;
       callback(err);
     });
 
+    // execute the callback once the process has finished running
     process.on("exit", function (code) {
       if (invoked) return;
       invoked = true;
@@ -93,6 +115,7 @@ const gestionCo2 = schedule.scheduleJob(" 01 * * * * ", () => {
     });
   }
 
+  // Now we can run a script and invoke a callback when complete, e.g.
   runScript("./gestion/gestionCo2/gestionCo2.js", function (err) {
     if (err) throw err;
     // console.log(

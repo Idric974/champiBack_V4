@@ -1,64 +1,103 @@
-//?  AFFICHAGE DE L'ÉTAT DE LA VANNE FROID
+//? Récupération des données Température Air.
 
+let temperatureAir;
+let actionRelay;
 let etatRelay;
 let etatRelayBrute;
 let etatRelayLocalStorage;
 
-let afficheEtatRelay = () => {
-  fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/")
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText);
-      }
-      return response.json();
-    })
-    .then(function (data) {
-      etatRelayBrute = data.dataTemperatureAir.etatRelay;
-      // console.log("etatRelayBrute ==> ", data);
-      etatRelayLocalStorage = etatRelayBrute;
-    })
-    .then(() => {
-      etatRelay = JSON.stringify(etatRelayLocalStorage);
-      localStorage.setItem("Etat relay : ", etatRelay);
-      document.getElementById("etatRelay").innerHTML =
-        "Etat Vanne froid à : " + etatRelay + "%";
-    })
-    .catch(function (error) {
-      console.log("Fetch error: ", error);
-    });
+let afficheEtatRelay = async () => {
+  try {
+    const url =
+      "http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/";
+
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(
+        `🔴 ERROR | La réponse du réseau n'était pas correcte: ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    // console.log("⭐ DATA BRUTE | Get Temperature Air : ", data);
+
+    const { dataTemperatureAir } = data;
+    temperatureAir = dataTemperatureAir.temperatureAir;
+    actionRelay = dataTemperatureAir.actionRelay;
+    etatRelay = dataTemperatureAir.etatRelay;
+
+    // console.log("DATA : ", { temperatureAir, actionRelay, etatRelay });
+  } catch (error) {
+    console.error(
+      "🔴 ERROR | Erreur lors de la récupération des données :",
+      error
+    );
+    console.error("🔴 ERROR | Erreur JSON :", JSON.stringify(error));
+  }
 };
 
 afficheEtatRelay();
 
 //? -------------------------------------------------
 
-// ** 🟢 CLIC SUR LE BOUTON EAU AU SOL 🟢
+// ? Clic sur le bouton eau au sol.
 
 document
   .getElementById("btnRelayEauSol")
   .addEventListener("click", function () {
+    clicSurLeBoutonEauAuSol();
+  });
+
+const clicSurLeBoutonEauAuSol = async () => {
+  try {
     let element = document.getElementById("btnRelayEauSol");
     element.style.backgroundColor = "red";
     element.innerHTML = "Eau au sol activée";
     console.log("Eau au sol activée");
 
-    fetch("http://localhost:3003/gestionRelayApiRoutes/activerRelayEauAuSol/")
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
-        }
-        return response.json();
-      })
-      .then(function (data) {
-        console.log(data);
-        window.location.reload();
-      })
-      .catch(function (error) {
-        console.log("Fetch error: ", error);
-      });
-  });
+    const url =
+      "http://localhost:3003/gestionRelaysRoutesFront/activerRelayEauAuSol/";
 
-// ** 🟢 GESTION VENTILATEUR HUMIDITÉ 🟢
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(
+        `🔴 ERROR | La réponse du réseau n'était pas correcte: ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    console.log("⭐ DATA BRUTE | Clic sur le bouton eau au sol : ", data);
+
+    if (response.ok) {
+      window.location.reload();
+    }
+  } catch (error) {
+    console.error(
+      "🔴 ERROR | Clic sur le bouton eau au sol :",
+      JSON.stringify(error)
+    );
+  }
+};
+
+//? -----------------------------------------------
+
+// ? Gestion ventilateur humidité.
 
 let ventilateurHumidite;
 
@@ -66,7 +105,7 @@ let ventilateurHumidite;
 document
   .getElementById("ventilateurHumiditeOn")
   .addEventListener("click", function () {
-    fetch("http://localhost:3003/gestionRelayApiRoutes/relayVentilo/", {
+    fetch("http://localhost:3003/gestionRelaysRoutesFront/relayVentilo/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -95,7 +134,7 @@ document
 document
   .getElementById("ventilateurHumiditeOff")
   .addEventListener("click", function () {
-    fetch("http://localhost:3003/gestionRelayApiRoutes/relayVentilo/", {
+    fetch("http://localhost:3003/gestionRelaysRoutesFront/relayVentilo/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -150,7 +189,7 @@ document
           let etatVanne = "ON";
 
           fetch(
-            "http://localhost:3003/gestionRelayApiRoutes/relayVanneFroid5Secondes/",
+            "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid5Secondes/",
             {
               method: "POST",
               headers: {
@@ -218,7 +257,7 @@ document
           let etatVanne = "OFF";
 
           fetch(
-            "http://localhost:3003/gestionRelayApiRoutes/relayVanneFroid5Secondes/",
+            "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid5Secondes/",
             {
               method: "POST",
               headers: {
@@ -286,7 +325,7 @@ document
           let etatVanne = "ON";
 
           fetch(
-            "http://localhost:3003/gestionRelayApiRoutes/relayVanneFroid40Secondes/",
+            "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid40Secondes/",
             {
               method: "POST",
               headers: {
@@ -354,7 +393,7 @@ document
           let etatVanne = "OFF";
 
           fetch(
-            "http://localhost:3003/gestionRelayApiRoutes/relayVanneFroid40Secondes/",
+            "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid40Secondes/",
             {
               method: "POST",
               headers: {
