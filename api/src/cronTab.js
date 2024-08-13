@@ -1,7 +1,5 @@
 const schedule = require("node-schedule");
 const childProcess = require("child_process");
-const invoked = false;
-const process = childProcess.fork(scriptPath);
 
 //*! 1) Gestion Air.
 
@@ -33,13 +31,16 @@ const gestionAir = schedule.scheduleJob(" */5 * * * * ", () => {
   }
 
   // Now we can run a script and invoke a callback when complete, e.g.
-  runScript("./gestion/gestionAir/gestionAir.js", function (err) {
-    if (err) throw err;
-    // console.log(
-    //   jaune,
-    //   '[ GESTION AIR CRON TAB  ] CALCULES Calcules sont  terminés'
-    // );
-  });
+  runScript(
+    "/home/pi/Desktop/champiBack_V4/api/src/services/gestionAir/gestionAir.js",
+    function (err) {
+      if (err) throw err;
+      // console.log(
+      //   jaune,
+      //   '[ GESTION AIR CRON TAB  ] CALCULES Calcules sont  terminés'
+      // );
+    }
+  );
 });
 
 //? -------------------------------------------------
@@ -75,13 +76,16 @@ const gestionHum = schedule.scheduleJob(" */15 * * * * ", () => {
   }
 
   // Now we can run a script and invoke a callback when complete, e.g.
-  runScript("./gestion/gestionHum/gestionHum.js", function (err) {
-    if (err) throw err;
-    // console.log(
-    //   bleu,
-    //   '[ GESTION HUM CRON TAB  ] GESTION HUMIDITÉ finished running some-script.js'
-    // );
-  });
+  runScript(
+    "/home/pi/Desktop/champiBack_V4/api/src/services/gestionHumidite/gestionHumidite.js",
+    function (err) {
+      if (err) throw err;
+      // console.log(
+      //   bleu,
+      //   '[ GESTION HUM CRON TAB  ] GESTION HUMIDITÉ finished running some-script.js'
+      // );
+    }
+  );
 });
 
 //? -------------------------------------------------
@@ -116,13 +120,16 @@ const gestionCo2 = schedule.scheduleJob(" 01 * * * * ", () => {
   }
 
   // Now we can run a script and invoke a callback when complete, e.g.
-  runScript("./gestion/gestionCo2/gestionCo2.js", function (err) {
-    if (err) throw err;
-    // console.log(
-    //   cyan,
-    //   '[ GESTION CO2 CRON TAB  ] GESTION CO2 finished running some-script.js'
-    // );
-  });
+  runScript(
+    "/home/pi/Desktop/champiBack_V4/api/src/services/gestionCo2/gestionCo2.js",
+    function (err) {
+      if (err) throw err;
+      // console.log(
+      //   cyan,
+      //   '[ GESTION CO2 CRON TAB  ] GESTION CO2 finished running some-script.js'
+      // );
+    }
+  );
 });
 
 //? -------------------------------------------------
