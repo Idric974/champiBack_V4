@@ -55,28 +55,33 @@
 .boutonActivation,
 .boutonDeactivation,
 .demarrerCycleButton {
-  width: 60%;
-  height: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: black;
-  font-size: 1rem;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: green;
-  border-radius: 10px;
-  border: none;
+  width: 98%;
+  background-image: linear-gradient(
+    -180deg,
+    var(--greenColor2),
+    var(--greenColor)
+  );
+  border-radius: var(--border-radius);
+  color: #ffffff;
   cursor: pointer;
-  outline: none;
-  position: relative;
-  box-shadow: 0 6px black;
-  margin: 10px;
+  line-height: 40px;
+  outline: 0;
+  transition: box-shadow 0.2s;
+  margin: 5px 0px 5px 0px;
+  font-size: 1.5rem;
 }
 
 .boutonDeactivation {
-  background-color: red;
+  width: 98%;
+  background-image: linear-gradient(-180deg, var(--orangeClic974), #f44611);
+  border-radius: var(--border-radius);
+  color: #ffffff;
+  cursor: pointer;
+  line-height: 40px;
+  outline: 0;
+  transition: box-shadow 0.2s;
+  margin: 5px 0px 5px 0px;
+  font-size: 1.5rem;
 }
 
 .boutonActivation:hover,

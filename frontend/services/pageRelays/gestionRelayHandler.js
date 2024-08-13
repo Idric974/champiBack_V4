@@ -1,3 +1,37 @@
+//?  AFFICHAGE DE L'ÉTAT DE LA VANNE FROID
+
+let etatRelay;
+let etatRelayBrute;
+let etatRelayLocalStorage;
+
+let afficheEtatRelay = () => {
+  fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/")
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+      return response.json();
+    })
+    .then(function (data) {
+      etatRelayBrute = data.dataTemperatureAir.etatRelay;
+      // console.log("etatRelayBrute ==> ", data);
+      etatRelayLocalStorage = etatRelayBrute;
+    })
+    .then(() => {
+      etatRelay = JSON.stringify(etatRelayLocalStorage);
+      localStorage.setItem("Etat relay : ", etatRelay);
+      document.getElementById("etatRelay").innerHTML =
+        "Etat Vanne froid à : " + etatRelay + "%";
+    })
+    .catch(function (error) {
+      console.log("Fetch error: ", error);
+    });
+};
+
+afficheEtatRelay();
+
+//? -------------------------------------------------
+
 // ** 🟢 CLIC SUR LE BOUTON EAU AU SOL 🟢
 
 document
@@ -86,38 +120,6 @@ document
 
 //? -------------------------------------------------
 
-// ** 🟢 AFFICHAGE DE L'ÉTAT DE LA VANNE FROID 🟢
-
-let etatRelay;
-let etatRelayBrute;
-let etatRelayLocalStorage;
-
-let afficheEtatRelay = () => {
-  fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/")
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText);
-      }
-      return response.json();
-    })
-    .then(function (data) {
-      etatRelayBrute = data.temperatureAir.etatRelay;
-      // console.log("etatRelayBrute ==> ", etatRelayBrute);
-      etatRelayLocalStorage = etatRelayBrute;
-    })
-    .then(() => {
-      etatRelay = JSON.stringify(etatRelayLocalStorage);
-      localStorage.setItem("Etat relay : ", etatRelay);
-      document.getElementById("etatRelay").innerHTML =
-        "Etat Vanne froid à : " + etatRelay + "%";
-    })
-    .catch(function (error) {
-      console.log("Fetch error: ", error);
-    });
-};
-
-afficheEtatRelay();
-
 // ** 🟢 GESTION DE VANNE FROID À 5 SECONDES ON 🟢
 
 document
@@ -133,7 +135,7 @@ document
         return response.json();
       })
       .then(function (data) {
-        valeurEtatVanne = data.temperatureAir.actionRelay;
+        valeurEtatVanne = data.dataTemperatureAir.actionRelay;
         console.log("Valeur Etat Vanne ===> ", valeurEtatVanne);
       })
       .then(() => {
@@ -201,7 +203,7 @@ document
         return response.json();
       })
       .then(function (data) {
-        valeurEtatVanne = data.temperatureAir.actionRelay;
+        valeurEtatVanne = data.dataTemperatureAir.actionRelay;
         console.log("Valeur Etat Vanne ===> ", valeurEtatVanne);
       })
       .then(() => {
@@ -269,7 +271,7 @@ document
         return response.json();
       })
       .then(function (data) {
-        valeurEtatVanne = data.temperatureAir.actionRelay;
+        valeurEtatVanne = data.dataTemperatureAir.actionRelay;
         console.log("Valeur Etat Vanne ===> ", valeurEtatVanne);
       })
       .then(() => {
@@ -337,7 +339,7 @@ document
         return response.json();
       })
       .then(function (data) {
-        valeurEtatVanne = data.temperatureAir.actionRelay;
+        valeurEtatVanne = data.dataTemperatureAir.actionRelay;
         console.log("Valeur Etat Vanne ===> ", valeurEtatVanne);
       })
       .then(() => {

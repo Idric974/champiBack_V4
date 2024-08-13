@@ -77,7 +77,7 @@ let getDataAir = async () => {
       );
 
       document.getElementById("consigneAir").innerHTML =
-        consigneAirLocalStorage + "Â°C";
+        consigneAirLocalStorage + "°C";
 
       //* Affichage historique Consigne.
       getDernierConsigneAirEntree = localStorage.getItem(
@@ -316,7 +316,7 @@ const calculeDuDeltaTemperatureAirConsigne = async () => {
 
   deltaAirLocalStorage = localStorage.getItem("Valeure delta Air : ");
 
-  document.getElementById("deltaAir").innerHTML = deltaAirLocalStorage + "Â°C";
+  document.getElementById("deltaAir").innerHTML = deltaAirLocalStorage + "°C";
 };
 
 calculeDuDeltaTemperatureAirConsigne();

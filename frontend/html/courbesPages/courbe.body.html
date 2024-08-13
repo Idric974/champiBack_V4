@@ -3,17 +3,15 @@
 
   <div class="demarrerCycle">
     <div class="boxButtonDemCycle">
-      <button id="btnAir" class="demarrerCycleButton">
-        DÃ©marrer un cycle
-      </button>
+      <button id="btnAir" class="demarrerCycleButton">Démarrer un cycle</button>
 
       <div id="dateDemarrageCycle" class="demarrerCycleDate">Date</div>
       <div id="jourDuCycle" class="demarrerCycleJour">Jour</div>
     </div>
 
     <small id="infoSmallId" class="infoSmallDisplay"
-      >La date de dÃ©but de cycle Ã  Ã©tÃ© crÃ©Ã© et enregistrÃ©e dans la base
-      de donnÃ©es.</small
+      >La date de début de cycle à été créé et enregistrée dans la base de
+      données.</small
     >
   </div>
 
@@ -21,34 +19,36 @@
     <!-- Boutons des tabs. -->
     <div class="container-onglets">
       <p class="onglets active">Gestion courbes air</p>
-      <p class="onglets">Gestion courbes humiditÃ©</p>
+      <p class="onglets">Gestion courbes humidité</p>
       <p class="onglets">Gestion courbes Co2</p>
     </div>
     <!-- Fin Boutons des tabs. -->
 
-    <!-- Courbes gestionAir -->
-    <div class="contenu active-contenu">
-      <div class="graphData">
-        <canvas id="myChartAir"></canvas>
+    <div class="courbeContainer">
+      <!-- Courbes gestionAir -->
+      <div class="contenu active-contenu">
+        <div class="graphData">
+          <canvas id="myChartAir"></canvas>
+        </div>
+
+        <div class="graphVanne">
+          <canvas id="myChartAirVanne"></canvas>
+        </div>
       </div>
+      <!-- FIN Courbes gestionAir -->
 
-      <div class="graphVanne">
-        <canvas id="myChartAirVanne"></canvas>
+      <!-- Courbes gestionHum -->
+      <div class="contenu">
+        <canvas id="myChartHum"></canvas>
       </div>
-    </div>
-    <!-- FIN Courbes gestionAir -->
+      <!-- FIN Courbes gestionHum -->
 
-    <!-- Courbes gestionHum -->
-    <div class="contenu">
-      <canvas id="myChartHum"></canvas>
+      <!-- Courbes gestionHum -->
+      <div class="contenu">
+        <canvas id="myChartCo2"></canvas>
+      </div>
+      <!-- Courbes gestionCo2 -->
     </div>
-    <!-- FIN Courbes gestionHum -->
-
-    <!-- Courbes gestionHum -->
-    <div class="contenu">
-      <canvas id="myChartCo2"></canvas>
-    </div>
-    <!-- Courbes gestionCo2 -->
   </div>
 </div>
 

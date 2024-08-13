@@ -11,7 +11,7 @@ app.use(express.json());
 
 //? --------------------------------------------------
 
-//? Header pour les Cross Origine
+//? Header pour les Cross Origine.
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -43,33 +43,9 @@ app.use(bodyParser.json({ type: "application/json; charset=utf-8" }));
 app.use(
   bodyParser.urlencoded({
     extended: true,
-    type: "application/x-www-form-urlencoded; charset=UTF-8",
+    type: "application/x-www-form-urlencoded; charset=utf-8",
   })
 );
-
-//? --------------------------------------------------
-
-//? Génération des pages html.
-
-const genererModele = require("/home/pi/Desktop/champiBack_V4/frontend/pages/indexGet.js");
-
-app.get("/", async (req, res) => {
-  const indexHtml = await genererModele("indexPage/index");
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-  res.send(indexHtml);
-});
-
-app.get("/relay", async (req, res) => {
-  const relayHtml = await genererModele("relayPages/relay");
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-  res.send(relayHtml);
-});
-
-app.get("/courbe", async (req, res) => {
-  const courbeHtml = await genererModele("courbesPages/courbe");
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-  res.send(courbeHtml);
-});
 
 //? --------------------------------------------------
 
@@ -87,6 +63,7 @@ app.use(
   "/styles",
   express.static("/home/pi/Desktop/champiBack_V4/frontend/styles")
 );
+
 //? --------------------------------------------------
 
 //? Les scripts des pages.
@@ -165,6 +142,30 @@ app.use("/gestionHumiditeRoutesApi", gestionHumiditeGetApiRouteHandler);
 // Gestion des relais
 const gestionRelayApiRouteHandler = require("./routes/apiRoutes/gestionRelayApiRoutes");
 app.use("/gestionRelayApiRoutes", gestionRelayApiRouteHandler);
+
+//? --------------------------------------------------
+
+//? Génération des pages html.
+
+const genererModele = require("/home/pi/Desktop/champiBack_V4/frontend/pages/indexGet.js");
+
+app.get("/", async (req, res) => {
+  const indexHtml = await genererModele("indexPage/index");
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(indexHtml);
+});
+
+app.get("/relay", async (req, res) => {
+  const relayHtml = await genererModele("relayPages/relay");
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(relayHtml);
+});
+
+app.get("/courbe", async (req, res) => {
+  const courbeHtml = await genererModele("courbesPages/courbe");
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(courbeHtml);
+});
 
 //? --------------------------------------------------
 

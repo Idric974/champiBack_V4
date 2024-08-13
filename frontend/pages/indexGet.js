@@ -3,7 +3,7 @@ const { readFile } = require("fs");
 const { promisify } = require("util");
 const readFileAsync = promisify(readFile);
 
-const READ_OPTIONS = { encoding: "utf8" };
+const READ_OPTIONS = { encoding: "utf-8" };
 const HTML_URL = "/home/pi/Desktop/champiBack_V4/frontend/html";
 
 const lireFichierHtml = (file) =>

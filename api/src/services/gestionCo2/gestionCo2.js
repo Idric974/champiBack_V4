@@ -15,12 +15,12 @@ const switchEntreDeveloppementEtProduction = () => {
   return new Promise((resolve, reject) => {
     try {
       if (process.env.CHAMPIBACK_STATUS === "developpement") {
-        masterURL = "http://192.168.0.10:5000/getCO2/" + numSalle;
+        masterURL = "http://192.168.1.9:5000/getCo2/" + numSalle;
         resolve(console.log("MODE DÉVELOPPEMENT ACTIF"));
       }
 
       if (process.env.CHAMPIBACK_STATUS === "production") {
-        masterURL = "http://localhost:5000/getCo2/" + numSalle;
+        masterURL = "http://192.168.0.10:5000/getCO2/" + numSalle;
         resolve(console.log("MODE PRODUCTION ACTIF"));
       }
     } catch (error) {
@@ -33,11 +33,11 @@ const switchEntreDeveloppementEtProduction = () => {
 
 //? Demande de mesure à la master.
 
-let data;
 let tauxCo2;
 
 const demandeDeMesureMaster = () => {
   return new Promise((resolve, reject) => {
+    let data = "";
     try {
       http
         .get(masterURL, (resp) => {
@@ -50,46 +50,41 @@ const demandeDeMesureMaster = () => {
           });
 
           resp.on("end", () => {
-            tauxCo2 = parseFloat(data.split('undefined"')[1]);
-            console.log(
-              "✅ SUCCÈS | Gestion CO2 1 Demande de mesure à la master | RESP.ON END : ",
-              tauxCo2
-            );
+            try {
+              tauxCo2 = parseFloat(data.split('undefined"')[1]);
+              console.log(
+                "✅ SUCCÈS | Gestion CO2 1 Demande de mesure à la master | RESP.ON END : ",
+                tauxCo2
+              );
+
+              // console.log("DATA", data);
+
+              resolve(tauxCo2);
+            } catch (error) {
+              reject(
+                "🔴 ERROR | Gestion CO2 1 Demande de mesure à la master | Parsing error : " +
+                  error.message
+              );
+            }
           });
         })
-
         .on("response", function (resp) {
-          if (resp.statusCode === 200) {
-            resolve(
-              console.log(
-                "✅ SUCCÈS | Gestion CO2 2 Demande de mesure à la master | RESP.ON RESPONSE | Status Code ",
-                resp.statusCode
-              )
-            );
-          } else {
+          if (resp.statusCode !== 200) {
             reject(
-              console.log(
-                "🔴 ERROR | Gestion CO2 2 Demande de mesure à la master | Status Code | RESP.ON RESPONSE ",
+              "🔴 ERROR | Gestion CO2 2 Demande de mesure à la master | Status Code | RESP.ON RESPONSE " +
                 resp.statusCode
-              )
             );
           }
         })
-
         .on("error", (err) => {
           reject(
-            console.log(
-              "🔴 ERROR | Gestion CO2 2 Demande de mesure à la master | RESP.ON ERREOR : ",
+            "🔴 ERROR | Gestion CO2 2 Demande de mesure à la master | RESP.ON ERROR : " +
               err.message
-            )
           );
         });
     } catch (error) {
       reject(
-        console.log(
-          "🟠 TRY CATCH ERROR : Demande de mesure à la master : ",
-          error
-        )
+        "🟠 TRY CATCH ERROR : Demande de mesure à la master : " + error.message
       );
     }
   });
@@ -118,17 +113,17 @@ const recuperationDeLaConsigneCo2 = () => {
               where: { id: id.maxid },
             })
             .then((result) => {
-              console.log("DATA Brute" + result);
+              // console.log("DATA Brute" + result);
               lastId = result.id;
 
               consigneCo2 = result.consigneCo2;
-              console.log("La consigne est : ", consigneCo2);
+              // console.log("La consigne est : ", consigneCo2);
 
               pasCo2 = result.pasCo2;
-              console.log("Pas :      ", pasCo2);
+              // console.log("Pas :      ", pasCo2);
 
               objectifCo2 = result.objectifCo2;
-              console.log("Objectif : ", objectifCo2);
+              // console.log("Objectif : ", objectifCo2);
 
               resolve({ consigneCo2, pasCo2, objectifCo2 });
             });
