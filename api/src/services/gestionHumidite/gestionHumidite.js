@@ -246,11 +246,11 @@ let mesureDeLaTemperatureMoyenneSec = () => {
               console.log(
                 "✅ SUCCÈS | Gestion Humidité 5 | Mesure " +
                   lastIndex +
-                  "/10 de la température Hum : " +
-                  listValSecHumidite
+                  "/40 de la température Sec : " +
+                  reading.value
               );
 
-              if (listValSecHumidite.length >= 40) {
+              if (listValSecHumidite.length >= 39) {
                 clearInterval(conteur);
                 resolve(listValSecHumidite);
               }
@@ -352,7 +352,7 @@ let calculeDeLaTempératureCorrigeeSec = () => {
 
 //? Tableau de correspondance.
 
-let temperatureCorrigeeSecTest = 10.5;
+// let temperatureCorrigeeSecTest = 10.5;
 let correspondancePressions;
 
 const getCorrespondanceSec = () => {
@@ -360,7 +360,7 @@ const getCorrespondanceSec = () => {
     try {
       // Appel direct de la fonction car elle retourne une valeur synchrone
       correspondancePressions = tableauCorrespondanceHumidite(
-        temperatureCorrigeeSecTest
+        correspondancePressions
       );
 
       if (correspondancePressions !== undefined) {
@@ -478,11 +478,11 @@ let mesureDeLaTemperatureMoyenneHumidite = () => {
               console.log(
                 "✅ SUCCÈS | Gestion Humidité 10 | Mesure " +
                   lastIndex +
-                  "/10 de la température Hum : " +
-                  listValHumHumidite
+                  "/40 de la température Hum : " +
+                  reading.value
               );
 
-              if (listValHumHumidite.length >= 40) {
+              if (listValHumHumidite.length >= 39) {
                 clearInterval(conteur);
                 resolve(listValHumHumidite);
               }
