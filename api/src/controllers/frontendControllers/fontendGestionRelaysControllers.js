@@ -28,6 +28,8 @@ const gpioActionOn = async () => {
   }
 };
 
+//? -------------------------------------------------
+
 //? Déactivation du relais Gestion Air.
 
 const gpioActionOff = async () => {
@@ -45,6 +47,8 @@ const gpioActionOff = async () => {
     console.error(`Error executing script: ${error}`);
   }
 };
+
+//? -------------------------------------------------
 
 //? Mise à jour etat Relay.
 
@@ -117,7 +121,7 @@ recuperationEtatRlay = () => {
           where: { id: id.maxid },
         })
         .then((result) => {
-          valEtatRelay = result["etatRelay"];
+          valEtatRelay = result.etatRelay;
 
           // console.log('valEtatRelay : ' + valEtatRelay);
           // console.log('valEtatRelay : ' + typeof valEtatRelay);
@@ -329,6 +333,8 @@ exports.activerRelayEauAuSol = (req, res) => {
   handleMyPromise();
 };
 
+//? -------------------------------------------------
+
 //? Gestion relay Ventilateur humidité.
 
 exports.relayVentilo = (req, res) => {
@@ -417,7 +423,7 @@ exports.relayVanneFroid40Secondes = (req, res, next) => {
       if (valEtatRelay >= 100) {
         etatRelay = 100;
       } else {
-        etatRelay = valEtatRelay + 12.5;
+        etatRelay = 100;
       }
 
       actionRelay = 0;
@@ -440,7 +446,7 @@ exports.relayVanneFroid40Secondes = (req, res, next) => {
       if (valEtatRelay <= 0) {
         etatRelay = 0;
       } else {
-        etatRelay = valEtatRelay - 12.5;
+        etatRelay = 100;
       }
 
       actionRelay = 0;

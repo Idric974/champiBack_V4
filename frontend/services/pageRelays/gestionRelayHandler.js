@@ -6,7 +6,7 @@ let etatRelay;
 let etatRelayBrute;
 let etatRelayLocalStorage;
 
-let afficheEtatRelay = async () => {
+let getTemperatureAir = async () => {
   try {
     const url =
       "http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/";
@@ -34,6 +34,10 @@ let afficheEtatRelay = async () => {
     actionRelay = dataTemperatureAir.actionRelay;
     etatRelay = dataTemperatureAir.etatRelay;
 
+    document.getElementById(
+      "etatRelay"
+    ).innerHTML = `Etat relai à = ${etatRelay} %`;
+
     // console.log("DATA : ", { temperatureAir, actionRelay, etatRelay });
   } catch (error) {
     console.error(
@@ -44,25 +48,28 @@ let afficheEtatRelay = async () => {
   }
 };
 
-afficheEtatRelay();
+getTemperatureAir();
 
 //? -------------------------------------------------
 
 // ? Clic sur le bouton eau au sol.
 
+let butonEauAuSol;
+let checkButonEauAuSol = 0;
+
 document
   .getElementById("btnRelayEauSol")
   .addEventListener("click", function () {
+    butonEauAuSol = document.getElementById("btnRelayEauSol");
+    butonEauAuSol.innerHTML = "Eau au sol activée";
+    butonEauAuSol.classList.remove("demarrerCycleButton");
+    butonEauAuSol.classList.add("boutonDeactivation");
+    console.log("Eau au sol activée");
     clicSurLeBoutonEauAuSol();
   });
 
 const clicSurLeBoutonEauAuSol = async () => {
   try {
-    let element = document.getElementById("btnRelayEauSol");
-    element.style.backgroundColor = "red";
-    element.innerHTML = "Eau au sol activée";
-    console.log("Eau au sol activée");
-
     const url =
       "http://localhost:3003/gestionRelaysRoutesFront/activerRelayEauAuSol/";
 
@@ -85,7 +92,9 @@ const clicSurLeBoutonEauAuSol = async () => {
     console.log("⭐ DATA BRUTE | Clic sur le bouton eau au sol : ", data);
 
     if (response.ok) {
-      window.location.reload();
+      butonEauAuSol.innerHTML = "Activation";
+      butonEauAuSol.classList.add("demarrerCycleButton");
+      butonEauAuSol.classList.remove("boutonDeactivation");
     }
   } catch (error) {
     console.error(
@@ -179,7 +188,7 @@ document
       })
       .then(() => {
         if (valeurEtatVanne == 1) {
-          afficheEtatRelay();
+          getTemperatureAir();
           alert("ATTENTION!! ACTION VANNE EN COURS");
           return;
         } else if (etatRelayBrute >= 100) {
@@ -221,7 +230,7 @@ document
       });
 
     setTimeout(() => {
-      afficheEtatRelay();
+      getTemperatureAir();
     }, 6000);
   });
 
@@ -247,7 +256,7 @@ document
       })
       .then(() => {
         if (valeurEtatVanne == 1) {
-          afficheEtatRelay();
+          getTemperatureAir();
           alert("ATTENTION!! ACTION VANNE EN COURS");
           return;
         } else if (etatRelayBrute <= 0) {
@@ -289,7 +298,7 @@ document
       });
 
     setTimeout(() => {
-      afficheEtatRelay();
+      getTemperatureAir();
     }, 6000);
   });
 
@@ -315,7 +324,7 @@ document
       })
       .then(() => {
         if (valeurEtatVanne == 1) {
-          afficheEtatRelay();
+          getTemperatureAir();
           alert("ATTENTION!! ACTION VANNE EN COURS");
           return;
         } else if (etatRelayBrute >= 100) {
@@ -357,7 +366,7 @@ document
       });
 
     setTimeout(() => {
-      afficheEtatRelay();
+      getTemperatureAir();
     }, 6000);
   });
 
@@ -383,7 +392,7 @@ document
       })
       .then(() => {
         if (valeurEtatVanne == 1) {
-          afficheEtatRelay();
+          getTemperatureAir();
           alert("ATTENTION!! ACTION VANNE EN COURS");
           return;
         } else if (etatRelayBrute <= 0) {
@@ -425,7 +434,7 @@ document
       });
 
     setTimeout(() => {
-      afficheEtatRelay();
+      getTemperatureAir();
     }, 6000);
   });
 

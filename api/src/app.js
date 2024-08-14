@@ -136,16 +136,16 @@ app.use("/gestionRelaysRoutesFront", gestionRelaisFrondendRouteHandler);
 //* API.
 
 // Gestion Air.
-// const gestionAirGetApiRouteHandler = require("./routes/apiRoutes/gestionAirRoutesApi");
-// app.use("/gestionAirRoutesApi", gestionAirGetApiRouteHandler);
+const gestionAirGetApiRouteHandler = require("./routes/apiRoutes/gestionAirRoutesApi");
+app.use("/gestionAirRoutesApi", gestionAirGetApiRouteHandler);
 
 // Gestion humidité.
-// const gestionHumiditeGetApiRouteHandler = require("./routes/apiRoutes/gestionHumiditeRoutesApi");
-// app.use("/gestionHumiditeRoutesApi", gestionHumiditeGetApiRouteHandler);
+const gestionHumiditeGetApiRouteHandler = require("./routes/apiRoutes/gestionHumiditeRoutesApi");
+app.use("/gestionHumiditeRoutesApi", gestionHumiditeGetApiRouteHandler);
 
 // Gestion des relais
-// const gestionRelayApiRouteHandler = require("./routes/apiRoutes/gestionRelayApiRoutes");
-// app.use("/gestionRelayApiRoutes", gestionRelayApiRouteHandler);
+const gestionRelayApiRouteHandler = require("./routes/apiRoutes/gestionRelayApiRoutes");
+app.use("/gestionRelayApiRoutes", gestionRelayApiRouteHandler);
 
 //? --------------------------------------------------
 
