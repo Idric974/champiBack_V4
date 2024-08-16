@@ -360,7 +360,7 @@ const getCorrespondanceSec = () => {
     try {
       // Appel direct de la fonction car elle retourne une valeur synchrone
       correspondancePressions = tableauCorrespondanceHumidite(
-        correspondancePressions
+        temperatureCorrigeeSec
       );
 
       if (correspondancePressions !== undefined) {
@@ -594,7 +594,7 @@ const getCorrespondanceHumidite = () => {
     try {
       // Appel direct de la fonction car elle retourne une valeur synchrone
       correspondancePressionsHumidite = tableauCorrespondanceHumidite(
-        temperatureCorrigeeHumiditeTest
+        temperatureCorrigeeHumide
       );
 
       if (correspondancePressionsHumidite !== undefined) {
