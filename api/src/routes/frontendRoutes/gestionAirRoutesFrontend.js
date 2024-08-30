@@ -25,13 +25,19 @@ router.post(
 );
 
 router.post(
-  "/postVanneActiveAir",
-  gestionAirRoutesFrontendHandler.postVanneActiveAir
-);
-
-router.post(
   "/postFermetureVanneAir",
   gestionAirRoutesFrontendHandler.postFermetureVanneAir
+);
+
+//? -------------------------------------------------
+
+//? Vanne active.
+
+router.get("/getVanneActive", gestionAirRoutesFrontendHandler.getVanneActive);
+
+router.post(
+  "/postVanneActiveAir",
+  gestionAirRoutesFrontendHandler.postVanneActiveAir
 );
 
 //? -------------------------------------------------

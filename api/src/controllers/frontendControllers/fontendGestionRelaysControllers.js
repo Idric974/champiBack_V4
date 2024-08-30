@@ -123,8 +123,7 @@ recuperationEtatRlay = () => {
         .then((result) => {
           valEtatRelay = result.etatRelay;
 
-          // console.log('valEtatRelay : ' + valEtatRelay);
-          // console.log('valEtatRelay : ' + typeof valEtatRelay);
+          // console.log("valEtatRelay : " + valEtatRelay);
         });
     });
 };
@@ -157,12 +156,48 @@ miseAjourEtatRelayEauAuSol = () => {
 
 //? -------------------------------------------------
 
+//? Récupération de l'état du relais eau au sol.
+
+exports.getEtatRelaisEauAuSol = (req, res) => {
+  try {
+    relayBoutonEauAuSol
+      .findOne({
+        attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
+        raw: true,
+      })
+      .then((id) => {
+        // console.log('Le dernier id de gestionAir est : ', id);
+        // console.log(id.maxid);
+
+        relayBoutonEauAuSol
+          .findOne({
+            where: { id: id.maxid },
+          })
+          .then((result) => {
+            let etatRelayEauAuSolFront = result.etatRelayEauAuSol;
+            res.status(200).json({ etatRelayEauAuSolFront });
+          });
+      });
+  } catch (error) {
+    reject(
+      console.log(
+        "❌ ERROR | Gestions relais au sol | Relays eau au sol | Clic sur le bouton eau au sol",
+
+        error
+      )
+    );
+  }
+};
+
+//? -------------------------------------------------
+
 //! -------------------------------------------------
 
 //? Clic sur le bouton eau au sol.
 
 let etatRelayEauAuSol;
 const relayBoutonEauAuSol = db.gestionEtatBoutonRelayEauAuSol;
+let valeurPinEauAuSol = 22;
 
 exports.activerRelayEauAuSol = (req, res) => {
   //? Les promesses.
@@ -211,7 +246,7 @@ exports.activerRelayEauAuSol = (req, res) => {
         if (etatRelayEauAuSol === 0) {
           //
 
-          gpioActionOn((pinAActiver = 16));
+          gpioActionOn((pinAActiver = valeurPinEauAuSol));
 
           console.log(
             "✅ SUCCÈS | Gestions relais au sol | Eau au sol activée"
@@ -240,7 +275,7 @@ exports.activerRelayEauAuSol = (req, res) => {
             });
 
           setTimeout(() => {
-            gpioActionOff((pinAActiver = 16));
+            gpioActionOff((pinAActiver = valeurPinEauAuSol));
 
             //* Mise à jour de la base de donnée.
 
@@ -358,15 +393,18 @@ exports.relayVentilo = (req, res) => {
 exports.relayVanneFroid5Secondes = (req, res, next) => {
   //
   let relayVanneFroid = req.body.etatRelay;
+  let numPinOn = req.body.ouvertureVanneRelay;
+  let numPinOff = req.body.fermetureVanneRelay;
+  // console.log({ relayVanneFroid, numPinOn, numPinOff });
 
-  if (relayVanneFroid == "ON") {
+  if (relayVanneFroid === "ON") {
     actionRelay = 1;
     miseAjourActionRelay();
     recuperationEtatRlay();
-    gpioActionOn((pinAActiver = 23));
+    gpioActionOn((pinAActiver = numPinOn));
 
     setTimeout(() => {
-      gpioActionOff((pinAActiver = 23));
+      gpioActionOff((pinAActiver = numPinOn));
 
       if (valEtatRelay >= 100) {
         etatRelay = 100;
@@ -382,14 +420,14 @@ exports.relayVanneFroid5Secondes = (req, res, next) => {
     }, 5000);
   }
 
-  if (relayVanneFroid == "OFF") {
+  if (relayVanneFroid === "OFF") {
     actionRelay = 1;
     miseAjourActionRelay();
     recuperationEtatRlay();
-    gpioActionOn((pinAActiver = 22));
+    gpioActionOn((pinAActiver = numPinOff));
 
     setTimeout(() => {
-      gpioActionOn((pinAActiver = 22));
+      gpioActionOff((pinAActiver = numPinOff));
 
       if (valEtatRelay <= 0) {
         etatRelay = 0;
@@ -410,15 +448,17 @@ exports.relayVanneFroid5Secondes = (req, res, next) => {
 exports.relayVanneFroid40Secondes = (req, res, next) => {
   //
   let relayVanneFroid = req.body.etatRelay;
+  let numPinOn = req.body.ouvertureVanneRelay;
+  let numPinOff = req.body.fermetureVanneRelay;
 
   if (relayVanneFroid == "ON") {
     actionRelay = 1;
     miseAjourActionRelay();
     recuperationEtatRlay();
-    gpioActionOn((pinAActiver = 23));
+    gpioActionOn((pinAActiver = numPinOn));
 
     setTimeout(() => {
-      gpioActionOff((pinAActiver = 23));
+      gpioActionOff((pinAActiver = numPinOn));
 
       if (valEtatRelay >= 100) {
         etatRelay = 100;
@@ -438,15 +478,15 @@ exports.relayVanneFroid40Secondes = (req, res, next) => {
     actionRelay = 1;
     miseAjourActionRelay();
     recuperationEtatRlay();
-    gpioActionOn((pinAActiver = 22));
+    gpioActionOn((pinAActiver = numPinOff));
 
     setTimeout(() => {
-      gpioActionOn((pinAActiver = 22));
+      gpioActionOff((pinAActiver = numPinOff));
 
       if (valEtatRelay <= 0) {
         etatRelay = 0;
       } else {
-        etatRelay = 100;
+        etatRelay = 0;
       }
 
       actionRelay = 0;

@@ -38,7 +38,6 @@ const getTauxCo2 = async () => {
 
     //* -------------------------------------------------
   } catch (error) {
-    console.log(error);
     console.log(JSON.stringify(error));
   }
 };
@@ -135,7 +134,6 @@ const calculeDuDeltaCo2Consigne = async () => {
   // console.log("Delta Co2 - Consigne :", deltaCo2);
 
   localStorage.setItem("Gestion Co2 | Delta Co2", deltaCo2);
-
   const deltaCo2Historique = localStorage.getItem("Gestion Co2 | Delta Co2");
 
   document.getElementById("deltaCo2").innerHTML = deltaCo2Historique + "°C";
@@ -173,7 +171,7 @@ const calculeDuLaDureeDeLaDescenteCo2 = async () => {
     let dureeDescenteCo2 =
       ((consigneCo2 - objectifHistorique) / pasCo2Historique) * 12;
 
-    console.log("Durée Descente Co2", dureeDescenteCo2);
+    // console.log("Durée Descente Co2", dureeDescenteCo2);
 
     nbJourCo2 = Math.floor(dureeDescenteCo2 / 24);
 
@@ -181,13 +179,13 @@ const calculeDuLaDureeDeLaDescenteCo2 = async () => {
 
     nbHeureCo2 = Math.floor(dureeDescenteCo2 / 36);
 
-    console.log(
-      "La durée de la descente Air est de  : " +
-        nbJourCo2 +
-        " Jours " +
-        nbHeureCo2 +
-        " Heures "
-    );
+    // console.log(
+    //   "La durée de la descente Air est de  : " +
+    //     nbJourCo2 +
+    //     " Jours " +
+    //     nbHeureCo2 +
+    //     " Heures "
+    // );
   }
 
   localStorage.setItem("Gestion Co2 | Nombre de jour", nbJourCo2);

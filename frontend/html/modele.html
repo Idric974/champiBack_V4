@@ -15,6 +15,7 @@
           <!-- Le Menu -->
           <nav class="menu">
             <div class="version">ChampiBack V4</div>
+
             <!-- <p class="boxMenuTitle">Menu</p> -->
             <ul class="menuButton">
               <a class="menuButtonItems" href="/"><li>Accueil</li></a>
@@ -39,96 +40,85 @@
             </div>
           </div>
 
+          <!-- Alert vanne en cour de fermeture -->
+          <div
+            id="alertSwutchVanneContainerId"
+            class="alertSwutchVanneContainerOff"
+          ></div>
+
+          <!-- Taux ouverure vanne -->
+          <div class="tauxOuvertureVanneContainer">
+            <p class="tauxOuverureVanneTitle">Tx Ouverture</p>
+            <div id="tauxOuverureVanneId" class="tauxOuverureVanne"></div>
+          </div>
+
+          <!-- Affichage date et heure -->
           <div class="dateEtHeure">
             <p class="dateEtHeureHeure" id="afficheHeure">-</p>
             <p class="dateEtHeureDate" id="afficheDate">-</p>
           </div>
         </div>
       </div>
+
       <!-- le corps -->
 
       <div class="dataContainer">{{CORPS}}</div>
     </div>
-
-    <!-- * AFFICHER LA DATE -->
-
     <script>
-      const showDate = () => {
-        let myDate;
+      // ? Afficher l'heure de l'application.
 
-        let mois = [
-          "01",
-          "02",
-          "03",
-          "04",
-          "05",
-          "06",
-          "07",
-          "08",
-          "09",
-          "10",
-          "11",
-          "12",
-        ];
+      const appTimeFunction = () => {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, "0");
+        const minutes = now.getMinutes().toString().padStart(2, "0");
+        const seconds = now.getSeconds().toString().padStart(2, "0");
 
-        let maintenant = new Date();
-        let jour = maintenant.getDate();
-        let moisAnnee = mois[maintenant.getMonth()];
-        let annee = maintenant.getFullYear();
+        const appTime = `${hours}:${minutes}:${seconds}`;
+        //console.log("Heure de l'application : ", appTime);
 
-        myDate = `${jour}/${moisAnnee}/${annee}`;
-
-        const element = document.getElementById("afficheDate");
-        if (element) {
-          element.innerHTML = myDate;
+        const dateElement = document.getElementById("afficheHeure");
+        if (dateElement) {
+          dateElement.innerHTML = appTime;
+        } else {
+          console.log("Pas d'heure");
         }
-        // console.log("La date ==>", myDate);
-      };
-      showDate();
-    </script>
-
-    <!-- * AFFICHER L'HEURE -->
-
-    <script>
-      const showTime = () => {
-        let myHeure;
-
-        function updateTime() {
-          let myDate = new Date();
-          let heure = myDate.getHours().toString().padStart(2, "0");
-          let minute = myDate.getMinutes().toString().padStart(2, "0");
-          let seconde = myDate.getSeconds().toString().padStart(2, "0");
-
-          myHeure = `${heure}:${minute}:${seconde}`;
-
-          const element = document.getElementById("afficheHeure");
-          if (element) {
-            element.innerHTML = myHeure;
-          } else {
-            console.log("Pas d'heure");
-          }
-        }
-
-        setInterval(() => {
-          updateTime();
-        }, 1000);
       };
 
-      // Appeler la fonction showTime après que le DOM est chargé
-      document.addEventListener("DOMContentLoaded", (event) => {
-        showTime();
-      });
-    </script>
+      setInterval(appTimeFunction, 1000);
 
-    <!-- * GESTION DES BOUTONS HUMIDITÉ SEC. -->
+      //? -------------------------------------------------
 
-    <script>
+      //? Afficher la date de l'application.
+
+      const appDateFunction = () => {
+        const now = new Date();
+        const day = now.toLocaleDateString();
+
+        const appDate = `${day} `;
+        // console.log("Date de l'application : ", appDate);
+
+        const dateElement = document.getElementById("afficheDate");
+        if (dateElement) {
+          dateElement.innerHTML = appDate;
+        } else {
+          console.log("Pas de date");
+        }
+      };
+
+      appDateFunction();
+
+      //? -------------------------------------------------
+
       let pin;
       let vanneActive = "vanneHum";
+      let checkProcessus = 0;
+      let vanneEncoursDeFermeture;
+      let myAlerte;
 
       document.addEventListener("DOMContentLoaded", function () {
         const buttonHum = document.getElementById("switchHum");
         const buttonSec = document.getElementById("switchSec");
+        myAlerte = document.getElementById("alertSwutchVanneContainerId");
 
         const toggleButtons = (activeButton, inactiveButton) => {
           activeButton.innerHTML = "ON";
@@ -137,99 +127,175 @@
           inactiveButton.style.backgroundColor = "var(--greenColor)";
         };
 
-        const handleClick = (activeVanne, activeButton, inactiveButton) => {
+        buttonHum.addEventListener("click", async () => {
+          activeVanne = "vanneHum";
+          vanneEncoursDeFermeture = "Vanne Sec";
+          pin = 25;
+          myAlerte.classList.add("alertSwutchVanneContainerOn");
+          myAlerte.classList.remove("alertSwutchVanneContainerOff");
+          myAlerte.innerHTML = `Fermeture ${vanneEncoursDeFermeture}`;
+          await handleClick("vanneHum", buttonHum, buttonSec);
+        });
+
+        buttonSec.addEventListener("click", async () => {
+          activeVanne = "vanneSec";
+          vanneEncoursDeFermeture = "Vanne Hum";
+          pin = 23;
+          myAlerte.classList.add("alertSwutchVanneContainerOn");
+          myAlerte.classList.remove("alertSwutchVanneContainerOff");
+          myAlerte.innerHTML = `Fermeture ${vanneEncoursDeFermeture}`;
+          await handleClick("vanneSec", buttonSec, buttonHum);
+        });
+
+        const handleClick = async (
+          activeVanne,
+          activeButton,
+          inactiveButton
+        ) => {
           vanneActive = activeVanne;
           toggleButtons(activeButton, inactiveButton);
-          saveVanneActive();
-          gpioAction(pin);
+
+          if (checkProcessus === 0) {
+            await saveVanneActiveSwitch();
+            await gpioActionSwitch(pin);
+          } else {
+            alert(
+              `ATTENTION : Vanne ${vanneEncoursDeFermeture} en cours de fermeture`
+            );
+          }
         };
-
-        buttonHum.addEventListener("click", () => {
-          handleClick("vanneHum", buttonHum, buttonSec);
-          activeVanne = "vanneHum";
-          pin = 25;
-          console.log("Bouton vanneHum cliqué");
-        });
-        buttonSec.addEventListener("click", () => {
-          handleClick("vanneSec", buttonSec, buttonHum);
-          activeVanne = "vanneSec";
-          pin = 23;
-          console.log("Bouton vanneSec cliqué");
-        });
       });
-    </script>
 
-    <!-- * SAUVEGARDE DE LA VANNE ACTIVE. -->
+      //? -------------------------------------------------
 
-    <script>
-      const saveVanneActive = () => {
-        fetch(
-          "http://localhost:3003/gestionAirRoutesFront/postVanneActiveAir/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              vanneActive,
-            }),
-          }
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("postVanneActive => ", data);
-          })
-          .catch("postVanneActive error=> ", (error) => {
-            console.error("🔴 Error | Functions | saveVanneActive : ", error);
-          });
-      };
-    </script>
+      //? Sauvegarde de la vanne active.
 
-    <!-- * FERMETURE DE LA VANNE LORS DU SWITCH. -->
+      const saveVanneActiveSwitch = async () => {
+        const url =
+          "http://localhost:3003/gestionAirRoutesFront/postVanneActiveAir/";
 
-    <script>
-      const gpioAction = (pin) => {
-        console.log("pin ==> ", pin);
-
-        fetch(
-          "http://localhost:3003/gestionAirRoutesFront/postFermetureVanneAir/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ pin }),
-          }
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("🖐 gpioAction ==>", data);
-          })
-          .catch((error) => {
-            console.error("🔴 Error | Functions | gpioAction : ", error);
-          });
-      };
-    </script>
-
-    <!-- * MISE À JOUR DE L'ÉTAT DES RELAIS. -->
-
-    <script>
-      let miseAjourEtatRelay = (etatRelay) => {
-        fetch("http://localhost:3003/gestionAirRoutesFront/majEtatRelay", {
+        const options = {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ etatRelay }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+          body: JSON.stringify({
+            vanneActive,
+          }),
+        };
+
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+          throw new Error(
+            "Network response was not ok | saveVanneActiveSwitch" +
+              response.statusText
+          );
+        }
+
+        const data = await response.json();
+        const { message } = data;
+        console.log("MESSAGE | Sauvegarde de la vanne active : ", message);
       };
+
+      //? -------------------------------------------------
+
+      //? Fermeture de la vanne lors du switch.
+
+      const gpioActionSwitch = async (pin) => {
+        const url =
+          "http://localhost:3003/gestionAirRoutesFront/postFermetureVanneAir/";
+
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pin,
+          }),
+        };
+
+        checkProcessus = 1;
+
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+          throw new Error(
+            "Network response was not ok | gpioActionSwitch" +
+              response.statusText
+          );
+        }
+
+        if (response.status === 200) {
+          checkProcessus = 0;
+          myAlerte.classList.remove("alertSwutchVanneContainerOn");
+          myAlerte.classList.add("alertSwutchVanneContainerOff");
+        }
+
+        const data = await response.json();
+        const { message } = data;
+        console.log(
+          "MASSAGE | Fermeture de la vanne lors du switch : ",
+          message
+        );
+      };
+
+      //? -------------------------------------------------
+
+      //? Récupération de la température de l’air.
+
+      let etatRelayFronte;
+
+      const getTauxOuvertureVanne = async () => {
+        try {
+          const url =
+            "http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/";
+
+          const options = {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          };
+
+          const response = await fetch(url, options);
+
+          if (!response.ok) {
+            throw new Error(
+              "Network response was not ok " + response.statusText
+            );
+          }
+
+          const data = await response.json();
+
+          const { dataTemperatureAir } = data;
+          //console.log("dataTemperatureAir :", dataTemperatureAir);
+
+          //* Affichage du taux d'ouverture de la vanne.
+
+          etatRelayFronte = dataTemperatureAir.etatRelay;
+          localStorage.setItem(
+            "Gestion Air | Taux Ouverure Vanne",
+            etatRelayFronte
+          );
+          // console.log("taux d'ouverture de la vanne :", etatRelayFronte);
+
+          const tauxOuverureVanneLocalStorage = localStorage.getItem(
+            "Gestion Air | Taux Ouverure Vanne"
+          );
+
+          document.getElementById("tauxOuverureVanneId").innerHTML =
+            tauxOuverureVanneLocalStorage + " %";
+
+          //* -------------------------------------------
+        } catch (error) {
+          console.log(error);
+          console.log(JSON.stringify(error));
+        }
+      };
+
+      getTauxOuvertureVanne();
     </script>
   </body>
 </html>

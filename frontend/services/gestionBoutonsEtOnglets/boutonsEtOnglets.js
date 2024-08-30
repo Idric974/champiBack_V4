@@ -58,8 +58,7 @@ let dateDemarrageDuCycleStorage;
         "Jour : " + jourDuCycleLocalStorage;
     })
     .catch((error) => {
-      console.log("Fetch error: ", error);
-      console.log(JSON.stringify(error));
+      console.log("Fetch error: ", JSON.stringify(error));
     });
 })();
 

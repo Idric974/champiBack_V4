@@ -91,11 +91,8 @@ exports.postConsigneTemperatureAir = async (req, res) => {
 
 exports.postPasEtConsigneTemperatureAir = async (req, res) => {
   try {
-    const pasAir = req.body.pasAir;
-    console.log("Le pas Air : " + pasAir);
-
-    const objectifAir = req.body.objectifAir;
-    console.log("L'objectif Air : " + objectifAir);
+    const { pasAir, objectifAir } = req.body;
+    console.log("Datas : ", { objectifAir, pasAir });
 
     // Trouver l'ID maximum
     const idResult = await gestionAirsDataModels.findOne({
@@ -129,7 +126,7 @@ exports.postPasEtConsigneTemperatureAir = async (req, res) => {
 exports.postVanneActiveAir = async (req, res) => {
   try {
     const vanneActive = req.body.vanneActive;
-    console.log("Vanne active air", vanneActive);
+    // console.log("Vanne active air", vanneActive);
 
     await gestionAirVannesModels.create({
       vanneActive: vanneActive,
@@ -183,5 +180,35 @@ exports.postFermetureVanneAir = async (req, res) => {
     res
       .status(500)
       .json({ message: "Erreur lors de l'exécution du script", error });
+  }
+};
+
+//? Recupération de la vanne à utiliser.
+
+exports.getVanneActive = async (req, res) => {
+  try {
+    const idResult = await gestionAirVannesModels.findOne({
+      attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
+      raw: true,
+    });
+
+    if (!idResult || !idResult.maxid) {
+      return res.status(404).json({ error: "Aucune température trouvée." });
+    }
+
+    const dataVanneActive = await gestionAirVannesModels.findOne({
+      where: { id: idResult.maxid },
+    });
+
+    if (!dataVanneActive) {
+      return res.status(404).json({
+        error: "La température avec l'ID spécifié n'a pas été trouvée.",
+      });
+    }
+
+    res.status(200).json({ dataVanneActive });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erreur interne du serveur." });
   }
 };

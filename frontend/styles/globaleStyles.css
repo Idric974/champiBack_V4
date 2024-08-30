@@ -374,6 +374,36 @@ button:active {
   font-weight: bold;
 }
 
+/** Taux ouverure vanne */
+
+.tauxOuvertureVanneContainer {
+  width: 98%;
+  margin: 10px 0px 5px 0px;
+  border: solid 1px white;
+  border-radius: var(--border-radius);
+  margin: 0px 0px 10px 0px;
+}
+
+.tauxOuverureVanneTitle {
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+}
+
+.tauxOuverureVanne {
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.5rem;
+}
+
 /** Boutons des Vannes */
 
 .boxVanne {
@@ -383,7 +413,7 @@ button:active {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin: 10px 0px 0px 0px;
+  margin: 10px 0px 5px 0px;
   border-radius: var(--border-radius);
 }
 
@@ -396,7 +426,7 @@ button:active {
   justify-content: center;
   justify-content: space-between;
   cursor: pointer;
-  margin: 10px 0px 10px 0px;
+  /* margin: 10px 0px 10px 0px; */
 }
 
 .switchValveBoxOnTitle {
@@ -488,10 +518,33 @@ button:active {
   transform: translateY(2px);
 }
 
+/** Alert vanne en cour de fermeture **/
+
+.alertSwutchVanneContainerOn {
+  width: 98%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 10px 5px 10px 5px;
+  margin-bottom: 5px;
+  color: white;
+  margin: 5px 0px 10px 0px;
+}
+
+.alertSwutchVanneContainerOff {
+  display: none;
+}
+
 /** La date et l'heure **/
 
 .dateEtHeure {
-  background-color: red;
   width: 98%;
   background-color: white;
   display: flex;
@@ -527,3 +580,5 @@ button:active {
   justify-content: center;
   padding: 10px 10px 10px 10px;
 }
+
+/**🟢 ICONES 🟢*/

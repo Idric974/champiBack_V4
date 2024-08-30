@@ -144,8 +144,8 @@ const gestionHumiditeGetApiRouteHandler = require("./routes/apiRoutes/gestionHum
 app.use("/gestionHumiditeRoutesApi", gestionHumiditeGetApiRouteHandler);
 
 // Gestion des relais
-const gestionRelayApiRouteHandler = require("./routes/apiRoutes/gestionRelayApiRoutes");
-app.use("/gestionRelayApiRoutes", gestionRelayApiRouteHandler);
+// const gestionRelayApiRouteHandler = require("./routes/apiRoutes/gestionRelayApiRoutes");
+// app.use("/gestionRelayApiRoutes", gestionRelayApiRouteHandler);
 
 //? --------------------------------------------------
 

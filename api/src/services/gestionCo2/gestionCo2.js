@@ -51,7 +51,7 @@ const demandeDeMesureMaster = () => {
 
           resp.on("end", () => {
             try {
-              tauxCo2 = parseFloat(data.split('undefined"')[1]);
+              tauxCo2 = parseInt(data.split("\\")[0], 10);
               console.log(
                 "✅ SUCCÈS | Gestion CO2 1 Demande de mesure à la master | RESP.ON END : ",
                 tauxCo2

@@ -9,6 +9,11 @@ router.get(
   gestionRelaysRoutesFrontendHandler.activerRelayEauAuSol
 );
 
+router.get(
+  "/getEtatRelaisEauAuSol",
+  gestionRelaysRoutesFrontendHandler.getEtatRelaisEauAuSol
+);
+
 router.post(
   "/relayVanneFroid5Secondes",
   gestionRelaysRoutesFrontendHandler.relayVanneFroid5Secondes

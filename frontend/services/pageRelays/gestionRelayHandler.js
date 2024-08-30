@@ -36,7 +36,7 @@ let getTemperatureAir = async () => {
 
     document.getElementById(
       "etatRelay"
-    ).innerHTML = `Etat relai à = ${etatRelay} %`;
+    ).innerHTML = `Vanne ouverte à : ${etatRelay} %`;
 
     // console.log("DATA : ", { temperatureAir, actionRelay, etatRelay });
   } catch (error) {
@@ -52,26 +52,14 @@ getTemperatureAir();
 
 //? -------------------------------------------------
 
-// ? Clic sur le bouton eau au sol.
+//? Récupération de l'état du relais eau au sol.
 
-let butonEauAuSol;
-let checkButonEauAuSol = 0;
+let etatRelayEauAuSol;
 
-document
-  .getElementById("btnRelayEauSol")
-  .addEventListener("click", function () {
-    butonEauAuSol = document.getElementById("btnRelayEauSol");
-    butonEauAuSol.innerHTML = "Eau au sol activée";
-    butonEauAuSol.classList.remove("demarrerCycleButton");
-    butonEauAuSol.classList.add("boutonDeactivation");
-    console.log("Eau au sol activée");
-    clicSurLeBoutonEauAuSol();
-  });
-
-const clicSurLeBoutonEauAuSol = async () => {
+let getEtatRelaisEauAuSol = async () => {
   try {
     const url =
-      "http://localhost:3003/gestionRelaysRoutesFront/activerRelayEauAuSol/";
+      "http://localhost:3003/gestionRelaysRoutesFront/getEtatRelaisEauAuSol/";
 
     const options = {
       method: "GET",
@@ -89,18 +77,167 @@ const clicSurLeBoutonEauAuSol = async () => {
     }
 
     const data = await response.json();
-    console.log("⭐ DATA BRUTE | Clic sur le bouton eau au sol : ", data);
+    // console.log(
+    //   "⭐ DATA BRUTE | Récupération de l'état du relais eau au sol : ",
+    //   data
+    // );
 
-    if (response.ok) {
-      butonEauAuSol.innerHTML = "Activation";
-      butonEauAuSol.classList.add("demarrerCycleButton");
-      butonEauAuSol.classList.remove("boutonDeactivation");
+    const { etatRelayEauAuSolFront } = data;
+    etatRelayEauAuSol = etatRelayEauAuSolFront;
+    // console.log("DATA : ", { etatRelayEauAuSol });
+  } catch (error) {
+    console.error(
+      "🔴 ERROR | Erreur lors de la récupération des données :",
+      error
+    );
+    console.error("🔴 ERROR | Erreur JSON :", JSON.stringify(error));
+  }
+};
+
+getEtatRelaisEauAuSol();
+
+//? -------------------------------------------------
+
+//? Recupération de la vanne à utiliser.
+
+let vanneActivRelay;
+let ouvertureVanneRelay;
+let fermetureVanneRelay;
+
+const getVanneActive = async () => {
+  try {
+    const url = "http://localhost:3003/gestionAirRoutesFront/getVanneActive/";
+
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(
+        `🔴 ERROR | La réponse du réseau n'était pas correcte: ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    // console.log(
+    //   "⭐ DATA BRUTE | Récupération de l'état du relais eau au sol : ",
+    //   data
+    // );
+
+    const { dataVanneActive } = data;
+    vanneActivRelay = dataVanneActive.vanneActive;
+    // console.log("Vanne Active : ", { vanneActivRelay });
+
+    if (vanneActivRelay === "vanneHum") {
+      ouvertureVanneRelay = "23";
+      fermetureVanneRelay = "22";
+      console.log(
+        "✅ SUCCÈS | Gestion Relais | La vanne utilisée est = ",
+        vanneActivRelay
+      );
+    }
+
+    if (vanneActivRelay === "vanneSec") {
+      ouvertureVanneRelay = "25";
+      fermetureVanneRelay = "24";
+      console.log(
+        "✅ SUCCÈS | Gestion Relais | La vanne utilisée est = ",
+        vanneActivRelay
+      );
     }
   } catch (error) {
     console.error(
-      "🔴 ERROR | Clic sur le bouton eau au sol :",
-      JSON.stringify(error)
+      "🔴 ERROR | Erreur lors de la récupération des données :",
+      error
     );
+    console.error("🔴 ERROR | Erreur JSON :", JSON.stringify(error));
+  }
+};
+
+getVanneActive();
+
+//? --------------------------------------------------
+
+// ? Clic sur le bouton eau au sol.
+
+(async function nomDeLaFonction() {
+  await getEtatRelaisEauAuSol();
+  if (etatRelayEauAuSol === 1) {
+    const butonEauAuSol = document.getElementById("btnRelayEauSol");
+    butonEauAuSol.innerHTML = "Eau au sol activée";
+    butonEauAuSol.classList.remove("demarrerCycleButton");
+    butonEauAuSol.classList.add("boutonDeactivation");
+    console.log("??Eau au sol déjà activée");
+  }
+})();
+
+document
+  .getElementById("btnRelayEauSol")
+  .addEventListener("click", function () {
+    butonEauAuSol = document.getElementById("btnRelayEauSol");
+    butonEauAuSol.innerHTML = "Eau au sol activée";
+    butonEauAuSol.classList.remove("demarrerCycleButton");
+    butonEauAuSol.classList.add("boutonDeactivation");
+    console.log("Eau au sol activée");
+    clicSurLeBoutonEauAuSolHandle();
+  });
+
+const clicSurLeBoutonEauAuSol = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (etatRelayEauAuSol === 1) {
+        alert("ATTENTION, L'EAU AU SOL EST DÉJÀ ACTIVÉE");
+        reject(etatRelayEauAuSol);
+      }
+
+      if (etatRelayEauAuSol === 0) {
+        // console.log("butonEauAuSol === 0");
+
+        const url =
+          "http://localhost:3003/gestionRelaysRoutesFront/activerRelayEauAuSol/";
+
+        const options = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+          throw new Error(
+            `🔴 ERROR | La réponse du réseau n'était pas correcte: ${response.statusText}`
+          );
+        }
+
+        const data = await response.json();
+        // console.log("⭐ DATA BRUTE | Clic sur le bouton eau au sol : ", data);
+
+        if (response.ok) {
+          butonEauAuSol.innerHTML = "Activation";
+          butonEauAuSol.classList.add("demarrerCycleButton");
+          butonEauAuSol.classList.remove("boutonDeactivation");
+          resolve(console.log("OK"));
+        }
+      }
+    } catch (error) {
+      reject(console.log("🟠 TRY CATCH ERROR : my error :", error));
+    }
+  });
+};
+
+const clicSurLeBoutonEauAuSolHandle = async () => {
+  try {
+    await getEtatRelaisEauAuSol();
+    await clicSurLeBoutonEauAuSol();
+  } catch (err) {
+    console.log("🟠 CATCH ERROR : Résolution des promesses :", err);
   }
 };
 
@@ -168,274 +305,265 @@ document
 
 //? -------------------------------------------------
 
-// ** 🟢 GESTION DE VANNE FROID À 5 SECONDES ON 🟢
+//? Clic sur le bouton ouverture vanne pendant 5 secondes.
 
 document
   .getElementById("vanneFroid5SesoncdesOn")
   .addEventListener("click", function () {
-    let valeurEtatVanne;
-
-    fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/")
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
-        }
-        return response.json();
-      })
-      .then(function (data) {
-        valeurEtatVanne = data.dataTemperatureAir.actionRelay;
-        console.log("Valeur Etat Vanne ===> ", valeurEtatVanne);
-      })
-      .then(() => {
-        if (valeurEtatVanne == 1) {
-          getTemperatureAir();
-          alert("ATTENTION!! ACTION VANNE EN COURS");
-          return;
-        } else if (etatRelayBrute >= 100) {
-          alert("VANNE DEJA OUVERTE À 100%");
-          return;
-        } else {
-          let etatVanne = "ON";
-
-          fetch(
-            "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid5Secondes/",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                etatRelay: etatVanne,
-              }),
-            }
-          )
-            .then(function (response) {
-              if (!response.ok) {
-                throw new Error(
-                  "Network response was not ok " + response.statusText
-                );
-              }
-              return response.json();
-            })
-            .then(function (data) {
-              console.log(data);
-            })
-            .catch(function (error) {
-              console.log("Fetch error: ", error);
-            });
-        }
-      })
-      .catch(function (error) {
-        console.log("Fetch error: ", error);
-      });
-
-    setTimeout(() => {
-      getTemperatureAir();
-    }, 6000);
+    clicBoutonOuvertureVanne5SecondesOnHandle();
   });
 
-//! -------------------------------------------------
+const clicBoutonOuvertureVanne5Secondes = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (actionRelay === 1) {
+        getTemperatureAir();
+        alert("ATTENTION!! ACTION VANNE EN COURS");
+        return;
+      }
 
-// ** 🟢 GESTION DE VANNE FROID À 5 SECONDES OFF 🟢
+      if (etatRelay >= 100) {
+        getTemperatureAir();
+        alert("VANNE DEJA OUVERTE À 100%");
+        return;
+      }
+
+      const url =
+        "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid5Secondes/";
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          etatRelay: "ON",
+          ouvertureVanneRelay,
+        }),
+      };
+
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(
+          `🔴 THROWED ERROR | Gestion humidité | Clic sur le bouton ouverture vanne pendant 5 secondes : ${response.statusText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log("MESSAGE | ", data);
+      location.reload();
+      resolve();
+    } catch (error) {
+      reject(console.log("🟠 TRY CATCH ERROR : my reject :", error));
+    }
+  });
+};
+
+const clicBoutonOuvertureVanne5SecondesOnHandle = async () => {
+  try {
+    await getTemperatureAir();
+    await clicBoutonOuvertureVanne5Secondes();
+  } catch (err) {
+    console.log("🟠 CATCH ERROR : Résolution des promesses :", err);
+  }
+};
+
+//? -------------------------------------------------
+
+//? Clic sur le bouton Fermeture vanne pendant 5 secondes.
 
 document
   .getElementById("vanneFroid5SesoncdesOff")
   .addEventListener("click", function () {
-    let valeurEtatVanne;
-
-    fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/")
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
-        }
-        return response.json();
-      })
-      .then(function (data) {
-        valeurEtatVanne = data.dataTemperatureAir.actionRelay;
-        console.log("Valeur Etat Vanne ===> ", valeurEtatVanne);
-      })
-      .then(() => {
-        if (valeurEtatVanne == 1) {
-          getTemperatureAir();
-          alert("ATTENTION!! ACTION VANNE EN COURS");
-          return;
-        } else if (etatRelayBrute <= 0) {
-          alert("VANNE DEJA FERMÉE");
-          return;
-        } else {
-          let etatVanne = "OFF";
-
-          fetch(
-            "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid5Secondes/",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                etatRelay: etatVanne,
-              }),
-            }
-          )
-            .then(function (response) {
-              if (!response.ok) {
-                throw new Error(
-                  "Network response was not ok " + response.statusText
-                );
-              }
-              return response.json();
-            })
-            .then(function (data) {
-              console.log(data);
-            })
-            .catch(function (error) {
-              console.log("Fetch error: ", error);
-            });
-        }
-      })
-      .catch(function (error) {
-        console.log("Fetch error: ", error);
-      });
-
-    setTimeout(() => {
-      getTemperatureAir();
-    }, 6000);
+    clicBoutonFermetureVanne5SecondesOffHandle();
   });
 
-//! -------------------------------------------------
+const clicBoutonFermetureVanne5SecondesOff = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (actionRelay === 1) {
+        getTemperatureAir();
+        alert("ATTENTION!! ACTION VANNE EN COURS");
+        return;
+      }
 
-// ** 🟢 GESTION DE VANNE FROID À 40 SECONDES ON 🟢
+      if (etatRelay <= 0) {
+        getTemperatureAir();
+        alert("VANNE DEJA FERMÉE");
+        return;
+      }
+
+      const url =
+        "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid5Secondes/";
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          etatRelay: "OFF",
+          fermetureVanneRelay,
+        }),
+      };
+
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(
+          `🔴 THROWED ERROR | Gestion humidité | Clic sur le bouton ouverture vanne pendant 5 secondes : ${response.statusText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log("MESSAGE | ", data);
+      location.reload();
+      resolve();
+    } catch (error) {
+      reject(console.log("🟠 TRY CATCH ERROR : my reject :", error));
+    }
+  });
+};
+
+const clicBoutonFermetureVanne5SecondesOffHandle = async () => {
+  try {
+    await getTemperatureAir();
+    await clicBoutonFermetureVanne5SecondesOff();
+  } catch (err) {
+    console.log("🟠 CATCH ERROR : Résolution des promesses :", err);
+  }
+};
+
+//? -------------------------------------------------
+
+//? Clic sur le bouton ouverture vanne pendant 40 secondes.
 
 document
   .getElementById("vanneFroid40SesoncdesOn")
   .addEventListener("click", function () {
-    let valeurEtatVanne;
-
-    fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/")
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
-        }
-        return response.json();
-      })
-      .then(function (data) {
-        valeurEtatVanne = data.dataTemperatureAir.actionRelay;
-        console.log("Valeur Etat Vanne ===> ", valeurEtatVanne);
-      })
-      .then(() => {
-        if (valeurEtatVanne == 1) {
-          getTemperatureAir();
-          alert("ATTENTION!! ACTION VANNE EN COURS");
-          return;
-        } else if (etatRelayBrute >= 100) {
-          alert("VANNE DEJA OUVERTE À 100%");
-          return;
-        } else {
-          let etatVanne = "ON";
-
-          fetch(
-            "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid40Secondes/",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                etatRelay: etatVanne,
-              }),
-            }
-          )
-            .then(function (response) {
-              if (!response.ok) {
-                throw new Error(
-                  "Network response was not ok " + response.statusText
-                );
-              }
-              return response.json();
-            })
-            .then(function (data) {
-              console.log(data);
-            })
-            .catch(function (error) {
-              console.log("Fetch error: ", error);
-            });
-        }
-      })
-      .catch(function (error) {
-        console.log("Fetch error: ", error);
-      });
-
-    setTimeout(() => {
-      getTemperatureAir();
-    }, 6000);
+    clicBoutonOuvertureVanne40SecondesOnHandle();
   });
 
-//! -------------------------------------------------
+const clicBoutonOuvertureVanne40SecondesOn = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (actionRelay === 1) {
+        getTemperatureAir();
+        alert("ATTENTION!! ACTION VANNE EN COURS");
+        return;
+      }
 
-// ** 🟢 GESTION DE VANNE FROID À 40 SECONDES OFF 🟢
+      if (etatRelay >= 100) {
+        getTemperatureAir();
+        alert("VANNE DEJA OUVERTE À 100%");
+        return;
+      }
+
+      const url =
+        "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid40Secondes/";
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          etatRelay: "ON",
+          ouvertureVanneRelay,
+        }),
+      };
+
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(
+          `🔴 THROWED ERROR | Gestion humidité | Clic sur le bouton ouverture vanne pendant 5 secondes : ${response.statusText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log("MESSAGE | ", data);
+      location.reload();
+      resolve();
+    } catch (error) {
+      reject(console.log("🟠 TRY CATCH ERROR : my reject :", error));
+    }
+  });
+};
+
+const clicBoutonOuvertureVanne40SecondesOnHandle = async () => {
+  try {
+    await getTemperatureAir();
+    await clicBoutonOuvertureVanne40SecondesOn();
+  } catch (err) {
+    console.log("🟠 CATCH ERROR : Résolution des promesses :", err);
+  }
+};
+
+//? -------------------------------------------------
+
+//? Clic sur le bouton Fermeture vanne pendant 40 secondes.
 
 document
   .getElementById("vanneFroid40SesoncdesOff")
   .addEventListener("click", function () {
-    let valeurEtatVanne;
-
-    fetch("http://localhost:3003/gestionAirRoutesFront/getTemperatureAir/")
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
-        }
-        return response.json();
-      })
-      .then(function (data) {
-        valeurEtatVanne = data.dataTemperatureAir.actionRelay;
-        console.log("Valeur Etat Vanne ===> ", valeurEtatVanne);
-      })
-      .then(() => {
-        if (valeurEtatVanne == 1) {
-          getTemperatureAir();
-          alert("ATTENTION!! ACTION VANNE EN COURS");
-          return;
-        } else if (etatRelayBrute <= 0) {
-          alert("VANNE DEJA FERMÉE");
-          return;
-        } else {
-          let etatVanne = "OFF";
-
-          fetch(
-            "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid40Secondes/",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                etatRelay: etatVanne,
-              }),
-            }
-          )
-            .then(function (response) {
-              if (!response.ok) {
-                throw new Error(
-                  "Network response was not ok " + response.statusText
-                );
-              }
-              return response.json();
-            })
-            .then(function (data) {
-              console.log(data);
-            })
-            .catch(function (error) {
-              console.log("Fetch error: ", error);
-            });
-        }
-      })
-      .catch(function (error) {
-        console.log("Fetch error: ", error);
-      });
-
-    setTimeout(() => {
-      getTemperatureAir();
-    }, 6000);
+    clicBoutonFermetureVanne40SecondesOffHandle();
   });
 
-//! -------------------------------------------------
+const clicBoutonFermetureVanne40SecondesOff = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (actionRelay == 1) {
+        getTemperatureAir();
+        alert("ATTENTION!! ACTION VANNE EN COURS");
+        return;
+      }
+
+      if (etatRelay <= 0) {
+        getTemperatureAir();
+        alert("VANNE DEJA FERMÉE");
+        return;
+      }
+      const url =
+        "http://localhost:3003/gestionRelaysRoutesFront/relayVanneFroid40Secondes/";
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          etatRelay: "OFF",
+          fermetureVanneRelay,
+        }),
+      };
+
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(
+          `🔴 THROWED ERROR | Gestion humidité | Clic sur le bouton ouverture vanne pendant 5 secondes : ${response.statusText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log("MESSAGE | ", data);
+      location.reload();
+      resolve();
+    } catch (error) {
+      reject(console.log("🟠 TRY CATCH ERROR : my reject :", error));
+    }
+  });
+};
+
+const clicBoutonFermetureVanne40SecondesOffHandle = async () => {
+  try {
+    await getTemperatureAir();
+    await clicBoutonFermetureVanne40SecondesOff();
+  } catch (err) {
+    console.log("🟠 CATCH ERROR : Résolution des promesses :", err);
+  }
+};
+
+//? -------------------------------------------------

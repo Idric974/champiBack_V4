@@ -8,7 +8,7 @@ const relayEauAuSol = db.gestionEtatBoutonRelayEauAuSol;
 
 //! Functions.
 
-//? Activation du relais Gestion Air.
+//? Activation du relais.
 
 let pinAActiver;
 
@@ -28,7 +28,7 @@ const gpioActionOn = async () => {
   }
 };
 
-//? Déactivation du relais Gestion Air.
+//? Déactivation du relais.
 
 const gpioActionOff = async () => {
   try {
@@ -47,6 +47,8 @@ const gpioActionOff = async () => {
 };
 
 //? Mise à jour etat Relay.
+
+let etatRelay;
 
 miseAjourEtatRelay = () => {
   gestionAirModels
@@ -72,7 +74,7 @@ miseAjourEtatRelay = () => {
 
 //? -------------------------------------------------
 
-//? Mise à jour etat Relay.
+//? Mise à jour Action Relay.
 
 miseAjourActionRelay = () => {
   gestionAirModels
@@ -117,7 +119,7 @@ recuperationEtatRlay = () => {
           where: { id: id.maxid },
         })
         .then((result) => {
-          valEtatRelay = result["etatRelay"];
+          valEtatRelay = result.etatRelay;
 
           // console.log('valEtatRelay : ' + valEtatRelay);
           // console.log('valEtatRelay : ' + typeof valEtatRelay);
@@ -159,8 +161,11 @@ miseAjourEtatRelayEauAuSol = () => {
 
 let etatRelayEauAuSol;
 const relayBoutonEauAuSol = db.gestionEtatBoutonRelayEauAuSol;
+let valPinAActiver = 16;
 
 exports.activerRelayEauAuSol = (req, res) => {
+  console.log("ROUTE OK");
+
   //? Les promesses.
 
   let getEtatRelayEauAuSol = () => {
@@ -207,7 +212,7 @@ exports.activerRelayEauAuSol = (req, res) => {
         if (etatRelayEauAuSol === 0) {
           //
 
-          gpioActionOn((pinAActiver = 16));
+          gpioActionOn((pinAActiver = valPinAActiver));
 
           console.log(
             "✅ SUCCÈS | Gestions relais au sol | Eau au sol activée"
@@ -236,7 +241,7 @@ exports.activerRelayEauAuSol = (req, res) => {
             });
 
           setTimeout(() => {
-            gpioActionOff((pinAActiver = 16));
+            gpioActionOff((pinAActiver = valPinAActiver));
 
             //* Mise à jour de la base de donnée.
 
@@ -269,7 +274,7 @@ exports.activerRelayEauAuSol = (req, res) => {
             resolve();
 
             //*-------------------------------------
-          }, 120000);
+          }, 5000);
         }
 
         if (etatRelayEauAuSol === 1) {
@@ -319,8 +324,8 @@ exports.activerRelayEauAuSol = (req, res) => {
 
   let handleMyPromise = async () => {
     try {
-      await getEtatRelayEauAuSol();
-      await activationDeactivationBoutonRelayEauAuSol();
+      // await getEtatRelayEauAuSol();
+      // await activationDeactivationBoutonRelayEauAuSol();
     } catch (err) {
       console.log("err :", err);
     }
@@ -328,6 +333,8 @@ exports.activerRelayEauAuSol = (req, res) => {
 
   handleMyPromise();
 };
+
+//? -------------------------------------------------
 
 //? Gestion relay Ventilateur humidité.
 
@@ -349,11 +356,11 @@ exports.relayVentilo = (req, res) => {
 
 //? Gestion relay Vanne Froid à 5 secondes.
 
-exports.relayVanneFroid5Secondes = (req, res, next) => {
-  //
+exports.relayVanneFroid5Secondes = (req, res) => {
   let relayVanneFroid = req.body.etatRelay;
+  console.log("relayVanneFroid ====> ", relayVanneFroid);
 
-  if (relayVanneFroid == "ON") {
+  if (relayVanneFroid === "ON") {
     actionRelay = 1;
     miseAjourActionRelay();
     recuperationEtatRlay();
@@ -376,14 +383,14 @@ exports.relayVanneFroid5Secondes = (req, res, next) => {
     }, 5000);
   }
 
-  if (relayVanneFroid == "OFF") {
+  if (relayVanneFroid === "OFF") {
     actionRelay = 1;
     miseAjourActionRelay();
     recuperationEtatRlay();
     gpioActionOn((pinAActiver = 22));
 
     setTimeout(() => {
-      gpioActionOn((pinAActiver = 22));
+      gpioActionOff((pinAActiver = 22));
 
       if (valEtatRelay <= 0) {
         etatRelay = 0;
@@ -435,7 +442,7 @@ exports.relayVanneFroid40Secondes = (req, res, next) => {
     gpioActionOn((pinAActiver = 22));
 
     setTimeout(() => {
-      gpioActionOn((pinAActiver = 22));
+      gpioActionOff((pinAActiver = 22));
 
       if (valEtatRelay <= 0) {
         etatRelay = 0;

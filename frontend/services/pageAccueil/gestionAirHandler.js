@@ -25,6 +25,9 @@ const getTemperatureAir = async () => {
     const data = await response.json();
 
     const { dataTemperatureAir } = data;
+    //console.log("dataTemperatureAir :", dataTemperatureAir);
+
+    //* Affichage de la température de l'air.
 
     temperatureAir = dataTemperatureAir.temperatureAir;
     localStorage.setItem("gestionAir ==> Température Air:", temperatureAir);
@@ -35,6 +38,8 @@ const getTemperatureAir = async () => {
 
     document.getElementById("temperatureAir").innerHTML =
       temperatureAirLocalStorage + " °C";
+
+    //* -------------------------------------------
   } catch (error) {
     console.log(error);
     console.log(JSON.stringify(error));
@@ -66,22 +71,23 @@ let getDataAir = async () => {
     .then((response) => response.json())
     .then((data) => {
       //* Consigne Air.
+
       // console.log("DATA BRUTE : Consigne Air =>", data);
 
       consigneAir = data.datatemperatureAir.consigneAir;
-      // console.log("ðŸ‘‰ consigneAir =>", consigneAir);
-      localStorage.setItem("gestionAir ==> Consigne :", consigneAir);
+      localStorage.setItem("Gestion Air | Consigne affichee", consigneAir);
 
       consigneAirLocalStorage = localStorage.getItem(
-        "gestionAir ==> Consigne :"
+        "Gestion Air | Consigne affichee"
       );
 
       document.getElementById("consigneAir").innerHTML =
         consigneAirLocalStorage + "°C";
 
       //* Affichage historique Consigne.
+
       getDernierConsigneAirEntree = localStorage.getItem(
-        "gestionAir ==> Dernier consigne:"
+        "Gestion Air | Dernier Consigne"
       );
 
       document.getElementById("dernierConsigneAirEntree").innerHTML =
@@ -90,6 +96,7 @@ let getDataAir = async () => {
       //* -------------------------------------------------
 
       //* Affichage historique Pas.
+
       getdernierPasAirEntree = localStorage.getItem(
         "Gestion Air | Dernier Pas"
       );
@@ -361,7 +368,7 @@ document
         .then((data) => {
           console.log("Post Consigne Temperature Air : ", data);
           localStorage.setItem(
-            "gestionAir ==> Dernier consigne:",
+            "Gestion Air | Dernier Consigne",
             consigneAirForm
           );
         })
