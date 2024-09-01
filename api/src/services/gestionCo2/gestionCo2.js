@@ -38,10 +38,9 @@ const switchEntreDeveloppementEtProduction = () => {
 // let tauxCo2 = parseInt(data.split("\\")[0], 10);
 // console.log("tauxCo2 : ", tauxCo2);
 // console.log("tauxCo2 typeof: ", typeof tauxCo2);
-
+let data = "";
 const demandeDeMesureMaster = () => {
   return new Promise((resolve, reject) => {
-    let data = "";
     try {
       http
         .get(masterURL, (resp) => {
@@ -55,7 +54,8 @@ const demandeDeMesureMaster = () => {
 
           resp.on("end", () => {
             try {
-              tauxCo2 = parseInt(data.split("\\")[0], 10);
+              tauxCo2 = parseInt(data, 10);
+
               console.log(
                 "✅ SUCCÈS | Gestion CO2 1 Demande de mesure à la master | RESP.ON END : ",
                 tauxCo2
