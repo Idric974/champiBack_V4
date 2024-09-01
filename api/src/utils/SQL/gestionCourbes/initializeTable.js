@@ -5,7 +5,12 @@ const mysql = require("mysql");
 const tableName = "gestion_courbes";
 
 const data = {
-  dateDemarrageCycle: new Date(),
+  tauxCo2: 1005,
+  deltaCo2: 500,
+  daysCo2: new Date(),
+  heuresCo2: new Date(),
+  consigne: 1000,
+  valeurAxeX: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

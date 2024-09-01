@@ -3,19 +3,19 @@ const mysql = require("mysql");
 
 //? Table Gestion air.
 
-// const tableName = "gestion_co2s";
+const tableName = "gestion_co2s";
 
-// const data = {
-//   tauxCo2: 0,
-//   deltaAir: 0,
-//   daysCo2: 0,
-//   heuresCo2: 0,
-//   consigne: 0,
-//   valeurAxeX: 0,
-//   jourDuCycle: 0,
-//   createdAt: new Date(),
-//   updatedAt: new Date(),
-// };
+const data = {
+  tauxCo2: 0,
+  deltaCo2: 0,
+  daysCo2: 0,
+  heuresCo2: 0,
+  consigne: 0,
+  valeurAxeX: 0,
+  jourDuCycle: 0,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
 
 //? -------------------------------------------------
 

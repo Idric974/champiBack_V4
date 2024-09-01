@@ -5,6 +5,7 @@ const sequelize = require("sequelize");
 const db = require("../../models");
 const gestionCo2Models = db.gestionCo2;
 const gestionCo2DataModels = db.gestionCo2Data;
+const gestionCourbesModels = db.gestionCourbes;
 const numSalle = require("../../utils/numSalle/configNumSalle");
 
 //? Switch entre le mode développement et le mode production.
@@ -33,7 +34,10 @@ const switchEntreDeveloppementEtProduction = () => {
 
 //? Demande de mesure à la master.
 
-let tauxCo2;
+// let data = "1002\n";
+// let tauxCo2 = parseInt(data.split("\\")[0], 10);
+// console.log("tauxCo2 : ", tauxCo2);
+// console.log("tauxCo2 typeof: ", typeof tauxCo2);
 
 const demandeDeMesureMaster = () => {
   return new Promise((resolve, reject) => {
@@ -118,6 +122,7 @@ const recuperationDeLaConsigneCo2 = () => {
 
               consigneCo2 = result.consigneCo2;
               // console.log("La consigne est : ", consigneCo2);
+              // console.log("La consigne est typeof : ", typeof consigneCo2);
 
               pasCo2 = result.pasCo2;
               // console.log("Pas :      ", pasCo2);
@@ -148,10 +153,10 @@ let deltaCo2;
 const calculeDuDeltaCo2 = () => {
   return new Promise((resolve, reject) => {
     try {
-      if (typeof tauxCo2 !== "number" || typeof consigne !== "number") {
+      if (typeof tauxCo2 !== "number" || typeof consigneCo2 !== "number") {
         console.error("Erreur : tauxCo2 ou consigne ne sont pas des nombres.");
       } else {
-        deltaCo2 = tauxCo2 - consigne;
+        deltaCo2 = tauxCo2 - consigneCo2;
         resolve(console.log("deltaCo2 :", deltaCo2));
       }
     } catch (error) {
@@ -172,66 +177,55 @@ let heureMinute;
 let valeurAxeX;
 
 let constructionDeLaValeurDeLaxeX = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      gestionCo2Models
-        .findOne({
-          attributes: [[sequelize.fn("max", sequelize.col("id")), "maxid"]],
-          raw: true,
-        })
-        .then((id) => {
-          if (!id) {
-            throw new Error("No max ID found");
-          }
+      const id = await gestionCourbesModels.findOne({
+        attributes: [[sequelize.fn("max", sequelize.col("id")), "maxid"]],
+        raw: true,
+      });
 
-          return gestionCo2Models.findOne({
-            where: { id: id.maxid },
-          });
-        })
-        .then((result) => {
-          if (!result) {
-            throw new Error("No record found with max ID");
-          }
+      if (!id) {
+        throw new Error("No max ID found");
+      }
 
-          dateDemarrageCycle = new Date(result.dateDemarrageCycle);
+      const result = await gestionCourbesModels.findOne({
+        where: { id: id.maxid },
+      });
 
-          console.log(
-            "✅ SUCCÈS | Gestion Co2 2 | Date de démarrage du cycle :",
-            dateDemarrageCycle
-          );
+      if (!result) {
+        throw new Error("No record found with max ID");
+      }
 
-          const nbJourBrut =
-            new Date().getTime() - dateDemarrageCycle.getTime();
-          jourDuCycle = Math.round(nbJourBrut / (1000 * 3600 * 24)) + 1;
-          heureDuCycle = new Date().getHours();
-          minuteDuCycle = new Date().getMinutes();
+      dateDemarrageCycle = new Date(result.dateDemarrageCycle);
 
-          if (minuteDuCycle < 10) {
-            minuteDuCycle = `0${minuteDuCycle}`;
-          }
-
-          heureMinute = `${heureDuCycle}h${minuteDuCycle}`;
-          valeurAxeX = `Jour ${jourDuCycle} - ${heureMinute}`;
-
-          console.log(
-            "✅ SUCCÈS | Gestion Co2 3 | Construction de la valeur de l'axe X : ",
-            valeurAxeX
-          );
-
-          resolve(valeurAxeX);
-        })
-        .catch((error) => {
-          console.log(
-            "🔴 ERROR | Gestion Co2 | Construction de la valeur de l'axe X",
-            error
-          );
-          reject(error);
-        });
-    } catch (error) {
       console.log(
-        "🔴 ERROR | Gestion Co2 | Construction de la valeur de l'axe X",
+        "✅ SUCCÈS | Gestion Air | Date de démarrage du cycle = ",
+        dateDemarrageCycle
+      );
+
+      nbJourBrut = new Date().getTime() - dateDemarrageCycle.getTime();
+      jourDuCycle = Math.round(nbJourBrut / (1000 * 3600 * 24)) + 1;
+      heureDuCycle = new Date().getHours();
+      minuteDuCycle = new Date().getMinutes();
+      if (minuteDuCycle < 10) {
+        minuteDuCycle = `0${minuteDuCycle}`;
+      }
+      heureMinute = `${heureDuCycle}h${minuteDuCycle}`;
+
+      valeurAxeX = `Jour ${jourDuCycle} - ${heureMinute}`;
+      console.log(
+        "✅ SUCCÈS | Gestion Air | Construction de la valeur de l'axe X = ",
+        valeurAxeX
+      );
+
+      resolve(valeurAxeX);
+    } catch (error) {
+      console.error(
+        "❌ %c ERREUR ==> gestions Air ==> Construction de la valeur de l'axe X",
+        "color: orange",
         error
       );
+
       reject(error);
     }
   });
@@ -245,30 +239,26 @@ const enregistrementEnBaseDeDonnes = () => {
   return new Promise((resolve, reject) => {
     gestionCo2Models
       .create({
-        tauxCo2: tauxCo2,
-        deltaCo2: deltaCo2,
-        daysCo2: daysCo2,
-        heuresCo2: heuresCo2,
-        consigne: consigneCo2,
-        valeurAxeX: valeurAxeX,
-        jourDuCycle: jourDuCycle,
+        tauxCo2,
+        deltaCo2,
+        consigneCo2,
+        valeurAxeX,
+        jourDuCycle,
       })
       .then(() => {
-        console.log("Données transférées à la base de données gestion_co2s.");
+        console.log(
+          "🟢 Données transférées à la base de données gestion_co2s."
+        );
+        resolve();
       })
       .catch((error) => {
-        console.log(
-          cyan,
-          "[ GESTION CO2 CALCULES  ] Erreur dans le processus d’enregistrement dans la base gestion_co2s",
-          error
+        console.error(
+          "Erreur dans le processus d’enregistrement dans la base gestion_co2s :",
+          error.message
         );
+        console.error(error.stack);
+        reject(error);
       });
-
-    try {
-      resolve(console.log("🟢 SUCCESS : my resolve"));
-    } catch (error) {
-      reject(console.log("🟠 TRY CATCH ERROR : my reject :", error));
-    }
   });
 };
 
@@ -283,6 +273,7 @@ const enregistrementEnBaseDeDonnes = () => {
     await calculeDuDeltaCo2();
     await constructionDeLaValeurDeLaxeX();
     await enregistrementEnBaseDeDonnes();
+    console.log("TEST 4");
   } catch (error) {
     console.error(
       "🟠 Erreur dans le processus d'exécution du script gestion Co2",
