@@ -56,10 +56,16 @@ const demandeDeMesureMaster = () => {
 
           resp.on("end", () => {
             try {
-              tauxCo2 = parseInt(data, 10);
+              console.log("Data ==>", data);
+              let array = data.split("\n");
+              let stringValue = array[0];
+              tauxCo2 = parseInt(
+                stringValue.replace(/["\n\\]/g, "").trim(),
+                10
+              );
 
               console.log(
-                "✅ SUCCÈS | Gestion CO2 1 Demande de mesure à la master | RESP.ON END : ",
+                "✅ SUCCÈS | Gestion CO2 2 Demande de mesure à la master | RESP.ON END : ",
                 tauxCo2
               );
 
