@@ -50,6 +50,8 @@ const demandeDeMesureMaster = () => {
               "✅ SUCCÈS | Gestion CO2 1 Demande de mesure à la master | RESP.ON DATA : ",
               data
             );
+
+            console.log("data ====> ", typeof data);
           });
 
           resp.on("end", () => {

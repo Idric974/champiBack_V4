@@ -1,11 +1,4 @@
-const myPromise = () => {
-  return new Promise((resolve, reject) => {
-    try {
-      console.log("Test myPromise OK");
-      resolve(console.log("🟢 SUCCESS : my resolve"));
-    } catch (error) {
-      console.log("🟠 TRY CATCH ERROR : my error :", error);
-      reject(console.log("🟠 TRY CATCH ERROR : my reject :", error));
-    }
-  });
-};
+let data = "988\n";
+
+let tauxCo2 = parseInt(data, 10);
+console.log("tauxCo2 : ", tauxCo2);
