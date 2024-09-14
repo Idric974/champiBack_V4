@@ -197,7 +197,7 @@ exports.getEtatRelaisEauAuSol = (req, res) => {
 
 let etatRelayEauAuSol;
 const relayBoutonEauAuSol = db.gestionEtatBoutonRelayEauAuSol;
-let valeurPinEauAuSol = 22;
+let valeurPinEauAuSol = 16;
 
 exports.activerRelayEauAuSol = (req, res) => {
   //? Les promesses.
