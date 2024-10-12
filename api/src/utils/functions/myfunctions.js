@@ -109,16 +109,16 @@ const numSalle = require("../../utils/numSalle/configNumSalle");
 
 const sendSMS = (temperatureDuMessage) => {
   console.log("temperatureDuMessage :", temperatureDuMessage);
-  let url;
+  let masterURL;
 
   if (process.env.CHAMPIBACK_STATUS === "developpement") {
     masterURL = "http://192.168.0.10:5000/getCO2/" + numSalle;
-    resolve(console.log("MODE DÉVELOPPEMENT ACTIF"));
+    console.log("MODE DÉVELOPPEMENT ACTIF");
   }
 
   if (process.env.CHAMPIBACK_STATUS === "production") {
-    masterURL = "http://192.168.1.10:5000/api/postSms/postSms" + numSalle;
-    resolve(console.log("MODE PRODUCTION ACTIF"));
+    masterURL = "http://192.168.0.10:5000/api/postSms/postSms" + numSalle;
+    console.log("MODE PRODUCTION ACTIF");
   }
 
   let date1 = new Date();
@@ -135,7 +135,7 @@ const sendSMS = (temperatureDuMessage) => {
 
   let message = `ALERTE : Salle ${numSalle} | ${temperatureDuMessage} | ${dateLocale}`;
 
-  fetch(url, {
+  fetch(masterURL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

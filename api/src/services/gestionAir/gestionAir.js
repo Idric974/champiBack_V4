@@ -477,20 +477,34 @@ let duree2Seconde = 2000;
 let duree5Seconde = 5000;
 let duree15Seconde = 15000;
 
+//* Test.
+// let delta = 3; //* Condition 1 :  Le delta est supérieur ou égale à 3.
+// let delta = 2.9; //* Condition 2 :  Le delta est supérieur à 1.5 °C et inférieur à 3 °C.
+// let delta = 1.4; //* Condition 3 :  Le delta est supérieur à 1°C et inférieur ou égale à 1.5°C.
+// let delta = 0.9; //* Condition 4 :  Le delta est supérieur à 0.5°C et inférieur ou égale à 1°C.
+// let delta = 0.5; //* Condition 5 :  Le delta est supérieur à 0.3°C et inférieur ou égale à 0.5°C.
+// let delta = 0.3; //* Condition 6 :  Le delta est supérieur ou égale à -0.3°C et inférieur ou égale à 0.3°C.
+// let delta = -0.4; //* Condition 7 :  Le delta est inférieur à -0.3°C et suppérieur ou égale à -0.5°C.
+// let delta = -1; //* Condition 8 :  Le delta est inférieur à -0.5°C et suppérieur ou égale à -1°C.
+// let delta = -1.5; //* Condition 9 :  Le delta est inférieur à -1°C et suppérieur ou égale à -1.5°C.
+// let delta = -1.6; //* Condition 10 : Le delta est inférieur à -1.5°C et suppérieur à -3°C.
+// let delta = 0.6; //* Condition 11 : Le delta est inférieur ou égaale à -3°C.
+//* -------------------------------------------------
+
 let definitionDesActions = () => {
   return new Promise((resolve, reject) => {
     try {
-      //
+      //* Condition 1 ! Le delta est supérieur ou égale à 3.
 
       if (delta >= 3) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | ALERTEle delta est supérieur à 3°C."
+          "❗❗ ALERTE | Gestion Air | ALERTE le delta est supérieur à 3°C."
         );
 
-        // sendSMS("Attention : le delta est supérieur à 3°C");
+        sendSMS("Attention : le delta est supérieur à 3°C");
 
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
+          "🖐  MESSAGE | Condition 1 | Gestion Air | Le delta est suppérieur ou égale à 3 | Action = Ouverture vanne pendant : " +
             duree15Seconde +
             " secondes"
         );
@@ -508,16 +522,15 @@ let definitionDesActions = () => {
         setTimeout(() => {
           gpioActionOff(ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
-          resolve(etatRelay, (actionRelay = 0));
+          resolve();
         }, duree15Seconde);
+      }
 
-        //?-----------------------------------------
-        //
-      } else if (delta > 1.5 && delta < 3) {
-        //
+      //* Condition 2 : Le delta est supérieur à 1.5 °C et inférieur à 3 °C.
 
+      if (delta > 1.5 && delta < 3) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta > 1.5° < 3° | Action = Ouverture vanne pendant : " +
+          "🖐  MESSAGE | Condition 2 | Gestion Air | Le delta est supérieur à 1.5°C et inférieur à 3°C | Action = Ouverture vanne pendant : " +
             duree15Seconde +
             " secondes"
         );
@@ -535,16 +548,15 @@ let definitionDesActions = () => {
         setTimeout(() => {
           gpioActionOff(ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
-          resolve(etatRelay, (actionRelay = 0));
+          resolve();
         }, duree15Seconde);
+      }
 
-        //?-----------------------------------------
-        //
-      } else if (delta > 1 && delta <= 1.5) {
-        //
+      //* Condition 3 : Le delta est supérieur à 1°C et inférieur ou égale à 1.5°C.
 
+      if (delta > 1 && delta <= 1.5) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
+          "🖐  MESSAGE | Condition 3 | Gestion Air | Le delta est supérieur à 1°C et inférieur ou égale à 1.5°C | Action = Ouverture vanne pendant : " +
             duree5Seconde +
             " secondes"
         );
@@ -562,16 +574,15 @@ let definitionDesActions = () => {
         setTimeout(() => {
           gpioActionOff(ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
-          resolve(etatRelay, (actionRelay = 0));
+          resolve();
         }, duree5Seconde);
+      }
 
-        //?-----------------------------------------
-        //
-      } else if (delta > 0.5 && delta <= 1) {
-        //
+      //* Condition 4 : Le delta est supérieur à 0.5°C et inférieur ou égale à 1°C.
 
+      if (delta > 0.5 && delta <= 1) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
+          "🖐  MESSAGE | Condition 4 | Gestion Air | Le delta est supérieur à 0.5°C et inférieur ou égale à 1°C | Action = Ouverture vanne pendant : " +
             duree2Seconde +
             " secondes"
         );
@@ -589,16 +600,15 @@ let definitionDesActions = () => {
         setTimeout(() => {
           gpioActionOff(ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
-          resolve(etatRelay, (actionRelay = 0));
+          resolve();
         }, duree2Seconde);
+      }
 
-        //?-----------------------------------------
-        //
-      } else if (delta > 0.3 && delta <= 0.5) {
-        //
+      //* Condition 5 : Le delta est supérieur à 0.3°C et inférieur ou égale à 0.5°C.
 
+      if (delta > 0.3 && delta <= 0.5) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Ouverture vanne pendant : " +
+          "🖐  MESSAGE | Condition 5 | Gestion Air | Le delta est supérieur à 0.3°C et inférieur ou égale à 0.5°C | Action = Ouverture vanne pendant : " +
             duree1Seconde +
             " secondes"
         );
@@ -616,31 +626,29 @@ let definitionDesActions = () => {
         setTimeout(() => {
           gpioActionOff(ouvertureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
-          resolve(etatRelay, (actionRelay = 0));
+          resolve();
         }, duree1Seconde);
+      }
 
-        //?-----------------------------------------
-        //
-      } else if (delta >= -0.3 && delta <= 0.3) {
-        //
+      //! -------------------------------------------
+      //* Condition 6 : Le delta est supérieur ou égale à -0.3°C et inférieur ou égale à 0.3°C donc pas d'action car interval entre -0.3 et 0.3.
 
-        //! Pas d'action car interval entre -0.3 et 0.3"
-
+      if (delta >= -0.3 && delta <= 0.3) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Pas d'action"
+          "🖐  MESSAGE | Condition 6 | Gestion Air | Delta >= 3° | Action = Pas d'action"
         );
 
         etatRelay = etatVanneBDD;
         miseAjourEtatRelay(etatRelay, (actionRelay = 0));
-        resolve(etatRelay, (actionRelay = 0));
+        resolve();
+      }
+      //! -------------------------------------------
 
-        //!-----------------------------------------
-        //
-      } else if (delta < -0.3 && delta >= -0.5) {
-        //
+      //* Condition 7 : Le delta est inférieur à -0.3°C et suppérieur ou égale à -0.5°C.
 
+      if (delta < -0.3 && delta >= -0.5) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
+          "🖐  MESSAGE | Condition 7 | Gestion Air | Le delta est inférieur à -0.3°C et suppérieur ou égale à -0.5°C | Action = Fermuture vanne pendant : " +
             duree1Seconde +
             " secondes"
         );
@@ -660,13 +668,14 @@ let definitionDesActions = () => {
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve();
         }, duree1Seconde);
+      }
 
-        //? -----------------------------------------------
-        //
-      } else if (delta < -0.5 && delta >= -1) {
+      //* Condition 8 : Le delta est inférieur à -0.5°C et suppérieur ou égale à -1°C.
+
+      if (delta < -0.5 && delta >= -1.4) {
         //
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
+          "🖐  MESSAGE | Condition 8 | Gestion Air | Le delta est inférieur à -0.5°C et suppérieur ou égale à -1°C | Action = Fermuture vanne pendant : " +
             duree5Seconde +
             " secondes"
         );
@@ -686,14 +695,13 @@ let definitionDesActions = () => {
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve();
         }, duree5Seconde);
+      }
 
-        //? -----------------------------------------------
-        //
-      } else if (delta < -1 && delta >= -1.5) {
-        //
+      //* Condition 9 : Le delta est inférieur à -1°C et suppérieur ou égale à -1.5°C.
 
+      if (delta < -1 && delta >= -1.5) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
+          "🖐  MESSAGE | Condition 9 | Gestion Air | Le delta est inférieur à -1°C et suppérieur ou égale à -1.5°C | Action = Fermuture vanne pendant : " +
             duree5Seconde +
             " secondes"
         );
@@ -713,14 +721,13 @@ let definitionDesActions = () => {
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve();
         }, duree5Seconde);
+      }
 
-        //? -----------------------------------------------
-        //
-      } else if (delta < -1.5 && delta > -3) {
-        //
+      //* Condition 10 : Le delta est inférieur à -1.5°C et suppérieur à -3°C.
 
+      if (delta < -1.5 && delta > -3) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
+          "🖐  MESSAGE | Condition 10 | Gestion Air | Delta >= 3° | Action = Fermuture vanne pendant : " +
             duree15Seconde +
             " secondes"
         );
@@ -740,18 +747,19 @@ let definitionDesActions = () => {
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve();
         }, duree15Seconde);
+      }
 
-        //? -----------------------------------------------
-        //
-      } else if (delta <= -3) {
+      //* Condition 11 : Le delta est inférieur ou égaale à -3°C.
+
+      if (delta <= -3) {
         console.log(
-          "✅ SUCCÈS | Gestion Air | !!!! ALERTE !!!! le delta est inférieur à -3°C."
+          "❗❗ ALERTE | Gestion Air | ALERTE le delta est inférieur à -3°C."
         );
 
-        // sendSMS("Attention : le delta est inférieur à -3°C");
+        sendSMS("Attention : le delta est inférieur à -3°C");
 
         console.log(
-          "✅ SUCCÈS | Gestion Air | Delta <= -3° | Action = Fermuture vanne pendant : " +
+          "🖐  MESSAGE | Condition 11 | Gestion Air | Le delta est inférieur ou égaale à -3°C | Action = Fermuture vanne pendant : " +
             duree15Seconde +
             " secondes"
         );
@@ -769,11 +777,8 @@ let definitionDesActions = () => {
         setTimeout(() => {
           gpioActionOff(fermetureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
-          resolve(etatRelay, (actionRelay = 0));
+          resolve();
         }, duree15Seconde);
-
-        //? -----------------------------------------------
-        //
       }
     } catch (error) {
       console.log("🔴 Définition des actions :", error);
