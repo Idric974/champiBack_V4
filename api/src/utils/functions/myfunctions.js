@@ -108,16 +108,19 @@ const gpioActionOff = async (pin) => {
 const numSalle = require("../../utils/numSalle/configNumSalle");
 
 const sendSMS = (temperatureDuMessage) => {
-  console.log("temperatureDuMessage :", temperatureDuMessage);
+  console.log(
+    `❤️ temperatureDuMessage :" ${temperatureDuMessage} + numSalle ${numSalle}`
+  );
+
   let masterURL;
 
   if (process.env.CHAMPIBACK_STATUS === "developpement") {
-    masterURL = "http://192.168.0.10:5000/getCO2/" + numSalle;
+    masterURL = `http://192.168.1.11:4000/api/postSms/postSms`;
     console.log("MODE DÉVELOPPEMENT ACTIF");
   }
 
   if (process.env.CHAMPIBACK_STATUS === "production") {
-    masterURL = "http://192.168.0.10:5000/api/postSms/postSms" + numSalle;
+    masterURL = `http://192.168.0.10:5000/api/postSms/postSms`;
     console.log("MODE PRODUCTION ACTIF");
   }
 
@@ -142,7 +145,13 @@ const sendSMS = (temperatureDuMessage) => {
     },
     body: JSON.stringify({ message }),
   })
-    .then((response) => response.json())
+    .then((response) => {
+      // Vérifiez d'abord si le contenu est JSON
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP! statut : ${response.status}`);
+      }
+      return response.json();
+    })
     .then((data) => {
       console.log("Reponse de SMS808 : ", data);
     })

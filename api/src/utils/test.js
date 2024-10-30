@@ -1,116 +1,53 @@
-let ouvertureVanne;
-let fermetureVanne;
+//? Envoyer un SMS d’alerte.
 
-//? Action après le calcule du delta.
+const numSalle = require("../utils/numSalle/configNumSalle");
+let myMessage = "Attention : le delta est inférieur à -3°C";
 
-let deltaHum = 3;
+const sendSMS = (myMessage) => {
+  console.log(`❤️ temperatureDuMessage :" ${myMessage} + numSalle ${numSalle}`);
 
-let actionApresCalculeDelta = () => {
-  return new Promise((resolve, reject) => {
-    try {
-      if (deltaHum > 2) {
-        resolve(
-          console.log(
-            "✅ SUCCÈS | Gestion Humidité 16 | DeltaHum >  2 | On ne fait rien"
-          )
-        );
-      }
+  let masterURL;
 
-      if (deltaHum <= 2 && deltaHum >= -2) {
-        resolve(
-          console.log(
-            "✅ SUCCÈS | Gestion Humidité 16 | deltaHum <= 2 && deltaHum >= -2 | Pas d'action car interval entre 2% et -2%"
-          )
-        );
-      }
+  if (process.env.CHAMPIBACK_STATUS === "developpement") {
+    masterURL = "http://192.168.1.11:5000/api/postSms/postSms" + numSalle;
+    console.log("MODE DÉVELOPPEMENT ACTIF");
+  }
 
-      if (deltaHum >= -5 && deltaHum < -2) {
-        resolve(
-          console.log(
-            "✅ SUCCÈS | Gestion Humidité 16 | deltaHum >= -5 && deltaHum < -2 | Activation de l'eau au sol"
-          )
-        );
+  if (process.env.CHAMPIBACK_STATUS === "production") {
+    masterURL = "http://192.168.0.10:5000/api/postSms/postSms" + numSalle;
+    console.log("MODE PRODUCTION ACTIF");
+  }
 
-        let eau = () => {
-          //* Activation de l'eau au sol.
+  let date1 = new Date();
 
-          new Gpio(16, "out");
-
-          console.log(
-            "[ GESTION HUM CALCULES  ] DeltaHum <  0 : Activation de l'eau au sol."
-          );
-        };
-        eau();
-
-        //* Déactivation de l'eau au sol.
-        setTimeout((eau) => {
-          new Gpio(16, "in");
-
-          console.log(
-            "[ GESTION HUM CALCULES  ] Déactivation de l'eau au sol."
-          );
-          resolve();
-        }, 10000);
-      }
-
-      if (deltaHum >= -10 && deltaHum < -5) {
-        //
-
-        let eau = () => {
-          //* Activation de l'eau au sol.
-
-          new Gpio(16, "out");
-
-          console.log(
-            "[ GESTION HUM CALCULES  ] DeltaHum <  0 : Activation de l'eau au sol."
-          );
-        };
-        eau();
-
-        //* Déactivation de l'eau au sol.
-        setTimeout((eau) => {
-          new Gpio(16, "in");
-
-          console.log(
-            "[ GESTION HUM CALCULES  ] Déactivation de l'eau au sol."
-          );
-
-          resolve();
-        }, 10000);
-      }
-
-      if (deltaHum < -10) {
-        let eau = () => {
-          //* Activation de l'eau au sol.
-
-          new Gpio(16, "out");
-
-          console.log(
-            "[ GESTION HUM CALCULES  ] DeltaHum <  0 : Activation de l'eau au sol."
-          );
-        };
-        eau();
-
-        //* Déactivation de l'eau au sol.
-        setTimeout((eau) => {
-          new Gpio(16, "in");
-
-          console.log(
-            "[ GESTION HUM CALCULES  ] Déactivation de l'eau au sol."
-          );
-          resolve();
-        }, 10000);
-
-        //! ----------------------------------------
-      }
-    } catch (error) {
-      reject();
-
-      console.log("ERREUR calcul action delta :", error);
-    }
+  let dateLocale = date1.toLocaleString("fr-FR", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
   });
+
+  let message = `ALERTE : Salle ${numSalle} | ${myMessage} | ${dateLocale}`;
+
+  fetch(masterURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ message }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Reponse de SMS808 : ", data);
+    })
+    .catch((error) => {
+      console.error("🔴 Error | Functions | sendSMS : ", error);
+    });
 };
 
-actionApresCalculeDelta();
+sendSMS();
 
 //? --------------------------------------------------
