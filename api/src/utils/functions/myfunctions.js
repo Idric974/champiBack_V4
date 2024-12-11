@@ -115,12 +115,12 @@ const sendSMS = (temperatureDuMessage) => {
   let masterURL;
 
   if (process.env.CHAMPIBACK_STATUS === "developpement") {
-    masterURL = `http://192.168.1.11:4000/api/postSms/postSms`;
+    masterURL = `http://192.168.1.10:4000/api/postSms/postSms`;
     console.log("MODE DÉVELOPPEMENT ACTIF");
   }
 
   if (process.env.CHAMPIBACK_STATUS === "production") {
-    masterURL = `http://192.168.0.10:5000/api/postSms/postSms`;
+    masterURL = `http://192.168.0.10:4000/api/postSms/postSms`;
     console.log("MODE PRODUCTION ACTIF");
   }
 
