@@ -5,7 +5,7 @@ const configDataBase = require("../utils/SQL/config/dbConfig");
 //* Connexion à la base de données
 const sequelize = new Sequelize(
     configDataBase.dbConfig.database,
-    configDataBase.dbConfig.username,
+    configDataBase.dbConfig.user,
     configDataBase.dbConfig.password,
     {
         host: configDataBase.dbConfig.host,

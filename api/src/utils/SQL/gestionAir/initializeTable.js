@@ -3,21 +3,21 @@ const mysql = require("mysql");
 
 //? Table Gestion air.
 
-// const tableName = "gestion_airs";
+const tableName = "gestion_airs";
 
-// const data = {
-//   temperatureAir: 0,
-//   deltaAir: 0,
-//   days: 0,
-//   heures: 0,
-//   etatRelay: 0,
-//   actionRelay: 0,
-//   consigne: 0,
-//   valeurAxeX: 0,
-//   jourDuCycle: 0,
-//   createdAt: new Date(),
-//   updatedAt: new Date(),
-// };
+const data = {
+  temperatureAir: 0,
+  deltaAir: 0,
+  days: 0,
+  heures: 0,
+  etatRelay: 0,
+  actionRelay: 0,
+  consigne: 0,
+  valeurAxeX: 0,
+  jourDuCycle: 0,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
 
 //? -------------------------------------------------
 

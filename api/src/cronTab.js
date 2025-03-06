@@ -6,7 +6,7 @@ const path = require('path');
 
 //? Calcules.
 
-const gestionAir = schedule.scheduleJob(" */1 * * * * ", () => {
+const gestionAir = schedule.scheduleJob(" */5 * * * * ", () => {
   var childProcess = require("child_process");
 
   function runScript(scriptPath, callback) {
