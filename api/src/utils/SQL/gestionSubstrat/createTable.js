@@ -1,5 +1,6 @@
 const configDataBase = require("../config/dbConfig");
-const mysql = require("mysql");
+const Sequelize = require("sequelize");
+
 
 //? Table Gestion substrats.
 

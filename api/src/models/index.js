@@ -1,27 +1,31 @@
+const path = require("path");
 const Sequelize = require("sequelize");
-require("dotenv").config();
+const configDataBase = require("../utils/SQL/config/dbConfig");
 
-const sequelize = new Sequelize({
-  host: "127.0.0.1",
-  username: "idric",
-  password: "Kup33uC4W6",
-  database: "champyresi",
-  dialect: "mysql",
-  logging: false,
-});
+//* Connexion à la base de données
+const sequelize = new Sequelize(
+    configDataBase.dbConfig.database,
+    configDataBase.dbConfig.username,
+    configDataBase.dbConfig.password,
+    {
+        host: configDataBase.dbConfig.host,
+        dialect: configDataBase.dbConfig.dialect,
+        port: configDataBase.dbConfig.port,
+        logging: configDataBase.dbConfig.logging
+    }
+);
 
 sequelize
   .authenticate()
   .then(() => {
-    // console.log(
-    //   '\x1b[32m',
-    //   '[NODE SERVER] Connexion à la base de données réussie'
-    // );
+    console.log(
+      '\x1b[32m',
+      '[NODE SERVER] Connexion à la base de données réussie ✅'
+    );
   })
-
   .catch((err) => {
     console.log(
-      "\x1b[32m",
+      "\x1b[31m",
       "[NODE SERVER] Connexion à la base de données ❌❌ échouée ❌❌",
       err
     );
@@ -33,100 +37,36 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 //? GestionAir
-
-// Mesure.
-db.gestionAir = require("./gestionAir/gestionAirModels")(sequelize, Sequelize);
-
-// Data.
-db.gestionAirData = require("./gestionAir/gestionAirsDataModels")(
-  sequelize,
-  Sequelize
-);
-
-// Etalonnage.
-db.etalonnageAir = require("./gestionAir/gestionAirEtalonnageModels")(
-  sequelize,
-  Sequelize
-);
-
-// Etat relay.
-db.gestionAirEtatRelay = require("./gestionAir/gestionAirEtatRelayModels")(
-  sequelize,
-  Sequelize
-);
-
-// Courbes.
-db.gestionCourbes = require("./courbes/gestionCourbesModels")(
-  sequelize,
-  Sequelize
-);
-
-// Vannes.
-db.gestionAirVannes = require("./gestionAir/gestionAirVannesModels")(
-  sequelize,
-  Sequelize
-);
+db.gestionAir = require(path.join(__dirname, "gestionAir/gestionAirModels"))(sequelize, Sequelize);
+db.gestionAirData = require(path.join(__dirname, "gestionAir/gestionAirsDataModels"))(sequelize, Sequelize);
+db.etalonnageAir = require(path.join(__dirname, "gestionAir/gestionAirEtalonnageModels"))(sequelize, Sequelize);
+db.gestionAirEtatRelay = require(path.join(__dirname, "gestionAir/gestionAirEtatRelayModels"))(sequelize, Sequelize);
+db.gestionCourbes = require(path.join(__dirname, "courbes/gestionCourbesModels"))(sequelize, Sequelize);
+db.gestionAirVannes = require(path.join(__dirname, "gestionAir/gestionAirVannesModels"))(sequelize, Sequelize);
 
 //* -----------------------------------------------------------------
-
-//? Gestion Humidité.
-
-// Mesure.
-db.gestionHum = require("./gestionHum/gestionHumModels")(sequelize, Sequelize);
-
-// Data.
-db.gestionHumData = require("./gestionHum/gestionHumDataModels")(
-  sequelize,
-  Sequelize
-);
-
-// Etalonnage.
-db.etalonnageSec = require("./gestionHum/gestionHumEtalonnageSecModels")(
-  sequelize,
-  Sequelize
-);
-
-db.etalonnageHum = require("./gestionHum/gestionHumEtalonnageHumModels")(
-  sequelize,
-  Sequelize
-);
+//? Gestion Humidité
+db.gestionHum = require(path.join(__dirname, "gestionHum/gestionHumModels"))(sequelize, Sequelize);
+db.gestionHumData = require(path.join(__dirname, "gestionHum/gestionHumDataModels"))(sequelize, Sequelize);
+db.etalonnageSec = require(path.join(__dirname, "gestionHum/gestionHumEtalonnageSecModels"))(sequelize, Sequelize);
+db.etalonnageHum = require(path.join(__dirname, "gestionHum/gestionHumEtalonnageHumModels"))(sequelize, Sequelize);
 
 //* -----------------------------------------------------------------
+//? Gestion Co2
+db.gestionCo2 = require(path.join(__dirname, "gestionCo2/gestionCo2Models"))(sequelize, Sequelize);
+db.gestionCo2Data = require(path.join(__dirname, "gestionCo2/gestionCo2DataModels"))(sequelize, Sequelize);
 
-//? Gestion Co2.
+//* -----------------------------------------------------------------
+//? Gestion des logs
+db.gestionLogsBack = require(path.join(__dirname, "logsModels/gestionLogsModels"))(sequelize, Sequelize);
 
-// Mesure.
-db.gestionCo2 = require("./gestionCo2/gestionCo2Models")(sequelize, Sequelize);
+//* -----------------------------------------------------------------
+//? Gestion eau au sol
+db.gestionEtatBoutonRelayEauAuSol = require(path.join(__dirname, "relayEauAuSol/relayEauAuSolModels"))(sequelize, Sequelize);
 
-// Data.
-db.gestionCo2Data = require("./gestionCo2/gestionCo2DataModels")(
-  sequelize,
-  Sequelize
-);
-
-//? Gestion des log.
-
-// Logs du back
-db.gestionLogsBack = require("./logsModels/gestionLogsModels")(
-  sequelize,
-  Sequelize
-);
-
-//? Gestion eau au sol.
-
-db.gestionEtatBoutonRelayEauAuSol =
-  require("./relayEauAuSol/relayEauAuSolModels")(sequelize, Sequelize);
-
-//? Gestion substrat.
-
-db.gestionSubstrat = require("./gestionSubstrat/gestionSubstratModels")(
-  sequelize,
-  Sequelize
-);
-
-db.gestionSubstratData = require("./gestionSubstrat/gestionSubstratDataModels")(
-  sequelize,
-  Sequelize
-);
+//* -----------------------------------------------------------------
+//? Gestion substrat
+db.gestionSubstrat = require(path.join(__dirname, "gestionSubstrat/gestionSubstratModels"))(sequelize, Sequelize);
+db.gestionSubstratData = require(path.join(__dirname, "gestionSubstrat/gestionSubstratDataModels"))(sequelize, Sequelize);
 
 module.exports = db;

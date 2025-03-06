@@ -1,5 +1,5 @@
 const configDataBase = require("../config/dbConfig");
-const mysql = require("mysql");
+const Sequelize = require("sequelize");
 
 //? Table Gestion air.
 
@@ -74,41 +74,42 @@ const mysql = require("mysql");
 
 //? -------------------------------------------------
 
-const db = mysql.createConnection(configDataBase.dbConfig);
+//* Connexion à la base de données avec Sequelize
+const db = new Sequelize(
+  configDataBase.dbConfig.database,
+  configDataBase.dbConfig.username,
+  configDataBase.dbConfig.password,
+  {
+      host: configDataBase.dbConfig.host,
+      dialect: configDataBase.dbConfig.dialect,
+      port: configDataBase.dbConfig.port,
+      logging: configDataBase.dbConfig.logging
+  }
+);
 
-const connectToDatabase = () => {
-  return new Promise((resolve, reject) => {
-    db.connect((err) => {
-      if (err) {
-        console.error("Erreur lors de la connexion à la base de données:", err);
-        return reject(err);
-      }
-      console.log("Connexion à la base de donnée réussie 👍");
-      resolve();
-    });
-  });
+//* Fonction pour tester la connexion
+const connectToDatabase = async () => {
+  try {
+    await db.authenticate();
+    console.log("Connexion à la base de donnée réussie 👍");
+  } catch (err) {
+    console.error("Erreur lors de la connexion à la base de données:", err);
+    throw err;
+  }
 };
 
-const createTable = () => {
-  return new Promise((resolve, reject) => {
-    db.query(sql, (err, result) => {
-      if (err) {
-        console.error(
-          "Erreur lors de la création de la table" + tableName,
-          +err
-        );
-
-        return reject(err);
-      }
-      console.log(
-        "Table " + tableName + " créée ou déjà existante 👍 :",
-        result
-      );
-      resolve(result);
-    });
-  });
+//* Fonction pour créer la table
+const createTable = async () => {
+  try {
+    const result = await db.query(sql);
+    console.log("Table " + tableName + " créée ou déjà existante 👍 :", result);
+  } catch (err) {
+    console.error("Erreur lors de la création de la table " + tableName, err);
+    throw err;
+  }
 };
 
+//* Fonction principale
 const run = async () => {
   try {
     await connectToDatabase();
@@ -117,13 +118,8 @@ const run = async () => {
     console.error("Une erreur s'est produite:", err);
     process.exit(1); // Quitte le processus avec un code d'erreur
   } finally {
-    db.end((err) => {
-      if (err) {
-        console.error("Erreur lors de la fermeture de la connexion:", err);
-      } else {
-        console.log("Connexion à la base de données fermée.");
-      }
-    });
+    await db.close();  // Fermeture correcte de la connexion avec Sequelize
+    console.log("Connexion à la base de données fermée.");
   }
 };
 

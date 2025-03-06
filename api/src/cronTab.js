@@ -1,11 +1,12 @@
 const schedule = require("node-schedule");
 const childProcess = require("child_process");
+const path = require('path');
 
 //*! 1) Gestion Air.
 
 //? Calcules.
 
-const gestionAir = schedule.scheduleJob(" */5 * * * * ", () => {
+const gestionAir = schedule.scheduleJob(" */1 * * * * ", () => {
   var childProcess = require("child_process");
 
   function runScript(scriptPath, callback) {
@@ -30,17 +31,25 @@ const gestionAir = schedule.scheduleJob(" */5 * * * * ", () => {
     });
   }
 
-  // Now we can run a script and invoke a callback when complete, e.g.
+  //* Now we can run a script and invoke a callback when complete, e.g.
+  // runScript(
+  //   "/home/pi/Desktop/champiBack_V4/api/src/services/gestionAir/gestionAir.js",
+  //   function (err) {
+  //     if (err) throw err;
+  //     console.log(
+  //       jaune,
+  //       '[ GESTION AIR CRON TAB  ] CALCULES Calcules sont  terminés'
+  //     );
+  //   }
+  // );
+
+
   runScript(
-    "/home/pi/Desktop/champiBack_V4/api/src/services/gestionAir/gestionAir.js",
+    path.join(__dirname, 'services/gestionAir/gestionAir.js'),
     function (err) {
-      if (err) throw err;
-      // console.log(
-      //   jaune,
-      //   '[ GESTION AIR CRON TAB  ] CALCULES Calcules sont  terminés'
-      // );
+        if (err) throw err;
     }
-  );
+);
 });
 
 //? -------------------------------------------------
@@ -75,17 +84,26 @@ const gestionHum = schedule.scheduleJob(" */15 * * * * ", () => {
     });
   }
 
-  // Now we can run a script and invoke a callback when complete, e.g.
+  //* Now we can run a script and invoke a callback when complete, e.g.
+  // runScript(
+  //   "/home/pi/Desktop/champiBack_V4/api/src/services/gestionHumidite/gestionHumidite.js",
+  //   function (err) {
+  //     if (err) throw err;
+  //     console.log(
+  //       bleu,
+  //       '[ GESTION HUM CRON TAB  ] GESTION HUMIDITÉ finished running some-script.js'
+  //     );
+  //   }
+  // );
+
   runScript(
-    "/home/pi/Desktop/champiBack_V4/api/src/services/gestionHumidite/gestionHumidite.js",
+    path.join(__dirname, 'services/gestionHumidite/gestionHumidite.js'),
     function (err) {
-      if (err) throw err;
-      // console.log(
-      //   bleu,
-      //   '[ GESTION HUM CRON TAB  ] GESTION HUMIDITÉ finished running some-script.js'
-      // );
+        if (err) throw err;
     }
-  );
+);
+
+
 });
 
 //? -------------------------------------------------
@@ -119,17 +137,28 @@ const gestionCo2 = schedule.scheduleJob(" 01 * * * * ", () => {
     });
   }
 
-  // Now we can run a script and invoke a callback when complete, e.g.
+  //* Now we can run a script and invoke a callback when complete, e.g.
+  // runScript(
+  //   "/home/pi/Desktop/champiBack_V4/api/src/services/gestionCo2/gestionCo2.js",
+  //   function (err) {
+  //     if (err) throw err;
+  //     console.log(
+  //       cyan,
+  //       '[ GESTION CO2 CRON TAB  ] GESTION CO2 finished running some-script.js'
+  //     );
+  //   }
+  // );
+
   runScript(
-    "/home/pi/Desktop/champiBack_V4/api/src/services/gestionCo2/gestionCo2.js",
+    path.join(__dirname, 'services/gestionCo2/gestionCo2.js'),
     function (err) {
-      if (err) throw err;
-      // console.log(
-      //   cyan,
-      //   '[ GESTION CO2 CRON TAB  ] GESTION CO2 finished running some-script.js'
-      // );
+        if (err) throw err;
+        console.log(
+            cyan,
+            '[ GESTION CO2 CRON TAB  ] GESTION CO2 finished running some-script.js'
+        );
     }
-  );
+);
 });
 
 //? -------------------------------------------------

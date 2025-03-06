@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Version 4 du projet avec API structurée",
   "main": "api/src/server.js",
-  "scripts": {
-    "start": "concurrently -n 'Serveur Back,Cron Tab' -c \"red,blue\" \"nodemon api/src/server.js\" \"node /home/pi/Desktop/champiBack_V4/api/src/cronTab.js\"",
-    "dev": "nodemon api/src/server.js"
-  },
+"scripts": {
+  "start": "concurrently -n 'Serveur Back,Cron Tab' -c \"red,blue\" \"nodemon api/src/server.js\" \"node api/src/cronTab.js\"",
+  "dev": "nodemon api/src/server.js"
+},
   "author": "Idric Evarne",
   "license": "ISC",
   "dependencies": {

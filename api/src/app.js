@@ -26,6 +26,11 @@ app.use((req, res, next) => {
   next();
 });
 
+
+
+
+
+
 //? --------------------------------------------------
 
 //? Module de connexion à la base de données.
@@ -51,17 +56,30 @@ app.use(
 
 //? Les images.
 
+// app.use(
+//   "/images",
+//   express.static("/home/pi/Desktop/champiback_V4/frontend/images")
+// );
+
 app.use(
   "/images",
-  express.static("/home/pi/Desktop/champiBack_V4/frontend/images")
+  express.static(path.join(__dirname, '../../frontend/images'))
 );
+
+
+
 //? --------------------------------------------------
 
 //? Le CSS.
 
+// app.use(
+//   "/styles",
+//   express.static("/home/pi/Desktop/champiback_V4/frontend/styles")
+// );
+
 app.use(
   "/styles",
-  express.static("/home/pi/Desktop/champiBack_V4/frontend/styles")
+  express.static(path.join(__dirname, '../../frontend/styles'))
 );
 
 //? --------------------------------------------------
@@ -70,41 +88,66 @@ app.use(
 
 //* Gestion des boutons et des onglets.
 
+// app.use(
+//   "/gestionBoutonsEtOnglets",
+//   express.static(
+//     "/home/pi/Desktop/champiback_V4/frontend/services/gestionBoutonsEtOnglets"
+//   )
+// );
+
 app.use(
   "/gestionBoutonsEtOnglets",
-  express.static(
-    "/home/pi/Desktop/champiBack_V4/frontend/services/gestionBoutonsEtOnglets"
-  )
+  express.static(path.join(__dirname, '../../frontend/services/gestionBoutonsEtOnglets'))
 );
 
 //* Accueil.
 
+// app.use(
+//   "/pageAccueil",
+//   express.static("/home/pi/Desktop/champiback_V4/frontend/services/pageAccueil")
+// );
+
 app.use(
   "/pageAccueil",
-  express.static("/home/pi/Desktop/champiBack_V4/frontend/services/pageAccueil")
+  express.static(path.join(__dirname, '../../frontend/services/pageAccueil'))
 );
 
 //* Relays.
 
+// app.use(
+//   "/pageRelays",
+//   express.static("/home/pi/Desktop/champiback_V4/frontend/services/pageRelays")
+// );
+
 app.use(
   "/pageRelays",
-  express.static("/home/pi/Desktop/champiBack_V4/frontend/services/pageRelays")
+  express.static(path.join(__dirname, '../../frontend/services/pageRelays'))
 );
 
 //* Courbes.
 
+// app.use(
+//   "/pageCourbes",
+//   express.static("/home/pi/Desktop/champiback_V4/frontend/services/pageCourbes")
+// );
+
 app.use(
   "/pageCourbes",
-  express.static("/home/pi/Desktop/champiBack_V4/frontend/services/pageCourbes")
+  express.static(path.join(__dirname, '../../frontend/services/pageCourbes'))
 );
 
 //? --------------------------------------------------
 
 //? Fichier pour les graphiques.
 
+// app.use(
+//   "/dist",
+//   express.static("/home/pi/Desktop/champiback_V4/node_modules/chart.js/dist")
+// );
+
 app.use(
   "/dist",
-  express.static("/home/pi/Desktop/champiBack_V4/node_modules/chart.js/dist")
+  express.static(path.join(__dirname, '../../node_modules/chart.js/dist'))
 );
 
 //? --------------------------------------------------
@@ -151,7 +194,7 @@ app.use("/gestionHumiditeRoutesApi", gestionHumiditeGetApiRouteHandler);
 
 //? Génération des pages html.
 
-const genererModele = require("/home/pi/Desktop/champiBack_V4/frontend/pages/indexGet.js");
+const genererModele = require("/home/pi/Desktop/champiback_V4/frontend/pages/indexGet.js");
 
 app.get("/", async (req, res) => {
   const indexHtml = await genererModele("indexPage/index");
