@@ -154,7 +154,7 @@ exports.postFermetureVanneAir = async (req, res) => {
   try {
     // Exécuter le script gpioOn.py
     const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
-      `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOn.py ${gpioPin}`
+      `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOn.py ${gpioPin}`
     );
     if (stderrOn) {
       console.error(`Error output (gpioOn.py): ${stderrOn}`);
@@ -166,7 +166,7 @@ exports.postFermetureVanneAir = async (req, res) => {
 
     // Exécuter le script gpioOff.py
     const { stdout: stdoutOff, stderr: stderrOff } = await execAsync(
-      `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOff.py ${gpioPin}`
+      `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOff.py ${gpioPin}`
     );
     if (stderrOff) {
       console.error(`Error output (gpioOff.py): ${stderrOff}`);

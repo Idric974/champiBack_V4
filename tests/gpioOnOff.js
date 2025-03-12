@@ -5,7 +5,7 @@ let off = "gpioOff.py";
 let gpioPin = "22";
 
 exec(
-  `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/${off} ${gpioPin}`,
+  `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/${off} ${gpioPin}`,
   (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing script: ${error}`);

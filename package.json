@@ -1,5 +1,5 @@
 {
-  "name": "champiback_v4",
+  "name": "champiback_V4",
   "version": "1.0.0",
   "description": "Version 4 du projet avec API structurée",
   "main": "api/src/server.js",

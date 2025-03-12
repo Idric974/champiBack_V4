@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const path = require("path");
 const { exec } = require("child_process");
 const util = require("util");
 const execAsync = util.promisify(exec);
@@ -53,9 +54,16 @@ exports.gpioActionOn = async (req, res) => {
   try {
     //* Exécuter le script gpioOn.py
 
+    // const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
+    //   `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOn.py ${gpioPin}`
+    // );
+
+    const scriptPathOn = path.join(__dirname, "../../api/src/utils/python/gpioOn.py");
+
     const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
-      `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOn.py ${gpioPin}`
-    );
+  `python3 ${scriptPathOn} ${gpioPin}`
+);
+
     if (stderrOn) {
       console.error(`Error output (gpioOn.py): ${stderrOn}`);
     }
@@ -82,9 +90,17 @@ exports.gpioActionOff = async (req, res) => {
   try {
     //* Exécuter le script gpioOn.py
 
+    // const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
+    //   `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOff.py ${gpioPin}`
+    // );
+
+    const scriptPathOff = path.join(__dirname, "../../api/src/utils/python/gpioOff.py");
+
     const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
-      `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOff.py ${gpioPin}`
+      `python3 ${scriptPathOff} ${gpioPin}`
     );
+    
+
     if (stderrOn) {
       console.error(`Error output (gpioOff.py): ${stderrOn}`);
     }

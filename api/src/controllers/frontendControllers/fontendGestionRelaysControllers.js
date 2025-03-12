@@ -17,7 +17,7 @@ const gpioActionOn = async () => {
     //* Exécuter le script gpioOn.py
 
     const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
-      `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOn.py ${pinAActiver}`
+      `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOn.py ${pinAActiver}`
     );
     if (stderrOn) {
       console.error(`Error output (gpioOn.py): ${stderrOn}`);
@@ -37,7 +37,7 @@ const gpioActionOff = async () => {
     //* Exécuter le script gpioOn.py
 
     const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
-      `python3 /home/pi/Desktop/champiBack_V4/api/src/utils/python/gpioOff.py ${pinAActiver}`
+      `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOff.py ${pinAActiver}`
     );
     if (stderrOn) {
       console.error(`Error output (gpioOff.py): ${stderrOn}`);

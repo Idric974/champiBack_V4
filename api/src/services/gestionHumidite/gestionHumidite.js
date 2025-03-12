@@ -371,7 +371,7 @@ const getCorrespondanceSec = () => {
         resolve(correspondancePressions);
       } else {
         throw new Error(
-          "🔴 THROWED ERROR | Correspondance Sec non trouvée pour la température donnée."
+          "🔴 ERROR | Correspondance Sec non trouvée pour la température donnée."
         );
       }
     } catch (error) {

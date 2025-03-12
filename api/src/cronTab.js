@@ -33,7 +33,7 @@ const gestionAir = schedule.scheduleJob(" */5 * * * * ", () => {
 
   //* Now we can run a script and invoke a callback when complete, e.g.
   // runScript(
-  //   "/home/pi/Desktop/champiBack_V4/api/src/services/gestionAir/gestionAir.js",
+  //   "/home/pi/Desktop/champiback_V4/api/src/services/gestionAir/gestionAir.js",
   //   function (err) {
   //     if (err) throw err;
   //     console.log(
@@ -86,7 +86,7 @@ const gestionHum = schedule.scheduleJob(" */15 * * * * ", () => {
 
   //* Now we can run a script and invoke a callback when complete, e.g.
   // runScript(
-  //   "/home/pi/Desktop/champiBack_V4/api/src/services/gestionHumidite/gestionHumidite.js",
+  //   "/home/pi/Desktop/champiback_V4/api/src/services/gestionHumidite/gestionHumidite.js",
   //   function (err) {
   //     if (err) throw err;
   //     console.log(
@@ -139,7 +139,7 @@ const gestionCo2 = schedule.scheduleJob(" 01 * * * * ", () => {
 
   //* Now we can run a script and invoke a callback when complete, e.g.
   // runScript(
-  //   "/home/pi/Desktop/champiBack_V4/api/src/services/gestionCo2/gestionCo2.js",
+  //   "/home/pi/Desktop/champiback_V4/api/src/services/gestionCo2/gestionCo2.js",
   //   function (err) {
   //     if (err) throw err;
   //     console.log(

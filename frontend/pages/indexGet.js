@@ -5,7 +5,7 @@ const readFileAsync = promisify(readFile);
 const path = require("path");
 
 const READ_OPTIONS = { encoding: "utf-8" };
-// const HTML_URL = "/home/pi/Desktop/champiBack_V4/frontend/html";
+// const HTML_URL = "/home/pi/Desktop/champiback_V4/frontend/html";
 const HTML_URL = path.join(__dirname, "../../frontend/html");
 
 const lireFichierHtml = (file) =>
