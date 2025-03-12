@@ -51,14 +51,14 @@ const mysql = require("mysql");
 
 //? Table Gestion airs etat relays.
 
-let tableName = "gestion_airs_etat_relays";
+// let tableName = "gestion_airs_etat_relays";
 
-const sql = `
-CREATE TABLE gestion_airs_etat_relays (id int auto_increment,
-etatRelay FLOAT,
-createdAt DATE,
-updatedAt DATE,
-primary key(id))`;
+// const sql = `
+// CREATE TABLE gestion_airs_etat_relays (id int auto_increment,
+// etatRelay FLOAT,
+// createdAt DATE,
+// updatedAt DATE,
+// primary key(id))`;
 
 //? -------------------------------------------------
 

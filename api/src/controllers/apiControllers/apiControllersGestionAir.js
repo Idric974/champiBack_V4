@@ -54,15 +54,16 @@ exports.gpioActionOn = async (req, res) => {
   try {
     //* Exécuter le script gpioOn.py
 
-    // const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
-    //   `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOn.py ${gpioPin}`
-    // );
-
-    const scriptPathOn = path.join(__dirname, "../../api/src/utils/python/gpioOn.py");
-
     const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
-  `python3 ${scriptPathOn} ${gpioPin}`
-);
+      `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOn.py ${gpioPin}`
+    );
+
+//     const scriptPathOn = path.join(__dirname, "../../api/src/utils/python/gpioOn.py");
+
+//     const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
+//   `python3 ${scriptPathOn} ${gpioPin}`
+  
+// );
 
     if (stderrOn) {
       console.error(`Error output (gpioOn.py): ${stderrOn}`);
@@ -90,15 +91,15 @@ exports.gpioActionOff = async (req, res) => {
   try {
     //* Exécuter le script gpioOn.py
 
-    // const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
-    //   `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOff.py ${gpioPin}`
-    // );
-
-    const scriptPathOff = path.join(__dirname, "../../api/src/utils/python/gpioOff.py");
-
     const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
-      `python3 ${scriptPathOff} ${gpioPin}`
+      `python3 /home/pi/Desktop/champiback_V4/api/src/utils/python/gpioOff.py ${gpioPin}`
     );
+
+    // const scriptPathOff = path.join(__dirname, "../../api/src/utils/python/gpioOff.py");
+
+    // const { stdout: stdoutOn, stderr: stderrOn } = await execAsync(
+    //   `python3 ${scriptPathOff} ${gpioPin}`
+    // );
     
 
     if (stderrOn) {
