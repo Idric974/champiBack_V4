@@ -1,46 +1,32 @@
-const spi = require("spi-device");
+const mcpadc = require('mcp-spi-adc');
+const mcpChannel = 2;
+const multiple = 40;
+let airReadings = [];
 
-// Configuration du SPI
-const bus = 0;
-const device = 0;
-const mcp3008 = spi.open(bus, device, (err) => {
+
+//* Ouvre la communication SPI
+const tempSensor = mcpadc.open(mcpChannel, { speedHz: 20000 }, (err) => {
   if (err) {
-    console.log("Erreur lors de l'ouverture du périphérique SPI:", err);
+    console.error('Erreur lors de l’ouverture du SPI :', err);
     return;
   }
 
-  console.log("Périphérique SPI ouvert avec succès");
+  //* Fonction qui lit la valeur et l’ajoute à airReadings
+  const readSensor = () => {
+    tempSensor.read((err, reading) => {
+      if (err) {
+        console.error('Erreur lors de la lecture :', err);
+        return;
+      }
 
-  // Exemple de lecture des valeurs
-  for (let channel = 0; channel < 8; channel++) {
-    readAdc(channel, (value) => {
-      console.log(`Valeur du canal ${channel}: ${value}`);
+      //* Convertit de 0-1 à une échelle 0-40 (hypothétique)
+      let readingValues = reading.value * multiple; 
+      airReadings.push(readingValues);
+
+      console.log('[GESTION AIR] Valeurs mesurées :', airReadings);
     });
-  }
+  };
+
+  //* Lit toutes les secondes
+  setInterval(readSensor, 1000);
 });
-
-function readAdc(channel, callback) {
-  if (channel < 0 || channel > 7) {
-    throw new Error("Le canal doit être entre 0 et 7 inclus");
-  }
-
-  const message = [
-    {
-      sendBuffer: Buffer.from([1, (8 + channel) << 4, 0]),
-      receiveBuffer: Buffer.alloc(3),
-      byteLength: 3,
-      speedHz: 1350000,
-    },
-  ];
-
-  mcp3008.transfer(message, (err, message) => {
-    if (err) {
-      console.log("Erreur lors de la lecture du canal:", err);
-      return;
-    }
-
-    const rawValue =
-      ((message[0].receiveBuffer[1] & 3) << 8) + message[0].receiveBuffer[2];
-    callback(rawValue);
-  });
-}

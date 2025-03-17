@@ -1,4 +1,5 @@
 const sequelize = require("sequelize");
+const fs = require('fs');
 const currentTime = new Date().toLocaleTimeString();
 const db = require("../../models");
 const {
@@ -843,6 +844,7 @@ let handleMyPromise = async () => {
     await definitionDuDelta();
     await definitionDesActions();
     await enregistrementDatas();
+    await fs.appendFileSync('/home/pi/cron_execution.log', `Script exécuté à : ${new Date().toLocaleString()}\n`);
   } catch (err) {
     console.log("err finale :", err);
   }
